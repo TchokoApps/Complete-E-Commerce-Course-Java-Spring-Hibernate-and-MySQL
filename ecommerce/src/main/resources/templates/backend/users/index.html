@@ -9,6 +9,8 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{/backend/fontawesome/all.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/backend/style.css}" type="text/css"/>
 </head>
 <body>
 <div class="container-fluid">
@@ -83,14 +85,20 @@
             <tbody>
             <tr th:each="user : ${users}">
                 <td>[[${user.id}]]</td>
-                <td></td>
+                <td><span class="fas fa-portrait fa-3x icon-silver"></span></td>
                 <td>[[${user.email}]]</td>
                 <td>[[${user.firstName}]]</td>
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
-                <td>[[${user.enabled}]]</td>
                 <td>
-                    Edit | Delete
+                    <a class="fas fa-check-circle fa-2x icon-green" href="" th:if="${user.enabled == true}"></a>
+                    <a class="fas fa-check-circle fa-2x icon-dark" href="" th:if="${user.enabled == false}"></a>
+                </td>
+
+                <td>
+                    <a class="fas fa-edit fa-2x icon-green" href=""></a>
+                    &nbsp;
+                    <a class="fas fa-trash fa-2x icon-dark" href=""></a>
                 </td>
             </tr>
             </tbody>
