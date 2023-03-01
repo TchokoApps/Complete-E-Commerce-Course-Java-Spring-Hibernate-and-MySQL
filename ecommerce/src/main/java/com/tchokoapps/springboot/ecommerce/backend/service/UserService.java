@@ -4,6 +4,7 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,10 +14,12 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -26,6 +29,13 @@ public class UserService {
     }
 
     public void save(@NonNull User user) {
+        encodeUserPassword(user);
         userRepository.save(user);
+    }
+
+    private void encodeUserPassword(User user) {
+        String rawPassword = user.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        user.setPassword(encodedPassword);
     }
 }
