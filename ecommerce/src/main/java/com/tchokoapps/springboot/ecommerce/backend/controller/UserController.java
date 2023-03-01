@@ -4,6 +4,7 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.Role;
 import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.service.RoleService;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class UserController {
 
@@ -44,11 +46,11 @@ public class UserController {
         return "backend/users/create-form";
     }
 
-    @PostMapping("users/save")
+    @PostMapping("backend/users/save")
     public String saveUser(User user, RedirectAttributes redirectAttributes) {
-        System.out.println(user);
+        log.info("user: {}", user);
         userService.save(user);
         redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
-        return "redirect:/users";
+        return "redirect:/backend/users";
     }
 }

@@ -3,11 +3,13 @@ package com.tchokoapps.springboot.ecommerce.backend.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
