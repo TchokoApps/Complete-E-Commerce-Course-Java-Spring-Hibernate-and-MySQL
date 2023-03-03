@@ -90,13 +90,16 @@
                 <td>[[${user.firstName}]]</td>
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
+                <!--                <td>-->
+                <!--                    <span th:each="role : ${user.roles}" th:text="${role.name} + ' '"></span>-->
+                <!--                </td>-->
                 <td>
                     <a class="fas fa-check-circle fa-2x icon-green" href="" th:if="${user.enabled == true}"></a>
                     <a class="fas fa-check-circle fa-2x icon-dark" href="" th:if="${user.enabled == false}"></a>
                 </td>
 
                 <td>
-                    <a class="fas fa-edit fa-2x icon-green" href=""></a>
+                    <a class="fas fa-edit fa-2x icon-green" th:href="@{'/backend/users/edit/'+${user.id}}" title="Edit User"></a>
                     &nbsp;
                     <a class="fas fa-trash fa-2x icon-dark" href=""></a>
                 </td>
