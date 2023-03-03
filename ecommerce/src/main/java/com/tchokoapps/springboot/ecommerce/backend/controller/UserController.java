@@ -7,7 +7,6 @@ import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,17 +57,28 @@ public class UserController {
         log.info("user: {}", user);
 
         if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult);
-            return "backend/users/create-form";
+
+            if (bindingResult.getErrorCount() > 1) {
+                return "backend/users/create-form";
+            }
+
+            final String fieldName = bindingResult.getFieldErrors().get(0).getField();
+
+            if (!fieldName.equals("email")) {
+                return "backend/users/create-form";
+            }
+        }
+
+        User userFound = userService.findUserById(user.getId());
+        userFound.setEmail(user.getEmail());
+        userFound.setLastName(user.getLastName());
+        userFound.setFirstName(user.getFirstName());
+        if (!user.getPassword().isBlank()) {
+            userFound.setPassword(user.getPassword());
         }
         userService.save(user);
         redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
         return "redirect:/backend/users";
-    }
-
-    @PostMapping("/backend/users/check_email")
-    public String checkDuplicatedEmail(@Param("email") String email) {
-        return userService.isUserUnique(email) ? "OK" : "Duplicated";
     }
 
     @GetMapping("/backend/users/edit/{id}")
@@ -80,7 +90,7 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("pageTitle", "Edit User with id = " + user.getId());
             model.addAttribute("roles", roles);
-            return "/backend/users/create-form";
+            return "/backend/users/edit-form";
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/backend/users";

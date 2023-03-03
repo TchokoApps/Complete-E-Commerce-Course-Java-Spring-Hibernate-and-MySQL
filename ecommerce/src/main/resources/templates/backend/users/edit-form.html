@@ -66,6 +66,7 @@
 
     <form method="post" style="max-width: 700px; margin: 0 auto" th:action="@{/backend/users/save}"
           th:object="${user}">
+        <input name="id" th:value="*{id}" type="hidden">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">E-mail:</label>
@@ -94,7 +95,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Password:</label>
                 <div class="col-sm-8">
-                    <input class="form-control" maxlength="20" minlength="8" required th:field="*{password}"
+                    <input class="form-control" maxlength="20" minlength="8" th:field="*{password}"
                            type="password"/>
                     <span style="color: red;" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
                 </div>
