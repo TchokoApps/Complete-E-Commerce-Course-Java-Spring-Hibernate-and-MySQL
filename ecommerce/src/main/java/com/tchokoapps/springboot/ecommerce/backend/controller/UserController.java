@@ -31,6 +31,11 @@ public class UserController {
         this.roleService = roleService;
     }
 
+    @GetMapping("admin")
+    String showAdminPage(Model model) {
+        return "admin/index";
+    }
+
     @GetMapping("backend/users")
     String findAll(Model model) {
 
@@ -76,7 +81,7 @@ public class UserController {
         if (!user.getPassword().isBlank()) {
             userFound.setPassword(user.getPassword());
         }
-        userService.save(user);
+        userService.save(userFound);
         redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
         return "redirect:/backend/users";
     }

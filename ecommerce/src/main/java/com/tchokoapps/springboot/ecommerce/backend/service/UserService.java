@@ -39,11 +39,6 @@ public class UserService {
         user.setPassword(encodedPassword);
     }
 
-    public boolean isUserUnique(@NonNull String email) {
-        User userFound = userRepository.findUserByEmail(email);
-        return userFound != null;
-    }
-
     public User findUserById(@NonNull Integer id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Could not found any User with Id = " + id));
     }

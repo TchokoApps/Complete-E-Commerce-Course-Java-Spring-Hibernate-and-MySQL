@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap rating</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="bower_components/fontawesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="bootstrap-rating.css" rel="stylesheet">
+    <style>
+        .custom-heart {
+            font-size: 2.5em;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="survey-builder container">
+    <h2>Bootstrap rating</h2>
+    <hr/>
+    <h3>Default rating</h3>
+    <input class="rating" type="hidden"/>
+    <h3>Half rating</h3>
+    <input class="rating" data-fractions="2" type="hidden"/>
+    <h3>Disabled rating</h3>
+    <input class="rating" disabled="disabled" type="hidden"/>
+    <h3>Readonly rating with a value</h3>
+    <input class="rating" data-readonly type="hidden" value="3"/>
+    <h3>Readonly rating with a fractional value</h3>
+    <input class="rating" data-readonly type="hidden" value="2.5"/>
+    <h3>Customized heart rating</h3>
+    <input class="rating" data-empty="glyphicon glyphicon-heart-empty custom-heart" data-filled="glyphicon glyphicon-heart custom-heart"
+           type="hidden"/>
+    <h3>Only fill selected</h3>
+    <input class="rating" data-empty="glyphicon glyphicon-heart-empty" data-filled="glyphicon glyphicon-heart-empty"
+           data-filled-selected="glyphicon glyphicon-heart" type="hidden"/>
+    <h3>Handle events</h3>
+    <input class="rating check" data-empty="glyphicon glyphicon-unchecked" data-filled="glyphicon glyphicon-check" type="hidden"/>
+    <h3>Programmatically set/get rate</h3>
+    <input class="rating-tooltip" id="programmatically-rating" type="hidden">
+    <input id="programmatically-value" type="number">
+    <button id="programmatically-set" type="button">Set value</button>
+    <button id="programmatically-get" type="button">Get value</button>
+    <h3>Customize tooltips</h3>
+    <input class="rating-tooltip" type="hidden"/>
+    <h3>Set stop rate to 10 [1..10]</h3>
+    <input class="rating-tooltip" data-stop="10" type="hidden"/>
+    <h3>Set start rate to 5 [6..10]</h3>
+    <input class="rating-tooltip" data-start="5" type="hidden"/>
+    <h3>Set start and stop rate [2..10]</h3>
+    <input class="rating-tooltip" data-start="1" data-stop="10" type="hidden"/>
+    <h3>Set start and stop rate [2..10] with step 2</h3>
+    <input class="rating-tooltip" data-step="2" data-stop="10" type="hidden"/>
+    <h3>Set start and stop rate [-2..-10] with step -2</h3>
+    <input class="rating-tooltip" data-step="-2" data-stop="-10" type="hidden"/>
+    <h3>Font Awesome icons</h3>
+    <input class="rating-tooltip" data-empty="fa fa-bell-o fa-3x" data-filled="fa fa-bell fa-3x" type="hidden"/>
+    <h3>Fractional rating</h3>
+    <input class="rating-tooltip-manual" data-empty="fa fa-star-o fa-3x" data-filled="fa fa-star fa-3x" data-fractions="3" type="hidden"/>
+    <h3>Fractional right-to-left rating</h3>
+    <div dir="rtl">
+        <input class="rating-tooltip-manual" data-empty="fa fa-star-o fa-3x" data-filled="fa fa-star fa-3x" data-fractions="3" type="hidden"/>
+    </div>
+    <h3>Custom CSS icons</h3>
+    <input class="rating" data-empty="symbol symbol-empty" data-filled="symbol symbol-filled" data-fractions="2" type="hidden"/>
+</div>
+<script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
+<script src="bower_components/bootstrap/js/tooltip.js" type="text/javascript"></script>
+<script src="bootstrap-rating.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('input.check').on('change', function () {
+            alert('Rating: ' + $(this).val());
+        });
+        $('#programmatically-set').click(function () {
+            $('#programmatically-rating').rating('rate', $('#programmatically-value').val());
+        });
+        $('#programmatically-get').click(function () {
+            alert($('#programmatically-rating').rating('rate'));
+        });
+        $('.rating-tooltip').rating({
+            extendSymbol: function (rate) {
+                $(this).tooltip({
+                    container: 'body',
+                    placement: 'bottom',
+                    title: 'Rate ' + rate
+                });
+            }
+        });
+        $('.rating-tooltip-manual').rating({
+            extendSymbol: function () {
+                var title;
+                $(this).tooltip({
+                    container: 'body',
+                    placement: 'bottom',
+                    trigger: 'manual',
+                    title: function () {
+                        return title;
+                    }
+                });
+                $(this).on('rating.rateenter', function (e, rate) {
+                    title = rate;
+                    $(this).tooltip('show');
+                })
+                    .on('rating.rateleave', function () {
+                        $(this).tooltip('hide');
+                    });
+            }
+        });
+        $('.rating').each(function () {
+            $('<span class="label label-default"></span>')
+                .text($(this).val() || ' ')
+                .insertAfter(this);
+        });
+        $('.rating').on('change', function () {
+            $(this).next('.label').text($(this).val());
+        });
+    });
+</script>
+</body>
+</html>

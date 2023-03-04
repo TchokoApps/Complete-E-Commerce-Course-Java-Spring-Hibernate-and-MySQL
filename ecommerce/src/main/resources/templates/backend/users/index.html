@@ -79,7 +79,7 @@
                 <th>Last Name</th>
                 <th>Roles</th>
                 <th>Enabled</th>
-                <th></th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -99,9 +99,9 @@
                 </td>
 
                 <td>
-                    <a class="fas fa-edit fa-2x icon-green" th:href="@{'/backend/users/edit/'+${user.id}}" title="Edit User"></a>
-                    &nbsp;
-                    <a class="fas fa-trash fa-2x icon-dark" href=""></a>
+                    <a class="btn btn-info sm" th:href="@{'/backend/users/edit/'+${user.id}}" title="Edit User"> <i class="fas fa-edit"></i> </a>
+                    <a class="btn btn-danger sm" id="delete" th:href="@{'/backend/users/delete/'+${user.id}}" title="Delete Data"> <i
+                            class="fas fa-trash-alt"></i> </a>
                 </td>
             </tr>
             </tbody>
