@@ -39,9 +39,8 @@ public class UserController {
 
     @GetMapping("admin/users")
     String findAll(Model model) {
-
-//        final List<User> users = userService.findAll();
-//        model.addAttribute("users", users);
+        final List<User> users = userService.findAll();
+        model.addAttribute("users", users);
         return "admin/users/index";
     }
 

@@ -1,70 +1,79 @@
+<html xmlns:th="http://www.thymeleaf.org">
 <div class="page-content">
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-    <!-- start page title -->
-    <div class="row">
-      <div class="col-12">
-        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-          <h4 class="mb-sm-0">Data Tables</h4>
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Data Tables</h4>
 
-          <div class="page-title-right">
-            <ol class="breadcrumb m-0">
-              <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-              <li class="breadcrumb-item active">Data Tables</li>
-            </ol>
-          </div>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                            <li class="breadcrumb-item active">Data Tables</li>
+                        </ol>
+                    </div>
 
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- end page title -->
+        <!-- end page title -->
 
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Default Datatable</h4>
-            <p class="card-title-desc">DataTables has most features enabled by
-              default, so all you need to do to use it with your own tables is to call
-              the construction function: <code>$().DataTable();</code>.
-            </p>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Default Datatable</h4>
+                        <p class="card-title-desc">DataTables has most features enabled by
+                            default, so all you need to do to use it with your own tables is to call
+                            the construction function: <code>$().DataTable();</code>.
+                        </p>
 
-            <table class="table table-bordered dt-responsive nowrap" id="datatable"
-                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-              <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>Tiger Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>$320,800</td>
-              </tr>
-              <tr>
-                <td>Donna Snider</td>
-                <td>Customer Support</td>
-                <td>New York</td>
-                <td>27</td>
-                <td>2011/01/25</td>
-                <td>$112,000</td>
-              </tr>
-              </tbody>
-            </table>
+                        <table class="table table-bordered dt-responsive nowrap" id="datatable"
+                               style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Photos</th>
+                                <th>E-mail</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Roles</th>
+                                <th>Enabled</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user,count : ${users}">
+                                <td>[[${count.index + 1}]]</td>
+                                <td><span class="fas fa-portrait fa-3x icon-silver"></span></td>
+                                <td>[[${user.email}]]</td>
+                                <td>[[${user.firstName}]]</td>
+                                <td>[[${user.lastName}]]</td>
+                                <td>[[${user.roles}]]</td>
+                                <!--                <td>-->
+                                <!--                    <span th:each="role : ${user.roles}" th:text="${role.name} + ' '"></span>-->
+                                <!--                </td>-->
+                                <td>
+                                    <a class="fas fa-check-circle fa-2x icon-green" href="" th:if="${user.enabled == true}"></a>
+                                    <a class="fas fa-check-circle fa-2x icon-dark" href="" th:if="${user.enabled == false}"></a>
+                                </td>
 
-          </div>
-        </div>
-      </div> <!-- end col -->
-    </div> <!-- end row -->
+                                <td>
+                                    <a class="btn btn-info sm" th:href="@{'/backend/users/edit/'+${user.id}}" title="Edit User"> <i
+                                            class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-danger sm" id="delete" th:href="@{'/backend/users/delete/'+${user.id}}" title="Delete Data"> <i
+                                            class="fas fa-trash-alt"></i> </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-  </div> <!-- container-fluid -->
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+    </div> <!-- container-fluid -->
 </div>
