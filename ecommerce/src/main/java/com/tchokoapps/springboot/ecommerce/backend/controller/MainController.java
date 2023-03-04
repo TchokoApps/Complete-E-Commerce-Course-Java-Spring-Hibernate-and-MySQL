@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    @GetMapping("backend")
+    @GetMapping(value = {"", "/", "backend"})
     public String viewHomePage() {
         return "backend/index";
     }
