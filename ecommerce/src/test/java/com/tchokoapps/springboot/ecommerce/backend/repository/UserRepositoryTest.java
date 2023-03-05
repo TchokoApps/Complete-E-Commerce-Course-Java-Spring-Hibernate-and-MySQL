@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -14,8 +15,21 @@ class UserRepositoryTest {
 
     @Test
     public void testFindUserByEmail() {
-        User userFound = userRepository.findUserByEmail("john.doe@gmail.com");
-        assertThat(userFound).isNotNull();
+        // Given
+        User user = new User();
+        user.setEmail("johndoe@example.com");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setPassword("password");
+        user.setEnabled(true);
+        userRepository.save(user);
+
+        // When
+        User foundUser = userRepository.findUserByEmail(user.getEmail());
+
+        // Then
+        assertNotNull(foundUser);
+        assertEquals(user.getEmail(), foundUser.getEmail());
     }
 
 }

@@ -49,14 +49,14 @@
                                 <!--                    <span th:each="role : ${user.roles}" th:text="${role.name} + ' '"></span>-->
                                 <!--                </td>-->
                                 <td>
-                                    <a class="fas fa-check-circle fa-2x icon-green" href="" th:if="${user.enabled == true}"></a>
-                                    <a class="fas fa-check-circle fa-2x icon-dark" href="" th:if="${user.enabled == false}"></a>
+                                    <a class="fas fa-check-circle fa-2x icon-green" href="" style="color: green" th:if="${user.enabled == true}"></a>
+                                    <a class="fas fa-check-circle fa-2x icon-dark" href="" style="color: grey" th:if="${user.enabled == false}"></a>
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-info sm" th:href="@{'/backend/users/edit/'+${user.id}}" title="Edit User"> <i
+                                    <a class="btn btn-info sm" th:href="@{'/admin/users/edit-form/'+${user.id}}" title="Edit User"> <i
                                             class="fas fa-edit"></i> </a>
-                                    <a class="btn btn-danger sm" id="delete" th:href="@{'/backend/users/delete/'+${user.id}}" title="Delete Data"> <i
+                                    <a class="btn btn-danger sm" id="delete" th:href="@{'/admin/users/delete/'+${user.id}}" title="Delete Data"> <i
                                             class="fas fa-trash-alt"></i> </a>
                                 </td>
                             </tr>

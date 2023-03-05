@@ -64,8 +64,7 @@
         <h2>Manage Users | [[${pageTitle}]]</h2>
     </div>
 
-    <form method="post" style="max-width: 700px; margin: 0 auto" th:action="@{/backend/users/save}"
-          th:object="${user}">
+    <form method="post" style="max-width: 700px; margin: 0 auto" th:action="@{/backend/users/save}" th:object="${user}">
         <input name="id" th:value="*{id}" type="hidden">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">

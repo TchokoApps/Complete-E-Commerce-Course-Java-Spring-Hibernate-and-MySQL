@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,57 +57,55 @@ public class UserController {
 
     @PostMapping("admin/users/create")
     public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-        log.info("User = {}", user);
+        log.info("createUser() :: User = {}", user);
         if (bindingResult.hasErrors()) {
             final List<Role> roles = roleService.findAll();
             model.addAttribute("roles", roles);
             return "admin/users/create-form";
         }
         userService.save(user);
-        redirectAttributes.addFlashAttribute("message", "User has been saved successfully.");
+        redirectAttributes.addFlashAttribute("message", "User has been SAVED successfully.");
         return "redirect:/admin/users";
 
     }
 
-    @PostMapping("admin/users/save")
-    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+    @PostMapping("admin/users/edit")
+    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model)
             throws UserNotFoundException {
 
-        log.info("user: {}", user);
+        log.info("editUser() :: User: {}", user);
 
         if (bindingResult.hasErrors()) {
+            List<String> fields = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getField)
+                    .filter(s -> !List.of("email", "password").contains(s))
+                    .toList();
 
-            if (bindingResult.getErrorCount() > 1) {
-                return "admin/users/create-form";
-            }
-
-            final String fieldName = bindingResult.getFieldErrors().get(0).getField();
-
-            if (!fieldName.equals("email")) {
-                return "admin/users/create-form";
+            if (fields.size() != 0) {
+                final List<Role> roles = roleService.findAll();
+                model.addAttribute("roles", roles);
+                return "admin/users/edit-form";
             }
         }
-
         User userFound = userService.findUserById(user.getId());
         userFound.setEmail(user.getEmail());
         userFound.setLastName(user.getLastName());
         userFound.setFirstName(user.getFirstName());
-        if (!user.getPassword().isBlank()) {
-            userFound.setPassword(user.getPassword());
-        }
+        userFound.setRoles(user.getRoles());
+        userFound.setEnabled(user.isEnabled());
         userService.save(userFound);
-        redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
+        redirectAttributes.addFlashAttribute("message", "User has been UPDATED successfully.");
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin/users/edit/{id}")
-    public String editUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+    @GetMapping("/admin/users/edit-form/{id}")
+    public String editUserForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 
         try {
             User user = userService.findUserById(id);
             final List<Role> roles = roleService.findAll();
             model.addAttribute("user", user);
-            model.addAttribute("pageTitle", "Edit User with id = " + user.getId());
             model.addAttribute("roles", roles);
             return "/admin/users/edit-form";
         } catch (UserNotFoundException e) {
