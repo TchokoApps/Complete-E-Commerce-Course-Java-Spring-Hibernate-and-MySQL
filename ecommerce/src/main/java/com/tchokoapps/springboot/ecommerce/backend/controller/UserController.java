@@ -5,6 +5,8 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.service.RoleService;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
+import com.tchokoapps.springboot.ecommerce.common.Message;
+import com.tchokoapps.springboot.ecommerce.common.MessageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,7 +97,8 @@ public class UserController {
         userFound.setRoles(user.getRoles());
         userFound.setEnabled(user.isEnabled());
         userService.save(userFound);
-        redirectAttributes.addFlashAttribute("message", "User has been UPDATED successfully.");
+        Message message = new Message("User has been UPDATED successfully.", MessageType.getCssClass(MessageType.SUCCESS));
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/admin/users";
     }
 
@@ -109,7 +112,24 @@ public class UserController {
             model.addAttribute("roles", roles);
             return "/admin/users/edit-form";
         } catch (UserNotFoundException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            Message message = new Message(e.getMessage(), MessageType.getCssClass(MessageType.DANGER));
+            redirectAttributes.addFlashAttribute("message", message);
+            return "redirect:/admin/users";
+        }
+    }
+
+    @GetMapping("/admin/users/delete/{id}")
+    public String deleteUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            userService.delete(id);
+            log.info("deleteUser() :: User with id = {} deleted successfully", id);
+            Message message = new Message("User has been DELETED successfully.", MessageType.getCssClass(MessageType.DANGER));
+            redirectAttributes.addFlashAttribute("message", message);
+            return "redirect:/admin/users";
+
+        } catch (UserNotFoundException e) {
+            Message message = new Message(e.getMessage(), MessageType.getCssClass(MessageType.DANGER));
+            redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/admin/users";
         }
     }

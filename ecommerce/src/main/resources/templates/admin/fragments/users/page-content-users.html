@@ -8,8 +8,8 @@
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Users All</h4>
                 </div>
-                <div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${message != null}">
-                    [[${message}]]
+                <div th:class="${message.cssClass} + ' alert-dismissible fade show'" th:if="${message != null}">
+                    [[${message.content}]]
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
                 </div>
             </div>
