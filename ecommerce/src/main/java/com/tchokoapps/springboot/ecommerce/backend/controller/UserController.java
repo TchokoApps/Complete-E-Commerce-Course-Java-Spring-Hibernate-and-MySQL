@@ -44,33 +44,46 @@ public class UserController {
         return "admin/users/index";
     }
 
-    @GetMapping("backend/users/create")
-    public String createUser(Model model) {
-
+    @GetMapping("admin/users/create-form")
+    public String createUserForm(Model model) {
         final List<Role> roles = roleService.findAll();
         final User user = new User();
-        user.setEnabled(true);
+        user.setEnabled(false);
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
-        model.addAttribute("pageTitle", "Create New User");
-        return "backend/users/create-form";
+        return "admin/users/create-form";
     }
 
-    @PostMapping("backend/users/save")
-    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws UserNotFoundException {
+    @PostMapping("admin/users/create")
+    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        log.info("User = {}", user);
+        if (bindingResult.hasErrors()) {
+            final List<Role> roles = roleService.findAll();
+            model.addAttribute("roles", roles);
+            return "admin/users/create-form";
+        }
+        userService.save(user);
+        redirectAttributes.addFlashAttribute("message", "User has been saved successfully.");
+        return "redirect:/admin/users";
+
+    }
+
+    @PostMapping("admin/users/save")
+    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+            throws UserNotFoundException {
 
         log.info("user: {}", user);
 
         if (bindingResult.hasErrors()) {
 
             if (bindingResult.getErrorCount() > 1) {
-                return "backend/users/create-form";
+                return "admin/users/create-form";
             }
 
             final String fieldName = bindingResult.getFieldErrors().get(0).getField();
 
             if (!fieldName.equals("email")) {
-                return "backend/users/create-form";
+                return "admin/users/create-form";
             }
         }
 
@@ -83,10 +96,10 @@ public class UserController {
         }
         userService.save(userFound);
         redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
-        return "redirect:/backend/users";
+        return "redirect:/admin/users";
     }
 
-    @GetMapping("/backend/users/edit/{id}")
+    @GetMapping("/admin/users/edit/{id}")
     public String editUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 
         try {
@@ -95,10 +108,10 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("pageTitle", "Edit User with id = " + user.getId());
             model.addAttribute("roles", roles);
-            return "/backend/users/edit-form";
+            return "/admin/users/edit-form";
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
-            return "redirect:/backend/users";
+            return "redirect:/admin/users";
         }
     }
 }

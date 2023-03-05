@@ -47,3 +47,12 @@
 
 <!-- Datatable init js -->
 <script th:src="@{/backend/assets/js/pages/datatables.init.js}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#buttonCancelCreateUser").on("click", function () {
+            window.location = "[[@{/admin/users}]]";
+        });
+    });
+
+</script>
