@@ -66,7 +66,8 @@ public class UserController {
             return "admin/users/create-form";
         }
         userService.save(user);
-        redirectAttributes.addFlashAttribute("message", "User has been SAVED successfully.");
+        Message message = new Message("User has been CREATED successfully.", MessageType.getCssClass(MessageType.SUCCESS));
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/admin/users";
 
     }
