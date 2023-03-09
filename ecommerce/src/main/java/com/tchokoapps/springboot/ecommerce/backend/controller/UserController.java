@@ -68,12 +68,13 @@ public class UserController {
         log.info("{} MB is {} bytes.", megabytes, bytes);
         if (multipartFile != null) {
             if (multipartFile.getSize() <= bytes) {
+                log.info("File to be uploaded: {}", multipartFile.getOriginalFilename());
 
             } else {
                 redirectAttributes.addFlashAttribute("message", String.format("Filesize %s is greater than %s MB",
-                        multipartFile.getSize(), megabytes));
+                        multipartFile.getSize() / FileUtils.ONE_MB, megabytes));
                 redirectAttributes.addFlashAttribute("alertType", "error");
-                return "admin/users/create-form";
+                return "redirect:/admin/users/create";
             }
 
         }
