@@ -6,15 +6,14 @@ import com.tchokoapps.springboot.ecommerce.backend.service.RoleService;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -60,8 +59,25 @@ public class UserController {
     }
 
     @PostMapping("admin/users/create")
-    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                             Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
         log.info("createUser() :: User = {}", user);
+
+        final long megabytes = 1;
+        final long bytes = FileUtils.ONE_MB * megabytes;
+        log.info("{} MB is {} bytes.", megabytes, bytes);
+        if (multipartFile != null) {
+            if (multipartFile.getSize() <= bytes) {
+
+            } else {
+                redirectAttributes.addFlashAttribute("message", String.format("Filesize %s is greater than %s MB",
+                        multipartFile.getSize(), megabytes));
+                redirectAttributes.addFlashAttribute("alertType", "error");
+                return "admin/users/create-form";
+            }
+
+        }
+
         if (bindingResult.hasErrors()) {
             final List<Role> roles = roleService.findAll();
             model.addAttribute("roles", roles);

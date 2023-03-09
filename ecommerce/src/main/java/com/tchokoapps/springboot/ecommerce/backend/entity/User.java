@@ -46,9 +46,9 @@ public class User {
     @Column(name = "last_name", length = 45, nullable = false)
     private String lastName;
 
-    @Size(max = 64, message = "Photos cannot exceed 64 characters")
+    @Size(max = 64, message = "Photo cannot exceed 64 characters")
     @Column(length = 64)
-    private String photos;
+    private String photo;
 
     private boolean enabled;
 

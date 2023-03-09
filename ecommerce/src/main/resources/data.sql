@@ -18,23 +18,23 @@ INSERT INTO roles (name, description)
 VALUES ('CONTENT_WRITER', 'Can write and publish content');
 INSERT INTO roles (name, description)
 VALUES ('MARKETER', 'Can market products and services');
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('john.doe@gmail.com', 'password123', 'John', 'Doe', 'john-doe.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('jane.doe@gmail.com', 'password123', 'Jane', 'Doe', 'jane-doe.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('jack.smith@gmail.com', 'password123', 'Jack', 'Smith', 'jack-smith.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('jill.smith@gmail.com', 'password123', 'Jill', 'Smith', 'jill-smith.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('mark.johnson@gmail.com', 'password123', 'Mark', 'Johnson', 'mark-johnson.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('sara.johnson@gmail.com', 'password123', 'Sara', 'Johnson', 'sara-johnson.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('james.wilson@gmail.com', 'password123', 'James', 'Wilson', 'james-wilson.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('emily.wilson@gmail.com', 'password123', 'Emily', 'Wilson', 'emily-wilson.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('david.brown@gmail.com', 'password123', 'David', 'Brown', 'david-brown.jpg', true);
-INSERT INTO users (email, password, first_name, last_name, photos, enabled)
+INSERT INTO users (email, password, first_name, last_name, photo, enabled)
 VALUES ('lisa.brown@gmail.com', 'password123', 'Lisa', 'Brown', 'lisa-brown.jpg', true);
