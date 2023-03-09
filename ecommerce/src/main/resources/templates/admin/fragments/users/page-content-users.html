@@ -8,10 +8,6 @@
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Users All</h4>
                 </div>
-                <div th:class="${message.cssClass} + ' alert-dismissible fade show'" th:if="${message != null}">
-                    [[${message.content}]]
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-                </div>
             </div>
         </div>
         <!-- end page title -->
@@ -20,7 +16,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;" th:href="@{/admin/users/create-form}">Add
+                        <a class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;" th:href="@{/admin/users/create}">Add
                             User</a>
                         <br> <br>
                         <table class="table table-bordered dt-responsive nowrap" id="datatable"
@@ -54,7 +50,7 @@
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-info sm" th:href="@{'/admin/users/edit-form/'+${user.id}}" title="Edit User"> <i
+                                    <a class="btn btn-info sm" th:href="@{'/admin/users/edit/'+${user.id}}" title="Edit User"> <i
                                             class="fas fa-edit"></i> </a>
                                     <a class="btn btn-danger sm" id="delete" th:href="@{'/admin/users/delete/'+${user.id}}" title="Delete Data"> <i
                                             class="fas fa-trash-alt"></i> </a>

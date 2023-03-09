@@ -1,3 +1,4 @@
+<html xmlns:th="http://www.thymeleaf.org">
 <script th:src="@{/backend/assets/libs/jquery/jquery.min.js}"></script>
 <script th:src="@{/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/backend/assets/libs/metismenu/metisMenu.min.js}"></script>
@@ -59,5 +60,30 @@
             window.location = "[[@{/admin/users}]]";
         });
     });
+</script>
 
+<script th:if="${message != null && alertType != null} " th:inline="javascript">
+    /*<![CDATA[*/
+    /* Get session message and alertType if they exist */
+    var message = /*[[${message}]]*/ '';
+    var alertType = /*[[${alertType}]]*/ 'success';
+
+    /* Show Toastr notification if message exists */
+    if (message !== '') {
+        switch (alertType) {
+            case 'success':
+                toastr.success(message);
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+            default:
+                toastr.info(message);
+                break;
+        }
+    }
+    /*]]>*/
 </script>

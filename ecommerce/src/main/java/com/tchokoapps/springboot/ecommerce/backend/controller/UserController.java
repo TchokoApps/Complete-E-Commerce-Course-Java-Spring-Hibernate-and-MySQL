@@ -5,8 +5,6 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.service.RoleService;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
-import com.tchokoapps.springboot.ecommerce.common.Message;
-import com.tchokoapps.springboot.ecommerce.common.MessageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,13 +45,17 @@ public class UserController {
         return "admin/users/index";
     }
 
-    @GetMapping("admin/users/create-form")
-    public String createUserForm(Model model) {
+    @GetMapping("admin/users/create")
+    public String createUserForm(Model model, RedirectAttributes redirectAttributes) {
         final List<Role> roles = roleService.findAll();
         final User user = new User();
         user.setEnabled(false);
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
+
+        redirectAttributes.addFlashAttribute("message", "User CREATED successfully");
+        redirectAttributes.addFlashAttribute("alertType", "success");
+
         return "admin/users/create-form";
     }
 
@@ -66,15 +68,16 @@ public class UserController {
             return "admin/users/create-form";
         }
         userService.save(user);
-        Message message = new Message("User has been CREATED successfully.", MessageType.getCssClass(MessageType.SUCCESS));
-        redirectAttributes.addFlashAttribute("message", message);
+
+        redirectAttributes.addFlashAttribute("message", "User CREATED successfully");
+        redirectAttributes.addFlashAttribute("alertType", "success");
+
         return "redirect:/admin/users";
 
     }
 
     @PostMapping("admin/users/edit")
-    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model)
-            throws UserNotFoundException {
+    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
         log.info("editUser() :: User: {}", user);
 
@@ -91,19 +94,24 @@ public class UserController {
                 return "admin/users/edit-form";
             }
         }
-        User userFound = userService.findUserById(user.getId());
-        userFound.setEmail(user.getEmail());
-        userFound.setLastName(user.getLastName());
-        userFound.setFirstName(user.getFirstName());
-        userFound.setRoles(user.getRoles());
-        userFound.setEnabled(user.isEnabled());
-        userService.save(userFound);
-        Message message = new Message("User has been UPDATED successfully.", MessageType.getCssClass(MessageType.SUCCESS));
-        redirectAttributes.addFlashAttribute("message", message);
+        try {
+            User userFound = userService.findUserById(user.getId());
+            userFound.setEmail(user.getEmail());
+            userFound.setLastName(user.getLastName());
+            userFound.setFirstName(user.getFirstName());
+            userFound.setRoles(user.getRoles());
+            userFound.setEnabled(user.isEnabled());
+            userService.save(userFound);
+            redirectAttributes.addFlashAttribute("message", "User UPDATED successfully");
+            redirectAttributes.addFlashAttribute("alertType", "success");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("alertType", "error");
+        }
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin/users/edit-form/{id}")
+    @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 
         try {
@@ -113,8 +121,8 @@ public class UserController {
             model.addAttribute("roles", roles);
             return "/admin/users/edit-form";
         } catch (UserNotFoundException e) {
-            Message message = new Message(e.getMessage(), MessageType.getCssClass(MessageType.DANGER));
-            redirectAttributes.addFlashAttribute("message", message);
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("alertType", "error");
             return "redirect:/admin/users";
         }
     }
@@ -124,13 +132,13 @@ public class UserController {
         try {
             userService.delete(id);
             log.info("deleteUser() :: User with id = {} deleted successfully", id);
-            Message message = new Message("User has been DELETED successfully.", MessageType.getCssClass(MessageType.DANGER));
-            redirectAttributes.addFlashAttribute("message", message);
+            redirectAttributes.addFlashAttribute("message", "User DELETED successfully");
+            redirectAttributes.addFlashAttribute("alertType", "success");
             return "redirect:/admin/users";
 
         } catch (UserNotFoundException e) {
-            Message message = new Message(e.getMessage(), MessageType.getCssClass(MessageType.DANGER));
-            redirectAttributes.addFlashAttribute("message", message);
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("alertType", "error");
             return "redirect:/admin/users";
         }
     }
