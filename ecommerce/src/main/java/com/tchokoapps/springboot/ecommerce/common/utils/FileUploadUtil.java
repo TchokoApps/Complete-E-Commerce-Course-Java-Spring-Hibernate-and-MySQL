@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class FileUploadUtil {
 
-    private static final String UPLOAD_DIR = "upload";
+    private static final String UPLOAD_DIR = "photos";
 
     public static String saveFile(@NotNull MultipartFile multipartFile) throws IOException {
 

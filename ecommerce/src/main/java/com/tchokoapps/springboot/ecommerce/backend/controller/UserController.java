@@ -65,6 +65,12 @@ public class UserController {
                              Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
         log.info("createUser() :: User = {}", user);
 
+        if (bindingResult.hasErrors()) {
+            final List<Role> roles = roleService.findAll();
+            model.addAttribute("roles", roles);
+            return "admin/users/create-form";
+        }
+
         final long megabytes = 1;
         final long bytes = FileUtils.ONE_MB * megabytes;
         log.info("{} MB is {} bytes.", megabytes, bytes);
@@ -85,11 +91,6 @@ public class UserController {
             }
         }
 
-        if (bindingResult.hasErrors()) {
-            final List<Role> roles = roleService.findAll();
-            model.addAttribute("roles", roles);
-            return "admin/users/create-form";
-        }
         userService.save(user);
 
         redirectAttributes.addFlashAttribute("message", "User CREATED successfully");
