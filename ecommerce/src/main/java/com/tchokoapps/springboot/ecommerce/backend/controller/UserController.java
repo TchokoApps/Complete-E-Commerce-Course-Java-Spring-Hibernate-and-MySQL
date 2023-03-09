@@ -5,6 +5,7 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.service.RoleService;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
+import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -66,17 +68,21 @@ public class UserController {
         final long megabytes = 1;
         final long bytes = FileUtils.ONE_MB * megabytes;
         log.info("{} MB is {} bytes.", megabytes, bytes);
-        if (multipartFile != null) {
+        if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= bytes) {
-                log.info("File to be uploaded: {}", multipartFile.getOriginalFilename());
-
+                try {
+                    final String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                    user.setPhoto(savedFileName);
+                } catch (IOException e) {
+                    redirectAttributes.addFlashAttribute("message", e.getMessage());
+                    redirectAttributes.addFlashAttribute("alertType", "error");
+                    return "redirect:/admin/users";
+                }
             } else {
-                redirectAttributes.addFlashAttribute("message", String.format("Filesize %s is greater than %s MB",
-                        multipartFile.getSize() / FileUtils.ONE_MB, megabytes));
+                redirectAttributes.addFlashAttribute("message", String.format("File size should be less or equal %s MB", megabytes));
                 redirectAttributes.addFlashAttribute("alertType", "error");
-                return "redirect:/admin/users/create";
+                return "redirect:/admin/users";
             }
-
         }
 
         if (bindingResult.hasErrors()) {
