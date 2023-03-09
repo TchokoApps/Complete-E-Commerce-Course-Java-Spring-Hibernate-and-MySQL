@@ -111,6 +111,26 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("/admin/users/{id}/enabled/{status}")
+    public String enableOrDisableUserStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "status") boolean status,
+                                            RedirectAttributes redirectAttributes) {
+        try {
+            final User userFound = userService.findUserById(id);
+            userFound.setEnabled(status);
+            userService.save(userFound);
+            final String newStatus = status ? "Enabled" : "Disabled";
+
+            redirectAttributes.addFlashAttribute("message", String.format("User status changed to %s", newStatus));
+            redirectAttributes.addFlashAttribute("alertType", "success");
+            log.info("enableUser() :: User {} status changed to {}", userFound.getId(), newStatus);
+
+        } catch (UserNotFoundException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("alertType", "error");
+        }
+        return "redirect:/admin/users";
+    }
+
     @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 
