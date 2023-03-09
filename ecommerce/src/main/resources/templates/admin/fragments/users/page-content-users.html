@@ -36,7 +36,8 @@
                             <tbody>
                             <tr th:each="user,count : ${users}">
                                 <td>[[${count.index + 1}]]</td>
-                                <td><span class="fas fa-portrait fa-3x icon-silver"></span></td>
+                                <!--                                <td><span class="fas fa-portrait fa-3x icon-silver"></span></td>-->
+                                <td><img style="width:100px; height:100px" th:src="@{/upload/no_image.jpg}"></td>
                                 <td>[[${user.email}]]</td>
                                 <td>[[${user.firstName}]]</td>
                                 <td>[[${user.lastName}]]</td>
@@ -56,8 +57,8 @@
                                 <td>
                                     <a class="btn btn-info sm" th:href="@{'/admin/users/edit/'+${user.id}}" title="Edit User"> <i
                                             class="fas fa-edit"></i> </a>
-                                    <a class="btn btn-danger sm" id="delete" th:href="@{'/admin/users/delete/'+${user.id}}" title="Delete Data"> <i
-                                            class="fas fa-trash-alt"></i> </a>
+                                    <a class="btn btn-danger sm" id="delete" th:href="@{'/admin/users/delete/'+${user.id}}" title="Delete Data">
+                                        <i class="fas fa-trash-alt"></i> </a>
                                 </td>
                             </tr>
                             </tbody>
