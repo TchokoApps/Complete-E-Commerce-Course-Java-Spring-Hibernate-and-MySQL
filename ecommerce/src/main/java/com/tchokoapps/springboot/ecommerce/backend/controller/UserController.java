@@ -7,7 +7,6 @@ import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
 import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+
+import static org.apache.commons.io.FileUtils.ONE_MB;
 
 @Slf4j
 @Controller
@@ -46,6 +47,32 @@ public class UserController {
         return "admin/users/index";
     }
 
+    private static void addMessage(RedirectAttributes redirectAttributes, String message, String alertType) {
+        redirectAttributes.addFlashAttribute("message", message);
+        redirectAttributes.addFlashAttribute("alertType", alertType);
+    }
+
+    private static String saveImage(User user, RedirectAttributes redirectAttributes, MultipartFile multipartFile) {
+        final long maxFileSize = ONE_MB;
+
+        if (!multipartFile.isEmpty()) {
+            if (multipartFile.getSize() <= maxFileSize) {
+                try {
+                    final String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                    user.setPhoto(savedFileName);
+                } catch (IOException e) {
+                    log.error("Error saving file", e);
+                    addMessage(redirectAttributes, e.getMessage(), "error");
+                    return "redirect:/admin/users";
+                }
+            } else {
+                addMessage(redirectAttributes, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB), "error");
+                return "redirect:/admin/users";
+            }
+        }
+        return null;
+    }
+
     @GetMapping("admin/users/create")
     public String createUserForm(Model model, RedirectAttributes redirectAttributes) {
         final List<Role> roles = roleService.findAll();
@@ -54,34 +81,9 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
 
-        redirectAttributes.addFlashAttribute("message", "User CREATED successfully");
-        redirectAttributes.addFlashAttribute("alertType", "success");
+        addMessage(redirectAttributes, "User CREATED successfully", "success");
 
         return "admin/users/create-form";
-    }
-
-    private static String saveImage(User user, RedirectAttributes redirectAttributes, MultipartFile multipartFile) {
-        final long megabytes = 1;
-        final long bytes = FileUtils.ONE_MB * megabytes;
-        log.info("{} MB is {} bytes.", megabytes, bytes);
-
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= bytes) {
-                try {
-                    final String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    user.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    redirectAttributes.addFlashAttribute("message", e.getMessage());
-                    redirectAttributes.addFlashAttribute("alertType", "error");
-                    return "redirect:/admin/users";
-                }
-            } else {
-                redirectAttributes.addFlashAttribute("message", String.format("File size should be less or equal %s MB", megabytes));
-                redirectAttributes.addFlashAttribute("alertType", "error");
-                return "redirect:/admin/users";
-            }
-        }
-        return null;
     }
 
     @PostMapping("admin/users/create")
@@ -95,14 +97,11 @@ public class UserController {
             return "admin/users/create-form";
         }
 
-        String result = saveImage(user, redirectAttributes, multipartFile);
-        if (result != null) return result;
+        String saveImageResult = saveImage(user, redirectAttributes, multipartFile);
+        if (saveImageResult != null) return saveImageResult;
 
         userService.save(user);
-
-        redirectAttributes.addFlashAttribute("message", "User CREATED successfully");
-        redirectAttributes.addFlashAttribute("alertType", "success");
-
+        addMessage(redirectAttributes, "User CREATED successfully", "success");
         return "redirect:/admin/users";
 
     }
@@ -127,8 +126,8 @@ public class UserController {
             }
         }
 
-        String result = saveImage(user, redirectAttributes, multipartFile);
-        if (result != null) return result;
+        String x = saveImage(user, redirectAttributes, multipartFile);
+        if (x != null) return x;
 
         try {
             User userFound = userService.findUserById(user.getId());
@@ -139,11 +138,9 @@ public class UserController {
             userFound.setEnabled(user.isEnabled());
             userFound.setPhoto(user.getPhoto());
             userService.save(userFound);
-            redirectAttributes.addFlashAttribute("message", "User UPDATED successfully");
-            redirectAttributes.addFlashAttribute("alertType", "success");
+            addMessage(redirectAttributes, "User UPDATED successfully", "success");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("alertType", "error");
+            addMessage(redirectAttributes, e.getMessage(), "error");
         }
         return "redirect:/admin/users";
     }
@@ -156,13 +153,11 @@ public class UserController {
             userService.save(userFound);
             final String newStatus = status ? "Enabled" : "Disabled";
 
-            redirectAttributes.addFlashAttribute("message", String.format("User status changed to %s", newStatus));
-            redirectAttributes.addFlashAttribute("alertType", "success");
+            addMessage(redirectAttributes, String.format("User status changed to %s", newStatus), "success");
             log.info("enableUser() :: User {} status changed to {}", userFound.getId(), newStatus);
 
         } catch (UserNotFoundException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("alertType", "error");
+            addMessage(redirectAttributes, e.getMessage(), "error");
         }
         return "redirect:/admin/users";
     }
@@ -177,8 +172,7 @@ public class UserController {
             model.addAttribute("roles", roles);
             return "/admin/users/edit-form";
         } catch (UserNotFoundException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("alertType", "error");
+            addMessage(redirectAttributes, e.getMessage(), "error");
             return "redirect:/admin/users";
         }
     }
@@ -188,13 +182,11 @@ public class UserController {
         try {
             userService.delete(id);
             log.info("deleteUser() :: User with id = {} deleted successfully", id);
-            redirectAttributes.addFlashAttribute("message", "User DELETED successfully");
-            redirectAttributes.addFlashAttribute("alertType", "success");
+            addMessage(redirectAttributes, "User DELETED successfully", "success");
             return "redirect:/admin/users";
 
         } catch (UserNotFoundException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("alertType", "error");
+            addMessage(redirectAttributes, e.getMessage(), "error");
             return "redirect:/admin/users";
         }
     }
