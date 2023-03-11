@@ -38,9 +38,9 @@
                                 <td>[[${count.index + 1}]]</td>
                                 <!--                                <td><span class="fas fa-portrait fa-3x icon-silver"></span></td>-->
                                 <td>
-                                    <img style="width:100px; height:100px" th:if="${user.photo == null}" th:src="@{/upload/no_image.jpg}">
-                                    <img alt="User photo" height="100" th:if="${user.photo != null}"
-                                         th:src="@{/photos/{filename}(filename=${user.photo})}" width="100"/>
+                                    <img alt="User photo" height="100" th:height="100"
+                                         th:src="@{${user.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${user.photo})}}"
+                                         th:width="100"/>
                                 </td>
                                 <td>[[${user.email}]]</td>
                                 <td>[[${user.firstName}]]</td>

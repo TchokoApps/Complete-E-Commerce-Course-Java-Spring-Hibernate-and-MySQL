@@ -60,20 +60,11 @@ public class UserController {
         return "admin/users/create-form";
     }
 
-    @PostMapping("admin/users/create")
-    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-                             Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
-        log.info("createUser() :: User = {}", user);
-
-        if (bindingResult.hasErrors()) {
-            final List<Role> roles = roleService.findAll();
-            model.addAttribute("roles", roles);
-            return "admin/users/create-form";
-        }
-
+    private static String saveImage(User user, RedirectAttributes redirectAttributes, MultipartFile multipartFile) {
         final long megabytes = 1;
         final long bytes = FileUtils.ONE_MB * megabytes;
         log.info("{} MB is {} bytes.", megabytes, bytes);
+
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= bytes) {
                 try {
@@ -90,6 +81,22 @@ public class UserController {
                 return "redirect:/admin/users";
             }
         }
+        return null;
+    }
+
+    @PostMapping("admin/users/create")
+    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                             Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+        log.info("createUser() :: User = {}", user);
+
+        if (bindingResult.hasErrors()) {
+            final List<Role> roles = roleService.findAll();
+            model.addAttribute("roles", roles);
+            return "admin/users/create-form";
+        }
+
+        String result = saveImage(user, redirectAttributes, multipartFile);
+        if (result != null) return result;
 
         userService.save(user);
 
@@ -101,7 +108,8 @@ public class UserController {
     }
 
     @PostMapping("admin/users/edit")
-    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                           Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
 
         log.info("editUser() :: User: {}", user);
 
@@ -118,6 +126,10 @@ public class UserController {
                 return "admin/users/edit-form";
             }
         }
+
+        String result = saveImage(user, redirectAttributes, multipartFile);
+        if (result != null) return result;
+
         try {
             User userFound = userService.findUserById(user.getId());
             userFound.setEmail(user.getEmail());
@@ -125,6 +137,7 @@ public class UserController {
             userFound.setFirstName(user.getFirstName());
             userFound.setRoles(user.getRoles());
             userFound.setEnabled(user.isEnabled());
+            userFound.setPhoto(user.getPhoto());
             userService.save(userFound);
             redirectAttributes.addFlashAttribute("message", "User UPDATED successfully");
             redirectAttributes.addFlashAttribute("alertType", "success");
