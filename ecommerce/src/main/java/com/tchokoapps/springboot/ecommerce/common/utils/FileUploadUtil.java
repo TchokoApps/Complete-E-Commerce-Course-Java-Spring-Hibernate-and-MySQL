@@ -22,12 +22,12 @@ public class FileUploadUtil {
 
         Objects.requireNonNull(multipartFile, "Multipart file cannot be null");
 
-        final String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        final String sourceFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
-        final String fileExtension = FilenameUtils.getExtension(originalFileName);
+        final String fileExtension = FilenameUtils.getExtension(sourceFilename);
         Objects.requireNonNull(fileExtension, "File extension cannot be null");
 
-        final String fileName = UUID.randomUUID().toString().replaceAll("-", "").concat(".").concat(fileExtension);
+        final String destinationFilename = UUID.randomUUID().toString().replaceAll("-", "").concat(".").concat(fileExtension);
         File uploadDir = new File(UPLOAD_DIR);
 
         if (!uploadDir.exists()) {
@@ -36,8 +36,8 @@ public class FileUploadUtil {
                 throw new IOException("Could not create upload directory");
         }
 
-        File destFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
+        File destFile = new File(uploadDir.getAbsolutePath() + File.separator + destinationFilename);
         FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), destFile);
-        return fileName;
+        return destinationFilename;
     }
 }
