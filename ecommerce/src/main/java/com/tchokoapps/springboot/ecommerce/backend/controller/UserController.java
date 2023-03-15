@@ -5,9 +5,10 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.service.RoleService;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
+import com.tchokoapps.springboot.ecommerce.common.fileexporter.UserCsvFileExporter;
 import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,24 +17,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
 @Slf4j
 @Controller
+@AllArgsConstructor
 public class UserController {
 
     private UserService userService;
     private RoleService roleService;
-
-    @Autowired
-    public UserController(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
+    private UserCsvFileExporter userCsvFileExporter;
 
     @GetMapping("admin")
     String showAdminPage(Model model) {
@@ -188,6 +188,20 @@ public class UserController {
         } catch (UserNotFoundException e) {
             addMessage(redirectAttributes, e.getMessage(), "error");
             return "redirect:/admin/users";
+        }
+    }
+
+    @GetMapping("/admin/users/csv")
+    public void exportToCsv(HttpServletResponse response) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        String dateAndTime = dateFormat.format(new Date());
+        String fileName = "users_" + dateAndTime + ".csv";
+        response.setContentType("text/csv");
+        response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+        try {
+            userCsvFileExporter.exportToCsv(userService.findAll(), response.getWriter());
+        } catch (IOException e) {
+            log.error("Export file to CSV FAILED.", e);
         }
     }
 }
