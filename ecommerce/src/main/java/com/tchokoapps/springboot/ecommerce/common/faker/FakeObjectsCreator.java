@@ -30,7 +30,7 @@ public class FakeObjectsCreator implements CommandLineRunner {
 
         Faker faker = Faker.instance();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             Name name = faker.name();
             User user = new User();
             user.setEmail(name.firstName() + "." + name.lastName() + "@example.com");

@@ -16,9 +16,22 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a class="btn btn-dark btn-rounded waves-effect waves-light" style="float:right;" th:href="@{/admin/users/create}">Add
-                            User</a>
-                        <br> <br>
+                        <div class="button-items" style="text-align: right">
+                            <a class="btn btn-dark btn-rounded waves-effect waves-light" th:href="@{/admin/users/create}">Add
+                                User</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light" type="button">CSV</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light" type="button">EXCEL</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light" type="button">PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
                         <table class="table table-bordered dt-responsive nowrap" id="datatable"
                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
