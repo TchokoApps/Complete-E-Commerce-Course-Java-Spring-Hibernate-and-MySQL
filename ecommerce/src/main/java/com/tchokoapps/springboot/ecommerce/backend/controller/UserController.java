@@ -146,7 +146,8 @@ public class UserController {
     }
 
     @GetMapping("/admin/users/{id}/enabled/{status}")
-    public String enableOrDisableUserStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "status") boolean status, RedirectAttributes redirectAttributes) {
+    public String enableOrDisableUserStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "status") boolean status,
+                                            RedirectAttributes redirectAttributes) {
         try {
             final User userFound = userService.findUserById(id);
             userFound.setEnabled(status);
