@@ -35,11 +35,6 @@ public class UserController {
     private RoleService roleService;
     private UserCsvFileExporter userCsvFileExporter;
 
-    @GetMapping("admin")
-    String showAdminPage(Model model) {
-        return "admin/index";
-    }
-
     @GetMapping("admin/users")
     String findAll(Model model) {
         final List<User> users = userService.findAll();
@@ -154,7 +149,7 @@ public class UserController {
             userService.save(userFound);
             final String newStatus = status ? "Enabled" : "Disabled";
 
-            addMessage(redirectAttributes, String.format("User status changed to %s", newStatus), "success");
+            addMessage(redirectAttributes, String.format("User %s successfully", newStatus), "success");
             log.info("enableUser() :: User {} status changed to {}", userFound.getId(), newStatus);
 
         } catch (UserNotFoundException e) {

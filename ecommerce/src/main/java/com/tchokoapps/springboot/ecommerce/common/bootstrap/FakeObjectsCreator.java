@@ -30,13 +30,17 @@ public class FakeObjectsCreator implements CommandLineRunner {
         Faker faker = Faker.instance();
 
         for (int i = 0; i < 10; i++) {
+
             Name name = faker.name();
-            User user = new User();
-            user.setEmail(name.firstName() + "." + name.lastName() + "@example.com");
+            String firstName = name.firstName();
+            String lastName = name.lastName();
             String password = faker.internet().password();
+
+            User user = new User();
+            user.setEmail(firstName + "." + lastName + "@example.com");
             user.setPassword(password);
-            user.setFirstName(name.firstName());
-            user.setLastName(name.lastName());
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
             user.setEnabled(true);
 
             Set<Role> roles = new HashSet<>();
