@@ -54,4 +54,8 @@ public class DefaultUserDetails implements UserDetails {
     public boolean isEnabled() {
         return user.isEnabled();
     }
+
+    public String getFullname() {
+        return String.format("%s, %s", user.getFirstName(), user.getLastName());
+    }
 }
