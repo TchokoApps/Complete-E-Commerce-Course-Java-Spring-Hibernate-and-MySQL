@@ -32,9 +32,15 @@ public class User {
     private String email;
 
     @NotNull(message = "Object cannot be null")
+    @Size(min = 8, message = "Object cannot be less than 10 characters")
     @Size(max = 64, message = "Object cannot exceed 64 characters")
     @Column(length = 64, nullable = false)
     private String password;
+
+    @Size(min = 8, message = "Object cannot be less than 10 characters")
+    @Size(max = 64, message = "Object cannot exceed 64 characters")
+    @Column(length = 64, nullable = true)
+    private String confirmPassword;
 
     @NotNull(message = "Object cannot be null")
     @Size(max = 45, message = "Object cannot exceed 45 characters")

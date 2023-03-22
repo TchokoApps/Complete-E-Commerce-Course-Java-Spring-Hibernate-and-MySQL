@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Footer</title>
+</head>
+<body>
+<!-- JAVASCRIPT -->
+<script th:src="@{/backend/assets/libs/jquery/jquery.min.js}"></script>
+<script th:src="@{/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/backend/assets/libs/metismenu/metisMenu.min.js}"></script>
+<script th:src="@{/backend/assets/libs/simplebar/simplebar.min.js}"></script>
+<script th:src="@{/backend/assets/libs/node-waves/waves.min.js}"></script>
+
+<script th:src="@{/backend/assets/js/app.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js}"
+        type="text/javascript"></script>
+<script th:if="${message != null && alertType != null} " th:inline="javascript">
+    /*<![CDATA[*/
+    /* Get session message and alertType if they exist */
+    var message = /*[[${message}]]*/ '';
+    var alertType = /*[[${alertType}]]*/ 'success';
+    console.log(message, alertType);
+
+    /* Show Toastr notification if message exists */
+    if (message !== '') {
+        switch (alertType) {
+            case 'success':
+                toastr.success(message);
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+            default:
+                toastr.info(message);
+                break;
+        }
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -1,26 +1,8 @@
-<html xmlns:th="http://www.thymeleaf.org">
+
 <!doctype html>
 <html lang="en">
-
-<head>
-
-    <meta charset="utf-8"/>
-    <title>Login | Upcube - Admin & Dashboard Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
-    <meta content="Themesdesign" name="author"/>
-    <!-- App favicon -->
-    <link rel="shortcut icon" th:src="@{/backend/assets/images/favicon.ico}">
-
-    <!-- Bootstrap Css -->
-    <link id="bootstrap-style" rel="stylesheet" th:href="@{/backend/assets/css/bootstrap.min.css}" type="text/css"/>
-    <!-- Icons Css -->
-    <link rel="stylesheet" th:href="@{/backend/assets/css/icons.min.css}" type="text/css"/>
-    <!-- App Css-->
-    <link id="app-style" rel="stylesheet" th:href="@{/backend/assets/css/app.min.css}" type="text/css"/>
-
-</head>
-
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="/admin/auth/fragments/header"></div>
 <body class="auth-body-bg">
 <div class="bg-overlay"></div>
 <div class="wrapper-page">
@@ -80,7 +62,8 @@
                                 <a class="text-muted" href="auth-recoverpw.html"><i class="mdi mdi-lock"></i> Forgot your password?</a>
                             </div>
                             <div class="col-sm-5 mt-3">
-                                <a class="text-muted" href="auth-register.html"><i class="mdi mdi-account-circle"></i> Create an account</a>
+                                <a class="text-muted" th:href="@{/admin/register}"><i
+                                        class="mdi mdi-account-circle"></i> Create an account</a>
                             </div>
                         </div>
                     </form>
@@ -95,14 +78,7 @@
 </div>
 <!-- end -->
 
-<!-- JAVASCRIPT -->
-<script th:src="@{/backend/assets/libs/jquery/jquery.min.js}"></script>
-<script th:src="@{/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/backend/assets/libs/metismenu/metisMenu.min.js}"></script>
-<script th:src="@{/backend/assets/libs/simplebar/simplebar.min.js}"></script>
-<script th:src="@{/backend/assets/libs/node-waves/waves.min.js}"></script>
-
-<script th:src="@{/backend/assets/js/app.js}"></script>
+<div th:replace="/admin/auth/fragments/footer"></div>
 
 </body>
 </html>

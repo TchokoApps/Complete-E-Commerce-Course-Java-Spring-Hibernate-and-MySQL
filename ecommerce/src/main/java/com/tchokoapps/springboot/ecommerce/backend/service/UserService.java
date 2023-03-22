@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,11 @@ public class UserService {
         user.setPassword(encodedPassword);
     }
 
-    public User findUserById(@NonNull Integer id) throws UserNotFoundException {
+    public User findUserById(@NotNull Integer id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Could not found any User with Id = " + id));
+    }
+
+    public User findUserByEmail(@NotNull String email) {
+        return userRepository.findUserByEmail(email);
     }
 }
