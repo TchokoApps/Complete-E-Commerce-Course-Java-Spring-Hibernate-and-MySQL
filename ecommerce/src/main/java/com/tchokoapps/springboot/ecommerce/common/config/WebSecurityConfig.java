@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/users/**").hasAuthority("ADMIN")
                 .antMatchers("/admin/login", "/admin/register")
                 .permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -43,9 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/admin/logout")
-//                .logoutSuccessUrl("/admin/login?logout")
                 .invalidateHttpSession(true)
                 .permitAll();
+
+        // Allow access to the H2 console
+        http.headers().frameOptions().disable();
+        http.csrf().disable();
     }
 
     @Override
