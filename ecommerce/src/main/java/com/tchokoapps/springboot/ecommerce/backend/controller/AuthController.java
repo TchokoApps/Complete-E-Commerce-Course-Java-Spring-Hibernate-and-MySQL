@@ -1,6 +1,7 @@
 package com.tchokoapps.springboot.ecommerce.backend.controller;
 
 import com.tchokoapps.springboot.ecommerce.backend.entity.User;
+import com.tchokoapps.springboot.ecommerce.backend.service.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,18 +47,16 @@ public class AuthController {
             return "admin/auth/register";
         }
 
-        if (user.getConfirmPassword() == null) {
-            return "admin/auth/register";
-        }
-
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             bindingResult.rejectValue("confirmPassword", null,
                     "The Password and Confirm Password fields should be identical.");
             return "admin/auth/register";
         }
 
-        if (userService.findUserByEmail(user.getEmail()) != null) {
+        try {
+            userService.findUserByEmail(user.getEmail());
             bindingResult.rejectValue("email", null, "Email is already taken");
+        } catch (UserNotFoundException ignored) {
         }
 
         user.setEnabled(true);

@@ -1,6 +1,5 @@
 package com.tchokoapps.springboot.ecommerce.backend.entity;
 
-import com.tchokoapps.springboot.ecommerce.common.validator.UniqueEmail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,30 +24,27 @@ public class User {
     private Integer id;
 
     @Email
-    @UniqueEmail
-    @NotNull(message = "Object cannot be null")
-    @Size(max = 128, message = "Object cannot exceed 128 characters")
+    @NotNull(message = "Email cannot be null")
+    @Size(min = 8, message = "Email cannot be less than 8 characters")
+    @Size(max = 64, message = "Email cannot exceed 128 characters")
     @Column(length = 128, nullable = false, unique = true)
     private String email;
 
-    @NotNull(message = "Object cannot be null")
-    @Size(min = 8, message = "Object cannot be less than 10 characters")
-    @Size(max = 64, message = "Object cannot exceed 64 characters")
+    @NotNull(message = "Password cannot be null")
+    @Size(min = 8, message = "Password cannot be less than 8 characters")
+    @Size(max = 64, message = "Password cannot exceed 64 characters")
     @Column(length = 64, nullable = false)
     private String password;
 
-    @Size(min = 8, message = "Object cannot be less than 10 characters")
-    @Size(max = 64, message = "Object cannot exceed 64 characters")
-    @Column(length = 64, nullable = true)
     private String confirmPassword;
 
-    @NotNull(message = "Object cannot be null")
-    @Size(max = 45, message = "Object cannot exceed 45 characters")
+    @NotNull(message = "First Name cannot be null")
+    @Size(max = 45, message = "First Name cannot exceed 45 characters")
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstName;
 
-    @NotNull(message = "Object cannot be null")
-    @Size(max = 45, message = "Object cannot exceed 45 characters")
+    @NotNull(message = "Last Name cannot be null")
+    @Size(max = 45, message = "Last Name cannot exceed 45 characters")
     @Column(name = "last_name", length = 45, nullable = false)
     private String lastName;
 

@@ -47,7 +47,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Could not found any User with Id = " + id));
     }
 
-    public User findUserByEmail(@NotNull String email) {
-        return userRepository.findUserByEmail(email);
+    public User findUserByEmail(@NotNull String email) throws UserNotFoundException {
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(String.format("Could not find user with email '%s'", email)));
     }
 }

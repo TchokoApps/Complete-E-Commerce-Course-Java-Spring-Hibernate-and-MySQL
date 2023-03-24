@@ -20,12 +20,12 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "Object cannot be null")
-    @Size(max = 40, message = "Object cannot exceed 64 characters")
+    @NotNull(message = "Name cannot be null")
+    @Size(max = 40, message = "Name cannot exceed 40 characters")
     @Column(length = 40, nullable = false, unique = true)
     private String name;
 
-    @Size(max = 150, message = "Object cannot exceed 64 characters")
+    @Size(max = 150, message = "Description cannot exceed 150 characters")
     @Column(length = 150, nullable = false)
     private String description;
 
