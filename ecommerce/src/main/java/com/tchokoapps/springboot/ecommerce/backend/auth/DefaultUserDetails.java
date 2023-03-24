@@ -58,4 +58,36 @@ public class DefaultUserDetails implements UserDetails {
     public String getFullname() {
         return String.format("%s, %s", user.getFirstName(), user.getLastName());
     }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public void setFirstName(String firstName) {
+        user.setFirstName(firstName);
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
+    public void setLastName(String lastName) {
+        user.setLastName(lastName);
+    }
+
+    public String getEmail() {
+        return user.getEmail();
+    }
+
+    public void setEmail(String email) {
+        user.setEmail(email);
+    }
+
+    public String getPhoto() {
+        return user.getPhoto();
+    }
+
+    public void setPhoto(String photo) {
+        user.setPhoto(photo);
+    }
 }

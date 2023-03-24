@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,8 @@ public class UserController {
     private RoleService roleService;
     private UserCsvFileExporter userCsvFileExporter;
 
+    private PasswordEncoder passwordEncoder;
+
     @GetMapping("admin/users")
     String findAll(Model model) {
         final List<User> users = userService.findAll();
@@ -49,26 +52,6 @@ public class UserController {
     private static void addMessage(RedirectAttributes redirectAttributes, String message, String alertType) {
         redirectAttributes.addFlashAttribute("message", message);
         redirectAttributes.addFlashAttribute("alertType", alertType);
-    }
-
-    private static String saveImage(User user, RedirectAttributes redirectAttributes, MultipartFile multipartFile) {
-        final long maxFileSize = ONE_MB;
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    final String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    user.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/users";
-                }
-            } else {
-                addMessage(redirectAttributes, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB), "error");
-                return "redirect:/admin/users";
-            }
-        }
-        return null;
     }
 
     @GetMapping("admin/users/create")
@@ -85,7 +68,8 @@ public class UserController {
     }
 
     @PostMapping("admin/users/create")
-    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes
+            redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
         log.info("createUser() :: User = {}", user);
 
         if (bindingResult.hasErrors()) {
@@ -119,6 +103,7 @@ public class UserController {
             }
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         addMessage(redirectAttributes, "User CREATED successfully", "success");
         return "redirect:/admin/users";
@@ -126,7 +111,7 @@ public class UserController {
     }
 
     @PostMapping("admin/users/edit")
-    public String editUser(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String editUser(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile multipartFile) {
 
         log.info("editUser() :: User: {}", user);
 
@@ -240,7 +225,7 @@ public class UserController {
     @PostMapping("admin/users/profile")
     public String editProfilePage(User user, BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes,
-                                  @RequestParam("image") MultipartFile multipartFile) {
+                                  @RequestParam("image") MultipartFile multipartFile, @AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
         log.info("editProfilePage() :: User: {}", user);
 
         final long maxFileSize = ONE_MB;
@@ -264,8 +249,8 @@ public class UserController {
         try {
             User userFound = userService.findUserById(user.getId());
             userFound.setEmail(user.getEmail());
-            userFound.setLastName(user.getLastName());
             userFound.setFirstName(user.getFirstName());
+            userFound.setLastName(user.getLastName());
             if (user.getPhoto() != null) {
                 userFound.setPhoto(user.getPhoto());
             }
@@ -288,8 +273,12 @@ public class UserController {
                     return "admin/users/profile";
                 }
 
-                userFound.setPassword(user.getPassword());
+                userFound.setPassword(passwordEncoder.encode(user.getPassword()));
             }
+
+            defaultUserDetails.setFirstName(user.getFirstName());
+            defaultUserDetails.setLastName(user.getLastName());
+            defaultUserDetails.setEmail(user.getEmail());
 
             userService.save(userFound);
             addMessage(redirectAttributes, "User profile UPDATED successfully", "success");
@@ -298,5 +287,6 @@ public class UserController {
         }
         return "redirect:/admin/users";
     }
+
 }
 

@@ -27,7 +27,6 @@ public class UserService {
     }
 
     public void save(@NonNull User user) {
-        encodeUserPassword(user);
         userRepository.save(user);
     }
 
@@ -35,12 +34,6 @@ public class UserService {
         User userFound = findUserById(id);
         userRepository.delete(userFound);
         log.info("delete() :: User with id = {} delete successfully.", id);
-    }
-
-    private void encodeUserPassword(User user) {
-        String rawPassword = user.getPassword();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encodedPassword);
     }
 
     public User findUserById(@NotNull Integer id) throws UserNotFoundException {
