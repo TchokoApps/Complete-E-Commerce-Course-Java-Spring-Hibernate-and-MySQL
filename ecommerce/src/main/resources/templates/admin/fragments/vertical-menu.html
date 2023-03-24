@@ -28,7 +28,7 @@
                     </a>
                 </li>
 
-                <li>
+                <li sec:authorize="hasAuthority('ADMIN')">
                     <a class="has-arrow waves-effect" href="javascript: void(0);">
                         <i class="ri-mail-send-line"></i>
                         <span>Users</span>
@@ -128,7 +128,7 @@
                         <li><a href="email-read.html">Add New Brand</a></li>
                     </ul>
                 </li>
-                <li>
+                <li sec:authorize="hasAuthority('ADMIN')">
                     <a class="has-arrow waves-effect" href="javascript: void(0);">
                         <i class="ri-mail-send-line"></i>
                         <span>Settings</span>

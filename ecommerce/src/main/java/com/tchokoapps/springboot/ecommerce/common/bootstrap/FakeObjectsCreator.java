@@ -29,7 +29,7 @@ public class FakeObjectsCreator implements CommandLineRunner {
 
         Faker faker = Faker.instance();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
 
             Name name = faker.name();
             String firstName = name.firstName();
