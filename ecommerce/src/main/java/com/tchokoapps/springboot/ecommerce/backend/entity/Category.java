@@ -35,4 +35,12 @@ public class Category {
     public Category() {
 
     }
+
+    public String getParentName() {
+        if (parent != null) {
+            return parent.getName();
+        }
+
+        return "";
+    }
 }

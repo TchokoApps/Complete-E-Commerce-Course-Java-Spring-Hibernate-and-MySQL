@@ -50,6 +50,7 @@
                                 <th>Alias</th>
                                 <th>Photo</th>
                                 <th>Enabled</th>
+                                <th>Parent</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -71,7 +72,7 @@
                                        th:href="@{'/admin/categories/' + ${category.id} + '/enabled/true'}"
                                        th:if="${category.enabled == false}" title="Enable this category"></a>
                                 </td>
-
+                                <td>[[${category.parentName}]]</td>
                                 <td>
                                     <a class="btn btn-info sm" th:href="@{'/admin/categories/edit/'+${category.id}}"
                                        title="Edit category"> <i

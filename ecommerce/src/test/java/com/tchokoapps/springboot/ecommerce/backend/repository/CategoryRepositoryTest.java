@@ -21,7 +21,7 @@ public class CategoryRepositoryTest {
         Category category = Category.builder()
                 .name("Apparel and Accessories")
                 .alias("Apparel and Accessories")
-                .image("Apparel-and-Accessories.jpg")
+                .photo("Apparel-and-Accessories.jpg")
                 .build();
         Category categorySaved = categoryRepository.save(category);
         assertThat(categorySaved.getId()).isNotNull();
@@ -32,7 +32,7 @@ public class CategoryRepositoryTest {
         Category category = Category.builder()
                 .name("Apparel and Accessories")
                 .alias("Apparel and Accessories")
-                .image("Apparel and Accessories.jpg")
+                .photo("Apparel and Accessories.jpg")
                 .enabled(true)
                 .build();
         Category categorySaved = categoryRepository.save(category);
@@ -40,7 +40,7 @@ public class CategoryRepositoryTest {
         Category subCategory = Category.builder()
                 .name("Computers and Electronics")
                 .alias("Computers and Electronics")
-                .image("Computers and Electronics.jpg")
+                .photo("Computers and Electronics.jpg")
                 .enabled(true)
                 .parent(category)
                 .build();
