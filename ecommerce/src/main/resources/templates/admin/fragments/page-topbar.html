@@ -1,6 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
-<header id="page-topbar">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragment Page Topbar</title>
+</head>
+<body>
+<header id="page-topbar" th:fragment="page-topbar">
     <div class="navbar-header">
         <div class="d-flex">
             <!-- LOGO -->
@@ -399,3 +406,7 @@
         </div>
     </div>
 </header>
+</body>
+</html>
+
+

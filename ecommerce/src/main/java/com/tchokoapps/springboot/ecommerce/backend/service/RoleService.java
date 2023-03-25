@@ -18,4 +18,5 @@ public class RoleService {
         roleRepository.findAll().forEach(roles::add);
         return roles;
     }
+
 }

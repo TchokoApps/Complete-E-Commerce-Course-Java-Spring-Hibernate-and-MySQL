@@ -1,102 +1,115 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<script th:src="@{/backend/assets/libs/jquery/jquery.min.js}"></script>
-<script th:src="@{/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/backend/assets/libs/metismenu/metisMenu.min.js}"></script>
-<script th:src="@{/backend/assets/libs/simplebar/simplebar.min.js}"></script>
-<script th:src="@{/backend/assets/libs/node-waves/waves.min.js}"></script>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="script">
+    <html xmlns:th="http://www.thymeleaf.org">
+    <script th:src="@{/backend/assets/libs/jquery/jquery.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/metismenu/metisMenu.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/simplebar/simplebar.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/node-waves/waves.min.js}"></script>
 
 
-<!-- apexcharts -->
-<script th:src="@{/backend/assets/libs/apexcharts/apexcharts.min.js}"></script>
+    <!-- apexcharts -->
+    <script th:src="@{/backend/assets/libs/apexcharts/apexcharts.min.js}"></script>
 
-<!-- jquery.vectormap map -->
-<script th:src="@{/backend/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js}"></script>
-<script th:src="@{/backend/assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js}"></script>
+    <!-- jquery.vectormap map -->
+    <script th:src="@{/backend/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js}"></script>
 
-<!-- Required datatable js -->
-<script th:src="@{/backend/assets/libs/datatables.net/js/jquery.dataTables.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <!-- Required datatable js -->
+    <script th:src="@{/backend/assets/libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
 
-<!-- Responsive examples -->
-<script th:src="@{/backend/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+    <!-- Responsive examples -->
+    <script th:src="@{/backend/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
 
-<script th:src="@{/backend/assets/js/pages/dashboard.init.js}"></script>
+    <script th:src="@{/backend/assets/js/pages/dashboard.init.js}"></script>
 
-<!-- App js -->
-<script th:src="@{/backend/assets/js/app.js}"></script>
-<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js}" type="text/javascript"></script>
+    <!-- App js -->
+    <script th:src="@{/backend/assets/js/app.js}"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js}"
+            type="text/javascript"></script>
 
-<!-- Required datatable js -->
-<!-- Buttons examples -->
-<script th:src="@{/backend/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
-<script th:src="@{/backend/assets/libs/jszip/jszip.min.js}"></script>
-<script th:src="@{/backend/assets/libs/pdfmake/build/pdfmake.min.js}"></script>
-<script th:src="@{/backend/assets/libs/pdfmake/build/vfs_fonts.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+    <!-- Required datatable js -->
+    <!-- Buttons examples -->
+    <script th:src="@{/backend/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/jszip/jszip.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/pdfmake/build/pdfmake.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/pdfmake/build/vfs_fonts.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
 
-<script th:src="@{/backend/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-select/js/dataTables.select.min.js}"></script>
 
-<!-- Responsive examples -->
-<script th:src="@{/backend/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-<script th:src="@{/backend/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+    <!-- Responsive examples -->
+    <script th:src="@{/backend/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/backend/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
 
-<!-- Datatable init js -->
-<script th:src="@{/backend/assets/js/pages/datatables.init.js}"></script>
+    <!-- Datatable init js -->
+    <script th:src="@{/backend/assets/js/pages/datatables.init.js}"></script>
 
-<!-- Sweet Alerts js -->
-<script th:src="@{/backend/assets/libs/sweetalert2/sweetalert2.min.js}"></script>
+    <!-- Sweet Alerts js -->
+    <script th:src="@{/backend/assets/libs/sweetalert2/sweetalert2.min.js}"></script>
 
-<!-- Sweet alert init js-->
-<script th:src="@{/backend/assets/js/code.js}"></script>
+    <!-- Sweet alert init js-->
+    <script th:src="@{/backend/assets/js/code.js}"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#buttonCancelCreateUser").on("click", function () {
-            window.location = "[[@{/admin/users}]]";
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#buttonCancelCreateUser").on("click", function () {
+                window.location = "[[@{/admin/users}]]";
+            });
         });
-    });
-</script>
+    </script>
 
-<script th:if="${message != null && alertType != null} " th:inline="javascript">
-    /*<![CDATA[*/
-    /* Get session message and alertType if they exist */
-    var message = /*[[${message}]]*/ '';
-    var alertType = /*[[${alertType}]]*/ 'success';
+    <script th:if="${message != null && alertType != null} " th:inline="javascript">
+        /*<![CDATA[*/
+        /* Get session message and alertType if they exist */
+        var message = /*[[${message}]]*/ '';
+        var alertType = /*[[${alertType}]]*/ 'success';
 
-    /* Show Toastr notification if message exists */
-    if (message !== '') {
-        switch (alertType) {
-            case 'success':
-                toastr.success(message);
-                break;
-            case 'warning':
-                toastr.warning(message);
-                break;
-            case 'error':
-                toastr.error(message);
-                break;
-            default:
-                toastr.info(message);
-                break;
-        }
-    }
-    /*]]>*/
-</script>
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $('#image').change(function (e) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showImage').attr('src', e.target.result);
+        /* Show Toastr notification if message exists */
+        if (message !== '') {
+            switch (alertType) {
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+                default:
+                    toastr.info(message);
+                    break;
             }
-            reader.readAsDataURL(e.target.files['0']);
+        }
+        /*]]>*/
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#image').change(function (e) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#showImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(e.target.files['0']);
+            });
         });
-    });
-</script>
+    </script>
+</div>
+</body>
+</html>
+

@@ -4,6 +4,7 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,7 +26,8 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // When
-        User foundUser = userRepository.findUserByEmail(user.getEmail());
+        User foundUser = userRepository.findUserByEmail(user.getEmail()).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("User with email %s doesn´t exist", user.getEmail())));
 
         // Then
         assertNotNull(foundUser);

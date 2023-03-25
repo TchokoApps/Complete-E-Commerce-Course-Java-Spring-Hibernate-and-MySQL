@@ -1,4 +1,11 @@
-<div class="right-bar">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Right Bar</title>
+</head>
+<body>
+<div class="right-bar" th:fragment="right-bar">
     <div class="h-100" data-simplebar>
         <div class="rightbar-title d-flex align-items-center px-3 py-4">
 
@@ -36,7 +43,8 @@
                 <img alt="layout-3" class="img-fluid img-thumbnail" th:src="@{/backend/assets/images/layouts/layout-3.jpg}">
             </div>
             <div class="form-check form-switch mb-5">
-                <input class="form-check-input theme-choice" data-appStyle="/backend/assets/css/app-rtl.min.css" id="rtl-mode-switch" type="checkbox">
+                <input class="form-check-input theme-choice" data-appStyle="/backend/assets/css/app-rtl.min.css"
+                       id="rtl-mode-switch" type="checkbox">
                 <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
             </div>
 
@@ -46,6 +54,6 @@
     </div> <!-- end slimscroll-menu-->
 </div>
 <!-- /Right-bar -->
+</body>
+</html>
 
-<!-- Right bar overlay-->
-<div class="rightbar-overlay"></div>
