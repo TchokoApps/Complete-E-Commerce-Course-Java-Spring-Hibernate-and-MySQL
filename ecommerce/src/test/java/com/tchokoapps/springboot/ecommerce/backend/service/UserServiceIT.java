@@ -1,6 +1,7 @@
 package com.tchokoapps.springboot.ecommerce.backend.service;
 
 import com.tchokoapps.springboot.ecommerce.backend.entity.User;
+import com.tchokoapps.springboot.ecommerce.backend.exception.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

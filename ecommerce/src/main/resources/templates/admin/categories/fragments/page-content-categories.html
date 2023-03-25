@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Content Categories</title>
+</head>
+<body>
+<div class="page-content" th:fragment="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">All Categories</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="button-items" style="text-align: right">
+                            <a class="btn btn-dark btn-rounded waves-effect waves-light"
+                               th:href="@{/admin/categories/create}">Add Category</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light"
+                               th:href="@{/admin/categories/csv}">CSV</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light">EXCEL</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light">PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap" id="datatable"
+                               style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Alias</th>
+                                <th>Photo</th>
+                                <th>Enabled</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="category,count : ${categories}">
+                                <td>[[${count.index + 1}]]</td>
+                                <td>[[${category.name}]]</td>
+                                <td>[[${category.alias}]]</td>
+                                <td>
+                                    <img alt="Category photo" height="100" th:height="100" th:src="@{${category.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${category.photo})}}"
+                                         th:width="100"/>
+                                </td>
+
+                                <td>
+                                    <a class="fas fa-check-circle fa-2x icon-green" style="color: green"
+                                       th:href="@{'/admin/categories/' + ${category.id} + '/enabled/false'}"
+                                       th:if="${category.enabled == true}" title="Disable this Category"></a>
+                                    <a class="fas fa-check-circle fa-2x icon-dark" style="color: grey"
+                                       th:href="@{'/admin/categories/' + ${category.id} + '/enabled/true'}"
+                                       th:if="${category.enabled == false}" title="Enable this category"></a>
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-info sm" th:href="@{'/admin/categories/edit/'+${category.id}}"
+                                       title="Edit category"> <i
+                                            class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-danger sm" id="delete"
+                                       th:href="@{'/admin/categories/delete/'+${category.id}}" title="Delete Data">
+                                        <i class="fas fa-trash-alt"></i> </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+    </div> <!-- container-fluid -->
+</div>
+</body>
+</html>
+

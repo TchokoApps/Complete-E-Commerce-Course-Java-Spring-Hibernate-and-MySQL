@@ -1,4 +1,4 @@
-package com.tchokoapps.springboot.ecommerce.backend.service;
+package com.tchokoapps.springboot.ecommerce.backend.exception;
 
 public class UserNotFoundException extends Exception {
     public UserNotFoundException() {

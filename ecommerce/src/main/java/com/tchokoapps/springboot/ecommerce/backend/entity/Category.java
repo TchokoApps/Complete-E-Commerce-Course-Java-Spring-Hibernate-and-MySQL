@@ -24,7 +24,7 @@ public class Category {
     @Column(length = 64)
     private String alias;
     @Column(length = 128)
-    private String image;
+    private String photo;
     private boolean enabled;
     @OneToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
