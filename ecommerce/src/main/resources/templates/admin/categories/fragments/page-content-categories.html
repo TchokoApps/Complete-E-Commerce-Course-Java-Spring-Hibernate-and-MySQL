@@ -46,9 +46,9 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Photo</th>
                                 <th>Name</th>
                                 <th>Alias</th>
-                                <th>Photo</th>
                                 <th>Enabled</th>
                                 <th>Parent</th>
                                 <th>Action</th>
@@ -57,13 +57,13 @@
                             <tbody>
                             <tr th:each="category,count : ${categories}">
                                 <td>[[${count.index + 1}]]</td>
-                                <td>[[${category.name}]]</td>
-                                <td>[[${category.alias}]]</td>
                                 <td>
-                                    <img alt="Category photo" height="100" th:height="100" th:src="@{${category.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${category.photo})}}"
+                                    <img alt="Category photo" height="100" th:height="100"
+                                         th:src="@{${category.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${category.photo})}}"
                                          th:width="100"/>
                                 </td>
-
+                                <td>[[${category.name}]]</td>
+                                <td>[[${category.alias}]]</td>
                                 <td>
                                     <a class="fas fa-check-circle fa-2x icon-green" style="color: green"
                                        th:href="@{'/admin/categories/' + ${category.id} + '/enabled/false'}"

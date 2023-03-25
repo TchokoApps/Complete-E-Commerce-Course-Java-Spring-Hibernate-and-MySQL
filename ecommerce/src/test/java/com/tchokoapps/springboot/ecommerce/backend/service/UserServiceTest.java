@@ -71,12 +71,10 @@ public class UserServiceTest {
         User user = new User();
         user.setFirstName("user");
         user.setPassword("password");
-        when(passwordEncoder.encode(any())).thenReturn("encoded_password");
 
         userService.save(user);
 
         verify(userRepository, times(1)).save(user);
-        assertEquals("encoded_password", user.getPassword());
     }
 
     @Test

@@ -29,7 +29,7 @@ public class Category {
     @OneToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Category parent;
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Category> children = new HashSet<>();
 
     public Category() {
@@ -42,5 +42,16 @@ public class Category {
         }
 
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
+                ", photo='" + photo + '\'' +
+                ", enabled=" + enabled +
+                '}';
     }
 }

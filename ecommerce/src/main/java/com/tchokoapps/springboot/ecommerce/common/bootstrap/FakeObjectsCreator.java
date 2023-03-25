@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -107,7 +106,7 @@ public class FakeObjectsCreator implements CommandLineRunner {
         Category category9_4 = Category.builder().name("Baby & Toddler Toys").enabled(true).parent(category9).build();
         Category category9_5 = Category.builder().name("Baby Fashion").enabled(true).parent(category9).build();
 
-        List<Category> categories = categoryRepository.saveAll(Arrays.asList(category1, category1_1, category1_2, category1_3, category1_4, category1_5, category1_6, category2, category2_1, category2_2, category2_3, category2_4, category3, category3_1, category3_2, category3_3, category3_4, category3_5, category4, category4_1, category4_2, category4_3, category4_4, category4_5, category4_6, category5, category5_1, category5_2, category5_3, category5_4, category5_5, category6, category6_1, category6_2, category6_3, category6_4, category6_5, category6_6, category7, category7_1, category7_2, category7_3, category7_4, category7_5, category7_6, category8, category8_1, category8_2, category8_3, category8_4, category8_5, category9, category9_1, category9_2, category9_3, category9_4, category9_5));
+        categoryRepository.saveAll(Arrays.asList(category1, category1_1, category1_2, category1_3, category1_4, category1_5, category1_6, category2, category2_1, category2_2, category2_3, category2_4, category3, category3_1, category3_2, category3_3, category3_4, category3_5, category4, category4_1, category4_2, category4_3, category4_4, category4_5, category4_6, category5, category5_1, category5_2, category5_3, category5_4, category5_5, category6, category6_1, category6_2, category6_3, category6_4, category6_5, category6_6, category7, category7_1, category7_2, category7_3, category7_4, category7_5, category7_6, category8, category8_1, category8_2, category8_3, category8_4, category8_5, category9, category9_1, category9_2, category9_3, category9_4, category9_5));
     }
 
     private void createUsers(Faker faker) {

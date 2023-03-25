@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +20,28 @@ public class CategoryService {
 
     public List<Category> findAll() {
         return categoryRepository.findAll();
+    }
+
+    public List<Category> findAllHierarchically() {
+
+        List<Category> categories = new ArrayList<>();
+        List<Category> rootCategories = categoryRepository.findByParentIsNull();
+        for (Category rootCategory : rootCategories) {
+            getAllChildCategories(rootCategory, categories, "");
+        }
+
+        return categories;
+    }
+
+    private void getAllChildCategories(Category category, List<Category> categories, String prefix) {
+        category.setName(prefix + category.getName());
+        categories.add(category);
+        List<Category> children = categoryRepository.findByParentId(category.getId());
+        if (children != null) {
+            for (Category child : children) {
+                getAllChildCategories(child, categories, prefix + "-");
+            }
+        }
     }
 
     public void save(@NotNull Category category) {
@@ -36,8 +59,6 @@ public class CategoryService {
     }
 
     public Category findByName(String name) throws CategoryNotFoundException {
-        return categoryRepository.findCategoryByName(name).orElseThrow(() -> new CategoryNotFoundException(String.format("Could not find any Category with name = %s", name)));
+        return categoryRepository.findByName(name).orElseThrow(() -> new CategoryNotFoundException(String.format("Could not find any Category with name = %s", name)));
     }
-
-
 }
