@@ -37,7 +37,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Alias </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" name="alias" required th:field="*{alias}" type="text">
+                                    <input class="form-control" name="alias" th:field="*{alias}" type="text">
                                     <span style="color: red;" th:errors="*{alias}"
                                           th:if="${#fields.hasErrors('alias')}"></span>
                                 </div>
