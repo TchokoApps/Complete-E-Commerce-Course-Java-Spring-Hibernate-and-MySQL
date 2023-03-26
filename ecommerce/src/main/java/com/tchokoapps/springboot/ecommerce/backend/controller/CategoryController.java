@@ -2,8 +2,10 @@ package com.tchokoapps.springboot.ecommerce.backend.controller;
 
 import com.tchokoapps.springboot.ecommerce.backend.entity.Category;
 import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
+import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -53,6 +56,23 @@ public class CategoryController {
             List<Category> categories = categoryService.findAllHierarchically();
             model.addAttribute("categories", categories);
             return "admin/categories/create-form";
+        }
+
+        final long maxFileSize = FileUtils.ONE_MB;
+        if (!multipartFile.isEmpty()) {
+            if (multipartFile.getSize() <= maxFileSize) {
+                try {
+                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                    category.setPhoto(savedFileName);
+                } catch (IOException e) {
+                    log.error("Error happened when saving file", e);
+                    addMessage(redirectAttributes, e.getMessage(), "error");
+                    return "redirect:/admin/categories";
+                }
+            } else {
+                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                return "admin/categories/create-form";
+            }
         }
 
         try {
