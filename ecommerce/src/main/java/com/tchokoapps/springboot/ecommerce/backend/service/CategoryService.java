@@ -49,16 +49,16 @@ public class CategoryService {
     }
 
     public Category findById(@NotNull Integer id) throws CategoryNotFoundException {
-        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(String.format("Could not find any Category with id = %s", id)));
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(String.format("Could not find any Category(id=%s)", id)));
     }
 
     public void delete(Integer id) throws CategoryNotFoundException {
         Category category = findById(id);
         categoryRepository.delete(category);
-        log.info("Category with id = {} deleted successfully", id);
+        log.info("Category(id={}) deleted successfully", id);
     }
 
     public Category findByName(String name) throws CategoryNotFoundException {
-        return categoryRepository.findByName(name).orElseThrow(() -> new CategoryNotFoundException(String.format("Could not find any Category with name = %s", name)));
+        return categoryRepository.findByName(name).orElseThrow(() -> new CategoryNotFoundException(String.format("Could not find any Category(name=%s)", name)));
     }
 }

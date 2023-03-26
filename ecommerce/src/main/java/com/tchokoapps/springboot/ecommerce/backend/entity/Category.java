@@ -29,19 +29,25 @@ public class Category {
     @OneToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Category parent;
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> children = new HashSet<>();
 
     public Category() {
 
     }
 
+    @Transient
     public String getParentName() {
         if (parent != null) {
             return parent.getName();
         }
 
         return "";
+    }
+
+    @Transient
+    public boolean hasChildren() {
+        return !children.isEmpty();
     }
 
     @Override

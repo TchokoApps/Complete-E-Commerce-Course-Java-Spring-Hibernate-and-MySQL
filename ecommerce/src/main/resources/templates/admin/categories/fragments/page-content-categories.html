@@ -77,9 +77,11 @@
                                     <a class="btn btn-info sm" th:href="@{'/admin/categories/edit/'+${category.id}}"
                                        title="Edit category"> <i
                                             class="fas fa-edit"></i> </a>
-                                    <a class="btn btn-danger sm" id="delete"
-                                       th:href="@{'/admin/categories/delete/'+${category.id}}" title="Delete Data">
-                                        <i class="fas fa-trash-alt"></i> </a>
+                                    <th:block th:if="${category.hasChildren == false}">
+                                        <a class="btn btn-danger sm" id="delete"
+                                           th:href="@{'/admin/categories/delete/'+${category.id}}" title="Delete Data">
+                                            <i class="fas fa-trash-alt"></i> </a>
+                                    </th:block>
                                 </td>
                             </tr>
                             </tbody>

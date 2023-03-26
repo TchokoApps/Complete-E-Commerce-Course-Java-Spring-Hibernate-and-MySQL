@@ -152,5 +152,36 @@ public class CategoryController {
         }
         return "redirect:/admin/categories";
     }
+
+    @GetMapping("admin/categories/delete/{id}")
+    public String deleteCategory(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+        log.info("deleteCategory - Deleting category (id={})", id);
+
+        try {
+
+            Category category = categoryService.findById(id);
+
+            if (!category.getChildren().isEmpty()) {
+                addMessage(redirectAttributes, "This category has one or more subcategories. Please delete the sub categories before you delete this one", "error");
+                return "redirect:/admin/categories";
+            }
+
+            categoryService.delete(id);
+
+            if (StringUtils.isNotBlank(category.getPhoto())) {
+                FileUploadUtil.deleteQuietly(category.getPhoto());
+            }
+
+            addMessage(redirectAttributes, "Category deleted successfully", "success");
+
+            log.info("deleteCategory - Category (id={}) deleted successfully", id);
+
+        } catch (CategoryNotFoundException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+        }
+
+        return "redirect:/admin/categories";
+
+    }
 }
 

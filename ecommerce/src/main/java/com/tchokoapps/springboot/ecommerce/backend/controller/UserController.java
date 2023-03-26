@@ -178,7 +178,7 @@ public class UserController {
     }
 
     @GetMapping("/admin/users/delete/{id}")
-    public String deleteUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+    public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
             log.info("deleteUser() :: User with id = {} deleted successfully", id);
