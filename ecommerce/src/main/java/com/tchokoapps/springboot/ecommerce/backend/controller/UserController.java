@@ -55,15 +55,12 @@ public class UserController {
     }
 
     @GetMapping("admin/users/create")
-    public String createUserForm(Model model, RedirectAttributes redirectAttributes) {
+    public String createUserForm(Model model) {
         final List<Role> roles = roleService.findAll();
         final User user = new User();
         user.setEnabled(false);
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
-
-        addMessage(redirectAttributes, "User CREATED successfully", "success");
-
         return "admin/users/create-form";
     }
 
@@ -108,6 +105,21 @@ public class UserController {
         addMessage(redirectAttributes, "User CREATED successfully", "success");
         return "redirect:/admin/users";
 
+    }
+
+    @GetMapping("/admin/users/edit/{id}")
+    public String editUserForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+
+        try {
+            User user = userService.findUserById(id);
+            final List<Role> roles = roleService.findAll();
+            model.addAttribute("user", user);
+            model.addAttribute("roles", roles);
+            return "admin/users/edit-form";
+        } catch (UserNotFoundException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+            return "redirect:/admin/users";
+        }
     }
 
     @PostMapping("admin/users/edit")
@@ -163,21 +175,6 @@ public class UserController {
             addMessage(redirectAttributes, e.getMessage(), "error");
         }
         return "redirect:/admin/users";
-    }
-
-    @GetMapping("/admin/users/edit/{id}")
-    public String editUserForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-
-        try {
-            User user = userService.findUserById(id);
-            final List<Role> roles = roleService.findAll();
-            model.addAttribute("user", user);
-            model.addAttribute("roles", roles);
-            return "admin/users/edit-form";
-        } catch (UserNotFoundException e) {
-            addMessage(redirectAttributes, e.getMessage(), "error");
-            return "redirect:/admin/users";
-        }
     }
 
     @GetMapping("/admin/users/delete/{id}")

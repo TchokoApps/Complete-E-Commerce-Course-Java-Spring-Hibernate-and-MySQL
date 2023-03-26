@@ -82,6 +82,14 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#buttonCancelCreateCategory").on("click", function () {
+                window.location = "[[@{/admin/categories}]]";
+            });
+        });
+    </script>
+
     <script th:if="${message != null && alertType != null} " th:inline="javascript">
         /*<![CDATA[*/
         /* Get session message and alertType if they exist */

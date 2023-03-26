@@ -4,7 +4,7 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Page Content Create Category</title>
+    <title>Page Content Edit Category</title>
 </head>
 <body>
 <div class="page-content" th:fragment="page-content">
@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Add Category</h4>
+                    <h4 class="mb-sm-0">Edit Category</h4>
                 </div>
             </div>
         </div>
@@ -23,8 +23,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <form enctype="multipart/form-data" method="post" th:action="@{/admin/categories/create}"
+                        <form enctype="multipart/form-data" method="post" th:action="@{/admin/categories/edit}"
                               th:object="${category}">
+                            <input , name="id" th:value="*{id}" type="hidden">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Name </label>
                                 <div class="col-sm-10">
@@ -75,11 +76,11 @@
                                 <label class="col-sm-2 col-form-label"> </label>
                                 <div class="col-sm-10">
                                     <img alt="Card image cap" class="rounded avatar-lg" id="showImage"
-                                         th:src="@{/upload/no_image.jpg}">
+                                         th:src="@{${category.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${category.photo})}}">
                                 </div>
                             </div>
                             <!-- end row -->
-                            <input class="btn btn-info waves-effect waves-light" type="submit" value="Add Category">
+                            <input class="btn btn-info waves-effect waves-light" type="submit" value="Edit Category">
                             <input class="btn btn-secondary" id="buttonCancelCreateCategory" type="button"
                                    value="Cancel"/>
                         </form>
