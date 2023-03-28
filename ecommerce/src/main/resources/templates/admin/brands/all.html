@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="admin/fragments/header :: header('Brands')"></div>
+
+<body data-topbar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <div th:replace="admin/fragments/page-topbar :: page-topbar"></div>
+
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="admin/fragments/vertical-menu :: vertical-menu"></div>
+    <!-- Left Sidebar End -->
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div th:replace="admin/brands/fragments/page-content-brands :: page-content"></div>
+        <!-- End Page-content -->
+
+        <div th:replace="admin/fragments/footer :: footer"></div>
+
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- Right Sidebar -->
+<div th:replace="admin/fragments/right-bar :: right-bar"></div>
+
+<!-- JAVASCRIPT -->
+<div th:replace="admin/fragments/script :: script"></div>
+
+</body>
+
+</html>

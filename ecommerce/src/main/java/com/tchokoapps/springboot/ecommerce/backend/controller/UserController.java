@@ -43,7 +43,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("admin/users")
-    String findAll(Model model) {
+    public String findAll(Model model) {
         final List<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "admin/users/index";

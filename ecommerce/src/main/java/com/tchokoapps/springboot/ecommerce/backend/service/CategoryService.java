@@ -25,7 +25,7 @@ public class CategoryService {
     public List<Category> findAllHierarchically() {
 
         List<Category> categories = new ArrayList<>();
-        List<Category> rootCategories = categoryRepository.findByParentIsNull();
+        List<Category> rootCategories = categoryRepository.findByParentIsNullOrderByNameAsc();
         for (Category rootCategory : rootCategories) {
             getAllChildCategories(rootCategory, categories, "");
         }
@@ -36,7 +36,7 @@ public class CategoryService {
     private void getAllChildCategories(Category category, List<Category> categories, String prefix) {
         category.setName(prefix + category.getName());
         categories.add(category);
-        List<Category> children = categoryRepository.findByParentId(category.getId());
+        List<Category> children = categoryRepository.findByParentIdOrderByNameAsc(category.getId());
         if (children != null) {
             for (Category child : children) {
                 getAllChildCategories(child, categories, prefix + "-");

@@ -131,8 +131,8 @@
                         <span>Brands</span>
                     </a>
                     <ul aria-expanded="false" class="sub-menu">
-                        <li><a href="email-inbox.html">All Brands</a></li>
-                        <li><a href="email-read.html">Add New Brand</a></li>
+                        <li><a th:href="@{/admin/brands}">All Brands</a></li>
+                        <li><a th:href="@{/admin/brands/create}">Add New Brand</a></li>
                     </ul>
                 </li>
                 <li sec:authorize="hasAuthority('ADMIN')">

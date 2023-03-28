@@ -32,6 +32,9 @@ public class Category {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> children = new HashSet<>();
 
+    @ManyToMany(mappedBy = "categories")
+    private Set<Brand> brands = new HashSet<>();
+
     public Category() {
 
     }

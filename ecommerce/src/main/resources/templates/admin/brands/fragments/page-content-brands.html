@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Content Brands</title>
+</head>
+<body>
+<div class="page-content" th:fragment="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">All Brands</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="button-items" style="text-align: right">
+                            <a class="btn btn-dark btn-rounded waves-effect waves-light"
+                               th:href="@{/admin/brands/create}">Add Brand</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light"
+                               th:href="@{/admin/brands/csv}">CSV</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light">EXCEL</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light">PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap" id="datatable"
+                               style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Photos</th>
+                                <th>Name</th>
+                                <th>Categories</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="brand,count : ${brands}">
+                                <td>[[${count.index + 1}]]</td>
+                                <td>
+                                    <img alt="Brand photo" height="100"
+                                         th:src="@{${brand.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${brand.photo})}}"
+                                         th:width="100"/>
+                                </td>
+                                <td>[[${brand.name}]]</td>
+                                <td>
+                                    <ul>
+                                        <li th:each="category : ${brand.categories}" th:text="${category.name}"></li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info sm" th:href="@{'/admin/brands/update/' + ${brand.id}}"
+                                       title="Edit Brand"> <i
+                                            class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-danger sm" id="delete"
+                                       th:href="@{'/admin/brands/delete/'+${brand.id}}" title="Delete Brand">
+                                        <i class="fas fa-trash-alt"></i> </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+    </div> <!-- container-fluid -->
+</div>
+</body>
+</html>
+

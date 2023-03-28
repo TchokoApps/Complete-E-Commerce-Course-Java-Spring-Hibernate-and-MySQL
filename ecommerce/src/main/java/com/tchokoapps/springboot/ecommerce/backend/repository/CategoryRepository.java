@@ -12,5 +12,9 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     List<Category> findByParentIsNull();
 
+    List<Category> findByParentIsNullOrderByNameAsc();
+
     List<Category> findByParentId(Integer id);
+
+    List<Category> findByParentIdOrderByNameAsc(Integer id);
 }

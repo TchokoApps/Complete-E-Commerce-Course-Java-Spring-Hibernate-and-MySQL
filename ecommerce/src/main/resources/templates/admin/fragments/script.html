@@ -84,6 +84,14 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#buttonCancelCreateBrand").on("click", function () {
+                window.location = "[[@{/admin/brands}]]";
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#buttonCancelCreateCategory").on("click", function () {
                 window.location = "[[@{/admin/categories}]]";
             });
