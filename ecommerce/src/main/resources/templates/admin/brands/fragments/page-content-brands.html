@@ -62,6 +62,8 @@
                                 </td>
                                 <td>[[${brand.name}]]</td>
                                 <td>
+                                    <!--                                        <span class="badge badge-secondary" th:each="category : ${brand.categories}"-->
+                                    <!--                                              th:text="${category.name}"></span>-->
                                     <ul>
                                         <li th:each="category : ${brand.categories}" th:text="${category.name}"></li>
                                     </ul>
