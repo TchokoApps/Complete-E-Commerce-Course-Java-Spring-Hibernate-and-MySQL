@@ -1,15 +1,16 @@
 package com.tchokoapps.springboot.ecommerce.common.validator;
 
 import com.tchokoapps.springboot.ecommerce.backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Component
+@AllArgsConstructor
+public class UserUniqueEmailValidator implements ConstraintValidator<UserUniqueEmail, String> {
 
-public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -17,6 +18,6 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
         if (userRepository == null) {
             return true;
         }
-        return userRepository.findUserByEmail(email) == null;
+        return userRepository.findUserByEmail(email).isEmpty();
     }
 }

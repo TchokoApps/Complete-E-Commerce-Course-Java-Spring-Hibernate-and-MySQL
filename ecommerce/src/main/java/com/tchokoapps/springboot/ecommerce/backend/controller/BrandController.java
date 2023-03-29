@@ -2,6 +2,7 @@ package com.tchokoapps.springboot.ecommerce.backend.controller;
 
 import com.tchokoapps.springboot.ecommerce.backend.entity.Brand;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Category;
+import com.tchokoapps.springboot.ecommerce.backend.exception.BrandNotFoundExcepion;
 import com.tchokoapps.springboot.ecommerce.backend.service.BrandService;
 import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
 import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
@@ -55,14 +56,21 @@ public class BrandController {
     }
 
     @PostMapping("admin/brands/create")
-    public String createBrand(@Valid Brand brand, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-                              Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String createBrand(@Valid Brand brand, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
         log.info("createBrand - creating brand {}", brand);
 
         if (bindingResult.hasErrors()) {
             List<Category> categories = categoryService.findAllHierarchically();
             model.addAttribute("categories", categories);
             return "admin/brands/create-form";
+        }
+
+        try {
+            brandService.findByName(brand.getName());
+            bindingResult.rejectValue("name", "brand.name.already.exist", String.format("Brand name %s exist already", brand.getName()));
+            return "admin/brands/create-form";
+        } catch (BrandNotFoundExcepion ignored) {
+
         }
 
         final long maxFileSize = FileUtils.ONE_MB;
@@ -80,10 +88,10 @@ public class BrandController {
                 bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
                 return "admin/brands/create-form";
             }
-
-            brandService.save(brand);
-            addMessage(redirectAttributes, "Brand Created Successfully", "success");
         }
+
+        brandService.save(brand);
+        addMessage(redirectAttributes, "Brand Created Successfully", "success");
 
         return "redirect:/admin/brands";
     }
