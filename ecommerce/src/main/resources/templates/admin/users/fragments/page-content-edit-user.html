@@ -29,7 +29,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">E-Mail </label>
                                 <div class="col-sm-10">
-                                    <input , class="form-control" maxlength="64" minlength="8" name="name"
+                                    <input class="form-control" maxlength="64" minlength="8" name="name"
                                            required th:field="*{email}" type="email">
                                     <span style="color: red;" th:errors="*{email}"
                                           th:if="${#fields.hasErrors('email')}"></span>
@@ -89,6 +89,10 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label"> </label>
                                 <div class="col-sm-10">
+
+                                    <!--                                    <img alt="User Profile Picture" class="rounded avatar-lg" id="showImage"-->
+                                    <!--                                         th:src="@{${user.photo != null} ? '/photos/' + ${user.photo} : '/upload/no_image.jpg'}" />-->
+
                                     <img alt="Card image cap" class="rounded avatar-lg" id="showImage"
                                          th:src="@{${user.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${user.photo})}}">
                                 </div>

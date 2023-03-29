@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,6 +95,21 @@ public class BrandController {
         addMessage(redirectAttributes, "Brand Created Successfully", "success");
 
         return "redirect:/admin/brands";
+    }
+
+    @GetMapping("admin/brands/update/{id}")
+    public String updateBrandForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Brand brand = brandService.findById(id);
+            List<Category> categories = categoryService.findAllHierarchically();
+            model.addAttribute("brand", brand);
+            model.addAttribute("categories", categories);
+            return "admin/brands/update-form";
+
+        } catch (BrandNotFoundExcepion e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+            return "redirect:/admin/brands";
+        }
     }
 
 }
