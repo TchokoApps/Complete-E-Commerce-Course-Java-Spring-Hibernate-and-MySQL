@@ -1,75 +1,25 @@
 package com.tchokoapps.springboot.ecommerce.common.bootstrap;
 
-import com.github.javafaker.Faker;
-import com.github.javafaker.Name;
-import com.tchokoapps.springboot.ecommerce.backend.entity.Brand;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Category;
-import com.tchokoapps.springboot.ecommerce.backend.entity.Role;
-import com.tchokoapps.springboot.ecommerce.backend.entity.User;
-import com.tchokoapps.springboot.ecommerce.backend.repository.BrandRepository;
 import com.tchokoapps.springboot.ecommerce.backend.repository.CategoryRepository;
-import com.tchokoapps.springboot.ecommerce.backend.repository.RoleRepository;
-import com.tchokoapps.springboot.ecommerce.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Slf4j
-@Component
 @AllArgsConstructor
-public class FakeObjectsCreator implements CommandLineRunner {
+@Component
+public class CategoryCreator implements CommandLineRunner {
 
-    private RoleRepository roleRepository;
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
     private CategoryRepository categoryRepository;
-    private BrandRepository brandRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
-        Faker faker = Faker.instance();
-
-        createUsers(faker);
-
-        createCategories();
-
-        createBrands();
-    }
-
-    private void createBrands() {
-
-        Brand brand = Brand.builder().name("Nike").build();
-        Brand brand2 = Brand.builder().name("Adidas").build();
-        Brand brand3 = Brand.builder().name("Fila").build();
-        Brand brand4 = Brand.builder().name("Puma").build();
-        Brand brand5 = Brand.builder().name("Reebok").build();
-        Brand brand6 = Brand.builder().name("Converse").build();
-        Brand brand7 = Brand.builder().name("Vans").build();
-        Brand brand8 = Brand.builder().name("New Balance").build();
-        Brand brand9 = Brand.builder().name("Under Armour").build();
-        Brand brand10 = Brand.builder().name("ASICS").build();
-        Brand brand11 = Brand.builder().name("Saucony").build();
-        Brand brand12 = Brand.builder().name("Brooks").build();
-        Brand brand13 = Brand.builder().name("Lululemon").build();
-        Brand brand14 = Brand.builder().name("Gymshark").build();
-        Brand brand15 = Brand.builder().name("Athleta").build();
-        Brand brand16 = Brand.builder().name("Alo Yoga").build();
-        Brand brand17 = Brand.builder().name("Lorna Jane").build();
-        Brand brand18 = Brand.builder().name("Varley").build();
-        Brand brand19 = Brand.builder().name("Outdoor Voices").build();
-        Brand brand20 = Brand.builder().name("Carbon38").build();
-
-        brandRepository.saveAll(Arrays.asList(brand, brand2, brand3, brand4, brand5, brand6, brand7, brand8, brand9, brand10, brand11, brand12, brand13, brand14, brand15, brand16, brand17, brand18, brand19, brand20));
-    }
-
-    private void createCategories() {
         Category category1 = Category.builder().name("Phones & Tablets").enabled(true).build();
         Category category1_1 = Category.builder().name("Smartphones").enabled(true).parent(category1).build();
         Category category1_2 = Category.builder().name("Tablets").enabled(true).parent(category1).build();
@@ -137,31 +87,7 @@ public class FakeObjectsCreator implements CommandLineRunner {
         Category category9_5 = Category.builder().name("Baby Fashion").enabled(true).parent(category9).build();
 
         categoryRepository.saveAll(Arrays.asList(category1, category1_1, category1_2, category1_3, category1_4, category1_5, category1_6, category2, category2_1, category2_2, category2_3, category2_4, category3, category3_1, category3_2, category3_3, category3_4, category3_5, category4, category4_1, category4_2, category4_3, category4_4, category4_5, category4_6, category5, category5_1, category5_2, category5_3, category5_4, category5_5, category6, category6_1, category6_2, category6_3, category6_4, category6_5, category6_6, category7, category7_1, category7_2, category7_3, category7_4, category7_5, category7_6, category8, category8_1, category8_2, category8_3, category8_4, category8_5, category9, category9_1, category9_2, category9_3, category9_4, category9_5));
+
     }
 
-    private void createUsers(Faker faker) {
-        for (int i = 0; i < 25; i++) {
-
-            Name name = faker.name();
-            String firstName = name.firstName();
-            String lastName = name.lastName();
-            String password = faker.internet().password();
-
-            User user = new User();
-            user.setEmail(firstName + "." + lastName + "@example.com");
-            user.setPassword(password);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEnabled(true);
-
-            Set<Role> roles = new HashSet<>();
-            int number = faker.number().numberBetween(1, 11);
-            roles.add(roleRepository.findById(number).orElseThrow(() -> new RuntimeException("Role Not Found")));
-            user.setRoles(roles);
-
-            log.info("User: {}", user);
-            user.setPassword(passwordEncoder.encode(password));
-            userRepository.save(user);
-        }
-    }
 }

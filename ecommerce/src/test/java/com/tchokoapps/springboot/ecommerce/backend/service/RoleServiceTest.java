@@ -7,13 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
-class RoleServiceTest {
+public class RoleServiceTest {
     @Mock
     private RoleRepository roleRepository;
 
@@ -28,8 +29,8 @@ class RoleServiceTest {
     @Test
     public void testFindAll() {
         // Given
-        List<Role> roles = Arrays.asList(new Role(1, "ADMIN", "Can perform all actions"), new Role(2, "USER",
-                "Can view and edit own data"));
+        List<Role> roles = Arrays.asList(new Role(1, "ADMIN", "Can perform all actions", LocalDateTime.now(), LocalDateTime.now()),
+                new Role(2, "USER", "Can view and edit own data", LocalDateTime.now(), LocalDateTime.now()));
         doReturn(roles).when(roleRepository).findAll();
 
         // When
