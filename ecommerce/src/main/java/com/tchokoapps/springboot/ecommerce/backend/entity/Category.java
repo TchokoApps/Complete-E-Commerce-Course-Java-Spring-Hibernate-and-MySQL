@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,24 +22,37 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(length = 128, nullable = false, unique = true)
+
+    @Size(max = 128)
+    @Column(nullable = false, unique = true)
     private String name;
-    @Column(length = 64)
+
+    @Size(max = 64)
     private String alias;
-    @Column(length = 128)
+
+    @Size(max = 128)
     private String photo;
+
+    @NotNull
     private boolean enabled;
-    @OneToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     private Category parent;
+
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> children = new HashSet<>();
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Brand> brands = new HashSet<>();
 
-    public Category() {
+    private LocalDateTime createdTime;
 
+    private LocalDateTime updatedTime;
+
+    public Category() {
+        this.createdTime = LocalDateTime.now();
+        this.enabled = true;
     }
 
     @Transient
@@ -61,6 +77,8 @@ public class Category {
                 ", alias='" + alias + '\'' +
                 ", photo='" + photo + '\'' +
                 ", enabled=" + enabled +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
                 '}';
     }
 }

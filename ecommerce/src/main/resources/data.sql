@@ -1,23 +1,23 @@
-INSERT INTO roles (name, description)
-VALUES ('ADMIN', 'Can perform all actions');
-INSERT INTO roles (name, description)
-VALUES ('USER', 'Can view and edit own data');
-INSERT INTO roles (name, description)
-VALUES ('MANAGER', 'Can manage resources and team');
-INSERT INTO roles (name, description)
-VALUES ('GUEST', 'Can view limited content');
-INSERT INTO roles (name, description)
-VALUES ('DEVELOPER', 'Can develop and deploy applications');
-INSERT INTO roles (name, description)
-VALUES ('TESTER', 'Can test applications and report issues');
-INSERT INTO roles (name, description)
-VALUES ('ANALYST', 'Can analyze data and provide insights');
-INSERT INTO roles (name, description)
-VALUES ('DESIGNER', 'Can design user interfaces and experiences');
-INSERT INTO roles (name, description)
-VALUES ('CONTENT_WRITER', 'Can write and publish content');
-INSERT INTO roles (name, description)
-VALUES ('MARKETER', 'Can market products and services');
+INSERT INTO roles (name, description, created_time)
+VALUES ('ADMIN', 'Can perform all actions', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('USER', 'Can view and edit own data', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('MANAGER', 'Can manage resources and team', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('GUEST', 'Can view limited content', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('DEVELOPER', 'Can develop and deploy applications', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('TESTER', 'Can test applications and report issues', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('ANALYST', 'Can analyze data and provide insights', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('DESIGNER', 'Can design user interfaces and experiences', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('CONTENT_WRITER', 'Can write and publish content', NOW());
+INSERT INTO roles (name, description, created_time)
+VALUES ('MARKETER', 'Can market products and services', NOW());
 -- INSERT INTO users (email, password, first_name, last_name, enabled)
 -- VALUES ('john.doe@gmail.com', 'password123', 'John', 'Doe', true);
 -- INSERT INTO users (email, password, first_name, last_name, enabled)
