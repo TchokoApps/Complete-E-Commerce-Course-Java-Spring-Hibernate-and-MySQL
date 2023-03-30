@@ -164,4 +164,21 @@ public class BrandController {
         return "redirect:/admin/brands";
     }
 
+    @GetMapping("admin/brands/delete/{id}")
+    public String deleteBrand(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+        log.info("deleteBrand - deleting Brand(id={})", id);
+
+        try {
+            Brand brand = brandService.findById(id);
+            brand.getCategories().clear();
+            brandService.delete(id);
+        } catch (BrandNotFoundExcepion e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+        }
+
+        addMessage(redirectAttributes, "Brand Deleted Successfully", "success");
+
+        return "redirect:/admin/brands";
+    }
+
 }
