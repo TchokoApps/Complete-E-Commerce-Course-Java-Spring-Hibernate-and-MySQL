@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Content Products</title>
+</head>
+<body>
+<div class="page-content" th:fragment="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">All Products</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="button-items" style="text-align: right">
+                            <a class="btn btn-dark btn-rounded waves-effect waves-light"
+                               th:href="@{/admin/products/create}">Add Product</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light"
+                               th:href="@{/admin/products/csv}">CSV</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light">EXCEL</a>
+                            <a class="btn btn-primary btn-rounded waves-effect waves-light">PDF</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap" id="datatable"
+                               style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Main Image</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Category</th>
+                                <th>Enabled</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="product,count : ${products}">
+                                <td>[[${count.index + 1}]]</td>
+                                <td>
+                                    <img alt="Product photo" height="100" th:src="@{${product.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${brand.photo})}}"
+                                         width="100"/>
+                                </td>
+                                <td>[[${product.name}]]</td>
+                                <td>[[${product.brand.name}]]</td>
+                                <td>[[${product.category.name}]]</td>
+                                <td>
+                                    <a class="fas fa-check-circle fa-2x icon-green" style="color: green"
+                                       th:href="@{'/admin/products/' + ${product.id} + '/enabled/false'}"
+                                       th:if="${product.enabled == true}" title="Disable this Product"></a>
+                                    <a class="fas fa-check-circle fa-2x icon-dark" style="color: grey"
+                                       th:href="@{'/admin/products/' + ${product.id} + '/enabled/true'}"
+                                       th:if="${product.enabled == false}" title="Enable this Product"></a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info sm" th:href="@{'/admin/product/update/' + ${product.id}}"
+                                       title="Update Product"> <i
+                                            class="fas fa-edit"></i> </a>
+                                    <a class="btn btn-danger sm" id="delete"
+                                       th:href="@{'/admin/products/delete/'+${product.id}}" title="Delete Product">
+                                        <i class="fas fa-trash-alt"></i> </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+
+    </div> <!-- container-fluid -->
+</div>
+</body>
+</html>
+

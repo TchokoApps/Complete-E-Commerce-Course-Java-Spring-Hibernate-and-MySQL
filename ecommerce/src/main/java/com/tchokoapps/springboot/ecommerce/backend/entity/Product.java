@@ -28,6 +28,11 @@ public class Product {
     private String name;
 
     @Size(max = 256)
+    private String photo;
+
+    private boolean enabled;
+
+    @Size(max = 256)
     private String alias;
 
     @Size(max = 500)
@@ -77,6 +82,7 @@ public class Product {
     public Product() {
         this.createdTime = LocalDateTime.now();
         this.inStock = true;
+        this.enabled = true;
     }
 
     @Override

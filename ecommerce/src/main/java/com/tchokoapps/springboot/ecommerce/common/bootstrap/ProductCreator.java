@@ -45,6 +45,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.25))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product2 = Product.builder()
@@ -62,6 +63,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(4.5))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product3 = Product.builder()
@@ -79,6 +81,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(1.63))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product4 = Product.builder()
@@ -96,6 +99,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.05))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product6 = Product.builder()
@@ -113,6 +117,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.23))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product5 = Product.builder()
@@ -130,6 +135,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.24))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product7 = Product.builder()
@@ -147,6 +153,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.94))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product8 = Product.builder()
@@ -164,6 +171,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.65))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product9 = Product.builder()
@@ -181,6 +189,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.03))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         Product product10 = Product.builder()
@@ -198,6 +207,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.05))
                 .category(category)
                 .brand(brand)
+                .enabled(true)
                 .build();
 
         List<Product> products = Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10);

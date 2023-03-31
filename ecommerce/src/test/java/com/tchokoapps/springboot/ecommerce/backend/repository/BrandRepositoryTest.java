@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,6 +65,45 @@ public class BrandRepositoryTest {
 
         assertThat(brandSaved.getId()).isNotNull();
 
+    }
+
+    @Test
+    public void testFindAllBrandsAndOrderByName() {
+
+        Brand brand1 = Brand.builder()
+                .name("EcoGo")
+                .photo("EcoGo.png")
+                .build();
+
+        Brand brand2 = Brand.builder()
+                .name("GlowUp")
+                .photo("GlowUp.png")
+                .build();
+
+        Brand brand3 = Brand.builder()
+                .name("SavvySavings")
+                .photo("SavvySavings.png")
+                .build();
+
+        Brand brand4 = Brand.builder()
+                .name("LuxLounge")
+                .photo("LuxLounge.png")
+                .build();
+
+        Brand brand5 = Brand.builder()
+                .name("Organic Oasis")
+                .photo("OrganicOasis.png")
+                .build();
+
+        brandRepository.saveAll(Arrays.asList(brand1, brand2, brand3, brand4, brand5));
+
+        List<Brand> brandsOrderedByName = brandRepository.findAllByOrderByName();
+
+        List<String> resultNames = brandsOrderedByName.stream().map(Brand::getName).toList();
+
+        List<String> expectedNames = Arrays.asList("EcoGo", "GlowUp", "LuxLounge", "Organic Oasis", "SavvySavings");
+
+        assertThat(resultNames.toArray()).containsExactly(expectedNames.toArray());
     }
 
 }
