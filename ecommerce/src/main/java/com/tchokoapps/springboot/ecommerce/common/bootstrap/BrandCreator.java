@@ -4,7 +4,6 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.Brand;
 import com.tchokoapps.springboot.ecommerce.backend.repository.BrandRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -12,13 +11,11 @@ import java.util.Arrays;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class BrandCreator implements CommandLineRunner {
+public class BrandCreator {
 
     private BrandRepository brandRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
-
+    public void createBrands() {
         Brand brand = Brand.builder().name("Nike").build();
         Brand brand2 = Brand.builder().name("Adidas").build();
         Brand brand3 = Brand.builder().name("Fila").build();

@@ -8,7 +8,6 @@ import com.tchokoapps.springboot.ecommerce.backend.repository.RoleRepository;
 import com.tchokoapps.springboot.ecommerce.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -18,15 +17,14 @@ import java.util.Set;
 @Slf4j
 @AllArgsConstructor
 @Component
-public class UserCreator implements CommandLineRunner {
+public class UserCreator {
 
     private RoleRepository roleRepository;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) throws Exception {
 
+    public void createUsers() {
         Faker faker = Faker.instance();
 
         for (int i = 0; i < 25; i++) {

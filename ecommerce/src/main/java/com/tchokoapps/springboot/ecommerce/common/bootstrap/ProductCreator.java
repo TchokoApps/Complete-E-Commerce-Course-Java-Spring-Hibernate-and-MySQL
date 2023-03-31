@@ -9,7 +9,6 @@ import com.tchokoapps.springboot.ecommerce.backend.repository.BrandRepository;
 import com.tchokoapps.springboot.ecommerce.backend.repository.CategoryRepository;
 import com.tchokoapps.springboot.ecommerce.backend.repository.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,15 +17,13 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class ProductCreator implements CommandLineRunner {
+public class ProductCreator {
 
     private BrandRepository brandRepository;
     private CategoryRepository categoryRepository;
     private ProductRepository productRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
-
+    public void createProducts() throws BrandNotFoundExcepion, CategoryNotFoundException {
         int brandId = 1;
         Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new BrandNotFoundExcepion(String.format("Brand with id %s cannot be found", brandId)));
 
@@ -206,6 +203,5 @@ public class ProductCreator implements CommandLineRunner {
         List<Product> products = Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10);
 
         productRepository.saveAll(products);
-
     }
 }
