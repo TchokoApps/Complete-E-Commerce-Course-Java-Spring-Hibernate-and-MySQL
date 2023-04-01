@@ -9,8 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -32,10 +30,6 @@ public class Brand {
     @Column(unique = true)
     private String photo;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "brands_categories", joinColumns = @JoinColumn(name = "brand_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();
-
     private LocalDateTime createdTime;
 
     private LocalDateTime updatedTime;
@@ -43,6 +37,12 @@ public class Brand {
 
     public Brand() {
         this.createdTime = LocalDateTime.now();
+    }
+
+    public static class BrandBuilder {
+        public BrandBuilder() {
+            createdTime(LocalDateTime.now());
+        }
     }
 
     @Override

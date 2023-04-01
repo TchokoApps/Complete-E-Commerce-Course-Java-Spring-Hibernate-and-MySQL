@@ -23,7 +23,6 @@ public class UserCreator {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-
     public void createUsers() {
         Faker faker = Faker.instance();
 
@@ -39,7 +38,6 @@ public class UserCreator {
             user.setPassword(password);
             user.setFirstName(firstName);
             user.setLastName(lastName);
-            user.setEnabled(true);
 
             Set<Role> roles = new HashSet<>();
             int number = faker.number().numberBetween(1, 11);

@@ -1,7 +1,11 @@
 package com.tchokoapps.springboot.ecommerce.backend.controller;
 
+import com.tchokoapps.springboot.ecommerce.backend.entity.Brand;
+import com.tchokoapps.springboot.ecommerce.backend.entity.Category;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Product;
 import com.tchokoapps.springboot.ecommerce.backend.exception.ProductNotFoundException;
+import com.tchokoapps.springboot.ecommerce.backend.service.BrandService;
+import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
 import com.tchokoapps.springboot.ecommerce.backend.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +23,8 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+    private BrandService brandService;
+    private CategoryService categoryService;
 
     private static void addMessage(RedirectAttributes redirectAttributes, String message, String alertType) {
         redirectAttributes.addFlashAttribute("message", message);
@@ -49,5 +55,16 @@ public class ProductController {
         }
 
         return "redirect:/admin/products";
+    }
+
+    @GetMapping("admin/products/create")
+    public String createProductForm(Model model) {
+        Product product = new Product();
+        List<Brand> brands = brandService.findAllByOrderByName();
+        List<Category> categories = categoryService.findAllHierarchically();
+        model.addAttribute("product", product);
+        model.addAttribute("brands", brands);
+        model.addAttribute("categories", categories);
+        return "admin/products/create-form";
     }
 }

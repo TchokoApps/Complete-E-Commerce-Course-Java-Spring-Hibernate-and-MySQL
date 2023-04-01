@@ -71,6 +71,14 @@ public class User {
         this.enabled = true;
     }
 
+    public static class UserBuilder {
+        public UserBuilder() {
+            createdTime(LocalDateTime.now());
+            enabled(true);
+        }
+    }
+
+
     @Override
     public String toString() {
         return "User{" +

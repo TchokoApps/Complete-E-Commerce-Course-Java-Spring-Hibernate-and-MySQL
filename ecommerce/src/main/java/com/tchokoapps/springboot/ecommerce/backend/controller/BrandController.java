@@ -43,7 +43,7 @@ public class BrandController {
     public String findAll(Model model) {
 
         log.info("findAll");
-        List<Brand> brands = brandService.findAll();
+        List<Brand> brands = brandService.findAllByOrderByCreatedTimeDesc();
         model.addAttribute("brands", brands);
         return "admin/brands/all";
     }
@@ -152,8 +152,6 @@ public class BrandController {
                 brandFound.setPhoto(brand.getPhoto());
             }
 
-            brandFound.setCategories(brand.getCategories());
-
             brandService.save(brandFound);
             addMessage(redirectAttributes, "Brand Updated Successfully", "success");
 
@@ -169,8 +167,6 @@ public class BrandController {
         log.info("deleteBrand - deleting Brand(id={})", id);
 
         try {
-            Brand brand = brandService.findById(id);
-            brand.getCategories().clear();
             brandService.delete(id);
         } catch (BrandNotFoundExcepion e) {
             addMessage(redirectAttributes, e.getMessage(), "error");

@@ -12,4 +12,6 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 
     List<Brand> findAllByOrderByName();
 
+    List<Brand> findAllByOrderByCreatedTimeDesc();
+
 }

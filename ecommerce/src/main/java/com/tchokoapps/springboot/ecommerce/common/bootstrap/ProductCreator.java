@@ -35,7 +35,6 @@ public class ProductCreator {
                 .alias("galaxyS22")
                 .shortDescription("The latest and greatest Samsung phone")
                 .fullDescription("The Samsung Galaxy S22 is the newest offering from Samsung. It features a stunning 6.8-inch AMOLED display, 5G connectivity, and an Exynos 2200 chip.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(750))
                 .price(BigDecimal.valueOf(1199))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -45,7 +44,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.25))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product2 = Product.builder()
@@ -53,7 +51,6 @@ public class ProductCreator {
                 .alias("xps15")
                 .shortDescription("A high-performance laptop")
                 .fullDescription("The Dell XPS 15 is a high-performance laptop featuring a 15-inch 4K display, Intel Core i7 processor, and Nvidia GeForce GTX 1650 graphics card.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(1200))
                 .price(BigDecimal.valueOf(1699))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -63,7 +60,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(4.5))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product3 = Product.builder()
@@ -71,7 +67,6 @@ public class ProductCreator {
                 .alias("eosR5")
                 .shortDescription("A high-end mirrorless camera")
                 .fullDescription("The Canon EOS R5 is a high-end mirrorless camera featuring a 45-megapixel sensor, 8K video recording, and in-body image stabilization.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(3000))
                 .price(BigDecimal.valueOf(3899))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -81,7 +76,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(1.63))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product4 = Product.builder()
@@ -89,7 +83,6 @@ public class ProductCreator {
                 .alias("studioBuds")
                 .shortDescription("Wireless earbuds with active noise cancellation")
                 .fullDescription("The Beats Studio Buds are wireless earbuds with active noise cancellation and up to 8 hours of battery life.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(100))
                 .price(BigDecimal.valueOf(149))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -99,7 +92,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.05))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product6 = Product.builder()
@@ -107,7 +99,6 @@ public class ProductCreator {
                 .alias("s22u")
                 .shortDescription("The ultimate flagship phone")
                 .fullDescription("The Samsung Galaxy S22 Ultra is the latest flagship phone from Samsung. It features a 6.8-inch Dynamic AMOLED display, an upgraded camera system with 10x hybrid zoom, and a powerful Exynos 2200 processor. It also offers 5G connectivity and a long-lasting battery life.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(800))
                 .price(BigDecimal.valueOf(1199))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -117,7 +108,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.23))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product5 = Product.builder()
@@ -125,7 +115,6 @@ public class ProductCreator {
                 .alias("quietcomfort35ii")
                 .shortDescription("The ultimate noise-cancelling headphones")
                 .fullDescription("The Bose QuietComfort 35 II headphones are wireless noise-cancelling headphones with up to 20 hours of battery life and built-in Alexa and Google Assistant.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(250))
                 .price(BigDecimal.valueOf(349))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -135,7 +124,7 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.24))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
+
                 .build();
 
         Product product7 = Product.builder()
@@ -143,7 +132,6 @@ public class ProductCreator {
                 .alias("wh1000xm4")
                 .shortDescription("Wireless noise cancelling headphones")
                 .fullDescription("The Sony WH-1000XM4 is a high-quality pair of wireless headphones with noise-cancelling technology, up to 30 hours of battery life, and excellent sound quality.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(300))
                 .price(BigDecimal.valueOf(349))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -153,7 +141,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.94))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product8 = Product.builder()
@@ -161,7 +148,6 @@ public class ProductCreator {
                 .alias("switch")
                 .shortDescription("A versatile gaming console")
                 .fullDescription("The Nintendo Switch is a unique gaming console that can be played on a TV or taken on-the-go. It features a 6.2-inch touch screen, up to 9 hours of battery life, and a variety of games.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(250))
                 .price(BigDecimal.valueOf(299))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -171,7 +157,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.65))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product9 = Product.builder()
@@ -179,7 +164,6 @@ public class ProductCreator {
                 .alias("charge5")
                 .shortDescription("A premium fitness tracker")
                 .fullDescription("The Fitbit Charge 5 is a high-end fitness tracker with a heart rate monitor, built-in GPS, and up to 7 days of battery life. It also tracks your sleep and offers personalized insights.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(150))
                 .price(BigDecimal.valueOf(179))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -189,7 +173,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.03))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         Product product10 = Product.builder()
@@ -197,7 +180,6 @@ public class ProductCreator {
                 .alias("watch7")
                 .shortDescription("The ultimate smartwatch")
                 .fullDescription("The Apple Watch Series 7 is the latest iteration of Apple's smartwatch. It features a larger, always-on Retina display, improved durability, and up to 18 hours of battery life. It also offers advanced health monitoring and fitness tracking.")
-                .inStock(true)
                 .cost(BigDecimal.valueOf(400))
                 .price(BigDecimal.valueOf(499))
                 .discountPercent(BigDecimal.valueOf(0))
@@ -207,7 +189,6 @@ public class ProductCreator {
                 .weight(BigDecimal.valueOf(0.05))
                 .category(category)
                 .brand(brand)
-                .enabled(true)
                 .build();
 
         List<Product> products = Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10);

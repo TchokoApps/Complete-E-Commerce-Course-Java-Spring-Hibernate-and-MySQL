@@ -48,7 +48,6 @@
                                 <th>ID</th>
                                 <th>Photos</th>
                                 <th>Name</th>
-                                <th>Categories</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -61,13 +60,6 @@
                                          th:width="100"/>
                                 </td>
                                 <td>[[${brand.name}]]</td>
-                                <td>
-                                    <!--                                        <span class="badge badge-secondary" th:each="category : ${brand.categories}"-->
-                                    <!--                                              th:text="${category.name}"></span>-->
-                                    <ul>
-                                        <li th:each="category : ${brand.categories}" th:text="${category.name}"></li>
-                                    </ul>
-                                </td>
                                 <td>
                                     <a class="btn btn-info sm" th:href="@{'/admin/brands/update/' + ${brand.id}}"
                                        title="Edit Brand"> <i

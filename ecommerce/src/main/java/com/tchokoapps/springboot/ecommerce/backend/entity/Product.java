@@ -85,6 +85,14 @@ public class Product {
         this.enabled = true;
     }
 
+    public static class ProductBuilder {
+        public ProductBuilder() {
+            createdTime(LocalDateTime.now());
+            inStock(true);
+            enabled(true);
+        }
+    }
+
     @Override
     public String toString() {
         return "Product{" +

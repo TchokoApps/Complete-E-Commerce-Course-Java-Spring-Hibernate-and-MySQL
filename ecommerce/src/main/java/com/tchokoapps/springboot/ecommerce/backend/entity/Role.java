@@ -38,6 +38,12 @@ public class Role {
         this.createdTime = LocalDateTime.now();
     }
 
+    public static class RoleBuilder {
+        public RoleBuilder() {
+            createdTime(LocalDateTime.now());
+        }
+    }
+
     @Override
     public String toString() {
         return "Role{" +

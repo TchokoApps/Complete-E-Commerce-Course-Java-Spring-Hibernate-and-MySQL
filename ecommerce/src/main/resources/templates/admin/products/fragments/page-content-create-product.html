@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Content Create Product</title>
+</head>
+<body>
+<div class="page-content" th:fragment="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Add Product</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form enctype="multipart/form-data" method="post" th:action="@{/admin/products/save}"
+                              th:object="${product}">
+                            <h4 class="card-title mb-4">Create Product Wizard</h4>
+                            <div class="twitter-bs-wizard" id="basic-pills-wizard">
+                                <ul class="twitter-bs-wizard-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#overview">
+                                            <span class="step-number">01</span>
+                                            <span class="step-title">Overview</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#description">
+                                            <span class="step-number">02</span>
+                                            <span class="step-title">Description</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#images">
+                                            <span class="step-number">03</span>
+                                            <span class="step-title">Images</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#details">
+                                            <span class="step-number">04</span>
+                                            <span class="step-title">Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#confirm-detail">
+                                            <span class="step-number">04</span>
+                                            <span class="step-title">Confirm Detail</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content twitter-bs-wizard-tab-content">
+                                    <div class="tab-pane" id="overview">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Name</label>
+                                                        <input class="form-control" maxlength="256" minlength="3" name="name"
+                                                               required th:field="*{name}" type="text">
+                                                        <span style="color: red;" th:errors="*{name}"
+                                                              th:if="${#fields.hasErrors('name')}"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Alias</label>
+                                                        <input class="form-control" maxlength="256" minlength="3"
+                                                               name="alias" th:field="*{alias}" type="text">
+                                                        <span style="color: red;" th:errors="*{alias}"
+                                                              th:if="${#fields.hasErrors('alias')}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Brand</label>
+                                                        <select aria-label="Default select example" class="form-select"
+                                                                id="brandId"
+                                                                name="brandId" required th:field="*{brand}">
+                                                            <option selected="" value="0">Select Brand</option>
+                                                            <option th:each="brand : ${brands}"
+                                                                    th:text="${brand.name}"
+                                                                    th:value="${brand.id}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Category</label>
+                                                        <select aria-label="Default select example" class="form-select"
+                                                                id="categoryId"
+                                                                name="categoryId" required th:field="*{category}">
+                                                            <option selected="" value="0">Select Category</option>
+                                                            <option th:each="category : ${categories}"
+                                                                    th:text="${category.name}"
+                                                                    th:value="${category.id}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Enabled</label>
+                                                        <input class="form-check-input" th:field="*{enabled}"
+                                                               type="checkbox">
+                                                        <span style="color: red;" th:errors="*{enabled}"
+                                                              th:if="${#fields.hasErrors('enabled')}"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">In-Stock</label>
+                                                        <input class="form-check-input" th:field="*{inStock}"
+                                                               type="checkbox">
+                                                        <span style="color: red;" th:errors="*{inStock}"
+                                                              th:if="${#fields.hasErrors('inStock')}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Cost</label>
+                                                        <input class="form-control" min="0" name="cost"
+                                                               required step="0.01" th:field="*{cost}"
+                                                               type="number">
+                                                        <span style="color: red;" th:errors="*{cost}"
+                                                              th:if="${#fields.hasErrors('cost')}"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Discount</label>
+                                                        <input class="form-control" max="100" min="0"
+                                                               name="discountPercent" step="0.01" th:field="*{discountPercent}"
+                                                               type="number">
+                                                        <span style="color: red;" th:errors="*{discountPercent}"
+                                                              th:if="${#fields.hasErrors('discountPercent')}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="description">
+                                        <div>
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Short Description</label>
+                                                            <input class="form-control" maxlength="500"
+                                                                   minlength="3"
+                                                                   name="shortDescription" th:field="*{shortDescription}"
+                                                                   type="text">
+                                                            <span style="color: red;" th:errors="*{shortDescription}"
+                                                                  th:if="${#fields.hasErrors('shortDescription')}"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-vatno-input">VAT/TIN
+                                                                No.</label>
+                                                            <input class="form-control" id="basicpill-vatno-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-cstno-input">CST
+                                                                No.</label>
+                                                            <input class="form-control" id="basicpill-cstno-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-servicetax-input">Service
+                                                                Tax No.</label>
+                                                            <input class="form-control" id="basicpill-servicetax-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-companyuin-input">Company
+                                                                UIN</label>
+                                                            <input class="form-control" id="basicpill-companyuin-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-declaration-input">Declaration</label>
+                                                            <input class="form-control" id="basicpill-declaration-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="images">
+                                        <div>
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-namecard-input">Name
+                                                                on Card</label>
+                                                            <input class="form-control" id="basicpill-namecard-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label>Credit Card Type</label>
+                                                            <select class="form-select">
+                                                                <option selected>Select Card Type</option>
+                                                                <option value="AE">American Express</option>
+                                                                <option value="VI">Visa</option>
+                                                                <option value="MC">MasterCard</option>
+                                                                <option value="DI">Discover</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-cardno-input">Credit
+                                                                Card Number</label>
+                                                            <input class="form-control" id="basicpill-cardno-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label"
+                                                                   for="basicpill-card-verification-input">Card
+                                                                Verification Number</label>
+                                                            <input class="form-control" id="basicpill-card-verification-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-expiration-input">Expiration
+                                                                Date</label>
+                                                            <input class="form-control" id="basicpill-expiration-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="details">
+                                        <div>
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-namecard-input">Name
+                                                                on Card</label>
+                                                            <input class="form-control" id="basicpill-namecard-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label>Credit Card Type</label>
+                                                            <select class="form-select">
+                                                                <option selected>Select Card Type</option>
+                                                                <option value="AE">American Express</option>
+                                                                <option value="VI">Visa</option>
+                                                                <option value="MC">MasterCard</option>
+                                                                <option value="DI">Discover</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-cardno-input">Credit
+                                                                Card Number</label>
+                                                            <input class="form-control" id="basicpill-cardno-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label"
+                                                                   for="basicpill-card-verification-input">Card
+                                                                Verification Number</label>
+                                                            <input class="form-control" id="basicpill-card-verification-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="basicpill-expiration-input">Expiration
+                                                                Date</label>
+                                                            <input class="form-control" id="basicpill-expiration-input"
+                                                                   type="text">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="confirm-detail">
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-6">
+                                                <div class="text-center">
+                                                    <div class="mb-4">
+                                                        <i class="mdi mdi-check-circle-outline text-success display-4"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h5>Confirm Detail</h5>
+                                                        <p class="text-muted">If several languages coalesce, the grammar
+                                                            of the resulting</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                    <li class="previous"><a href="javascript: void(0);">Previous</a></li>
+                                    <li class="next"><a href="javascript: void(0);">Next</a></li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div>
+    </div> <!-- container-fluid -->
+</div>
+</body>
+</html>
+
+
+

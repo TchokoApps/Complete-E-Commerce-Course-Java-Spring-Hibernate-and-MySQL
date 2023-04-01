@@ -43,9 +43,6 @@ public class Category {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> children = new HashSet<>();
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-    private Set<Brand> brands = new HashSet<>();
-
     private LocalDateTime createdTime;
 
     private LocalDateTime updatedTime;
@@ -53,6 +50,13 @@ public class Category {
     public Category() {
         this.createdTime = LocalDateTime.now();
         this.enabled = true;
+    }
+
+    public static class CategoryBuilder {
+        public CategoryBuilder() {
+            createdTime(LocalDateTime.now());
+            enabled(true);
+        }
     }
 
     @Transient

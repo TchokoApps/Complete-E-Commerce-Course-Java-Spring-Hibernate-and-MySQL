@@ -21,6 +21,14 @@ public class BrandService {
         return brandRepository.findAll();
     }
 
+    public List<Brand> findAllByOrderByCreatedTimeDesc() {
+        return brandRepository.findAllByOrderByCreatedTimeDesc();
+    }
+
+    public List<Brand> findAllByOrderByName() {
+        return brandRepository.findAllByOrderByName();
+    }
+
     public void save(Brand brand) {
 
         Objects.requireNonNull(brand, "Brand cannot be NULL");
@@ -59,6 +67,4 @@ public class BrandService {
         return brandFound;
 
     }
-
-
 }

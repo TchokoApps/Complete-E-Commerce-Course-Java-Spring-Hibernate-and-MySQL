@@ -33,23 +33,6 @@
                                           th:if="${#fields.hasErrors('name')}"></span>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Select one or more categories</label>
-                                <!--                                <select aria-label="Default select example" class="form-select" id="categoryId"-->
-                                <!--                                        name="categoryId" th:field="*{categories}">-->
-                                <!--                                    <option selected="" value="0">[No category]</option>-->
-                                <!--                                    <th:block th:each="category : ${categories}">-->
-                                <!--                                        <option th:text="${category.name}" th:value="${category.id}"></option>-->
-                                <!--                                    </th:block>-->
-                                <!--                                </select>-->
-                                <select class="select2 form-control select2-multiple"
-                                        data-placeholder="Choose ..." id="categoryId" multiple="multiple"
-                                        name="categoryId" th:field="*{categories}">
-                                    <th:block th:each="category : ${categories}">
-                                        <option th:text="${category.name}" th:value="${category.id}"></option>
-                                    </th:block>
-                                </select>
-                            </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Photo </label>
                                 <div class="col-sm-10">
