@@ -58,7 +58,8 @@
                             <tr th:each="product,count : ${products}">
                                 <td>[[${count.index + 1}]]</td>
                                 <td>
-                                    <img alt="Product photo" height="100" th:src="@{${product.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${brand.photo})}}"
+                                    <img alt="Product photo" height="100"
+                                         th:src="@{${product.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${brand.photo})}}"
                                          width="100"/>
                                 </td>
                                 <td>[[${product.name}]]</td>
@@ -77,7 +78,7 @@
                                        title="Update Product"> <i
                                             class="fas fa-edit"></i> </a>
                                     <a class="btn btn-danger sm" id="delete"
-                                       th:href="@{'/admin/products/delete/'+${product.id}}" title="Delete Product">
+                                       th:href="@{'/admin/products/delete/'+ ${product.id}}" title="Delete Product">
                                         <i class="fas fa-trash-alt"></i> </a>
                                 </td>
                             </tr>

@@ -41,12 +41,12 @@ public class User {
 
     @NotNull(message = "First Name cannot be null")
     @Size(max = 45, message = "First Name cannot exceed 45 characters")
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
     @NotNull(message = "Last Name cannot be null")
     @Size(max = 45, message = "Last Name cannot exceed 45 characters")
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
     @Size(max = 64, message = "Photo cannot exceed 64 characters")

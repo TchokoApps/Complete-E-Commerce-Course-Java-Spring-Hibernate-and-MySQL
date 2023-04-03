@@ -26,7 +26,7 @@ public class BrandService {
     }
 
     public List<Brand> findAllByOrderByName() {
-        return brandRepository.findAllByOrderByName();
+        return brandRepository.findAllByOrderByNameAsc();
     }
 
     public void save(Brand brand) {

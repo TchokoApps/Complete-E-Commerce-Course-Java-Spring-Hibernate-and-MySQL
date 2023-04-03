@@ -5,30 +5,27 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "roles")
-public class Role {
+@Table(name = "product_images")
+@Entity
+public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 64, message = "Name must be between 3 and 64 characters long.")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
-    @Size(min = 3, max = 150, message = "Description must be between 3 and 150 characters long.")
-    @Column(nullable = false)
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
 
     @CreationTimestamp
     private LocalDateTime createdTime;
@@ -36,14 +33,4 @@ public class Role {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", createdTime=" + createdTime +
-                ", updatedTime=" + updatedTime +
-                '}';
-    }
 }

@@ -9,12 +9,17 @@ import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
 import com.tchokoapps.springboot.ecommerce.backend.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -66,5 +71,62 @@ public class ProductController {
         model.addAttribute("brands", brands);
         model.addAttribute("categories", categories);
         return "admin/products/create-form";
+    }
+
+    @PostMapping("admin/products/create")
+    public String createProduct(@Valid Product product, BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes, Model model) {
+
+        log.info("createProduct - creating Product {}", product);
+
+        if (bindingResult.hasErrors()) {
+            List<Brand> brands = brandService.findAllByOrderByName();
+            List<Category> categories = categoryService.findAllHierarchically();
+            model.addAttribute("brands", brands);
+            model.addAttribute("categories", categories);
+            return "admin/products/create-form";
+        }
+
+        try {
+            productService.findByName(product.getName());
+            bindingResult.rejectValue("name", null, String.format("Product name %s exist already", product.getName()));
+        } catch (ProductNotFoundException ignored) {
+
+        }
+
+        if (StringUtils.isBlank(product.getAlias())) {
+            String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getName());
+            product.setAlias(alias);
+        } else {
+            String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getAlias());
+            product.setAlias(alias);
+        }
+
+        product.setCreatedTime(LocalDateTime.now());
+        product.setUpdatedTime(LocalDateTime.now());
+
+        try {
+            Product productSaved = productService.save(product);
+            log.info("createProduct - Product saved: {}", productSaved);
+            addMessage(redirectAttributes, "Product Created Successfully", "success");
+        } catch (Exception e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+        }
+
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/products/delete/{id}")
+    public String deleteProduct(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+        productService.deleteProduct(id);
+        log.info("deleteProduct - Product with id {} deleted successfully", id);
+        addMessage(redirectAttributes, "Product Deleted Successfully", "success");
+        return "redirect:/admin/products";
+    }
+
+    private String removeWhitespaceAndNonAlphanumericCharacters(String text) {
+        return text.toLowerCase()
+                .replaceAll("\\s+", "-")
+                .replaceAll("[^a-z0-9-]", "");
     }
 }

@@ -56,7 +56,7 @@ public class CategoryRepositoryTest {
     @Test
     public void testFindCategoryByParentNull() {
         createCategories();
-        List<Category> categories = categoryRepository.findByParentIsNull();
+        List<Category> categories = categoryRepository.findAllByParentIsNull();
         categories.forEach(category -> System.out.println(category.getName()));
         assertThat(categories.isEmpty()).isFalse();
     }
@@ -135,7 +135,7 @@ public class CategoryRepositoryTest {
     @Test
     public void testPrintHierarchicalCategories() {
         createCategories();
-        List<Category> rootCategories = categoryRepository.findByParentIsNull();
+        List<Category> rootCategories = categoryRepository.findAllByParentIsNull();
         rootCategories.forEach(category -> printCategories(category, "-"));
     }
 
@@ -143,7 +143,7 @@ public class CategoryRepositoryTest {
         // print the category name with appropriate indentation
         System.out.printf("%" + (level * 3 + 1) + "s- %s\n", "", category.getName());
 
-        List<Category> childCategories = categoryRepository.findByParentId(category.getId());
+        List<Category> childCategories = categoryRepository.findAllByParentId(category.getId());
 
         // recursively print the children of this category
         if (childCategories != null) {
@@ -157,7 +157,7 @@ public class CategoryRepositoryTest {
     public void printCategories(Category category, String prefix) {
         System.out.println(prefix + category.getName());
 
-        List<Category> children = categoryRepository.findByParentId(category.getId());
+        List<Category> children = categoryRepository.findAllByParentId(category.getId());
 
         for (Category child : children) {
             printCategories(child, prefix + "-");

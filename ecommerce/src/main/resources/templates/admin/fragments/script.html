@@ -113,6 +113,14 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#buttonCancelCreateProduct").on("click", function () {
+                window.location = "[[@{/admin/products}]]";
+            });
+        });
+    </script>
+
     <script th:if="${message != null && alertType != null} " th:inline="javascript">
         /*<![CDATA[*/
         /* Get session message and alertType if they exist */
@@ -151,6 +159,32 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            // function to display selected image
+            function displayImage(file) {
+                var reader = new FileReader();
+
+                reader.addEventListener("load", function () {
+                    var image = new Image();
+                    image.title = file.name;
+                    image.src = this.result;
+                    $('#showPhoto').attr('src', image.src);
+                }, false);
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // bind displayImage function to file input change event
+            $('#photo').on('change', function () {
+                displayImage(this.files[0]);
+            });
+        });
+    </script>
+
 </div>
 </body>
 </html>

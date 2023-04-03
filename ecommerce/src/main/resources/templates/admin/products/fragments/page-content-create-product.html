@@ -20,7 +20,7 @@
         </div>
         <!-- end page title -->
         <div class="row">
-            <form enctype="multipart/form-data" method="post" th:action="@{/admin/products/save}"
+            <form enctype="multipart/form-data" method="post" th:action="@{/admin/products/create}"
                   th:object="${product}">
                 <div class="col-12">
                     <div class="card">
@@ -124,9 +124,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <input class="form-control" maxlength="500" minlength="3"
-                                               name="shortDescription"
-                                               required th:field="*{shortDescription}" type="text">
+                                        <textarea class="form-control" maxlength="500" minlength="3"
+                                                  name="shortDescription" required
+                                                  th:field="*{shortDescription}"></textarea>
                                         <span style="color: red;" th:errors="*{shortDescription}"
                                               th:if="${#fields.hasErrors('shortDescription')}"></span>
                                     </div>
@@ -140,7 +140,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <textarea id="elm1" maxlength="2000" minlength="3" name="fullDescription"
+                                        <textarea id="elm1" minlength="3" name="fullDescription"
                                                   th:field="*{fullDescription}"></textarea>
                                         <span style="color: red;" th:errors="*{fullDescription}"
                                               th:if="${#fields.hasErrors('fullDescription')}"></span>
@@ -152,6 +152,21 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Images</h4>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Photo: </label>
+                                <div class="col-sm-10">
+                                    <input accept="image/*" class="form-control" id="photo" name="photo" type="file">
+                                    <span style="color: red;" th:errors="*{photo}"
+                                          th:if="${#fields.hasErrors('photo')}"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label"> </label>
+                                <div class="col-sm-10">
+                                    <img alt="Card image cap" class="rounded avatar-lg" height="100" id="showPhoto"
+                                         th:src="@{/upload/no_image.jpg}" width="100">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
@@ -159,7 +174,54 @@
                             <h4 class="card-title mb-4">Details</h4>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Shipping</h4>
+                            <p class="card-title-desc">The following information is important to calculate shipping cost
+                                for the product. The dimensions (L x W x H) is for the box that is used to package the
+                                product - not the product´s dimensions.</p>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Length</label>
+                                        <input class="form-control" min="0" name="length"
+                                               required step="0.01" th:field="*{length}"
+                                               type="number">
+                                        <span style="color: red;" th:errors="*{length}"
+                                              th:if="${#fields.hasErrors('length')}"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Width</label>
+                                        <input class="form-control" max="100" min="0"
+                                               name="width" step="0.01" th:field="*{width}"
+                                               type="number">
+                                        <span style="color: red;" th:errors="*{width}"
+                                              th:if="${#fields.hasErrors('width')}"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Height</label>
+                                        <input class="form-control" max="100" min="0"
+                                               name="height" step="0.01" th:field="*{height}"
+                                               type="number">
+                                        <span style="color: red;" th:errors="*{height}"
+                                              th:if="${#fields.hasErrors('height')}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div> <!-- end col -->
+                <div class="card">
+                    <div class="card-body">
+                        <input class="btn btn-info waves-effect waves-light" type="submit" value="Add Product">
+                        <input class="btn btn-secondary" id="buttonCancelCreateProduct" type="button" value="Cancel"/>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div> <!-- container-fluid -->

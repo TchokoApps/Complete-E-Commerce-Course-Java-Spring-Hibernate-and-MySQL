@@ -4,11 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -23,26 +27,33 @@ public class Product {
     private Integer id;
 
     @NotBlank
-    @Size(max = 256)
+    @Size(min = 3, max = 256, message = "Name must be between 3 and 256 characters long.")
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Size(max = 256)
+    @Size(min = 3, max = 45, message = "Photo must be between 3 and 45 characters long.")
     private String photo;
 
     private boolean enabled;
 
-    @Size(max = 256)
+    @Size(min = 3, max = 45, message = "Alias must be between 3 and 45 characters long.")
     private String alias;
 
-    @Size(max = 500)
+    @Size(min = 3, max = 500, message = "Short Description must be between 3 and 45 characters long.")
     private String shortDescription;
 
-    @Size(max = 2000)
+    @Size(min = 3, max = 20000, message = "Full Description must be between 3 and 20000 characters long.")
     private String fullDescription;
 
+    private String mainImage;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ProductImage> productImages = new HashSet<>();
+
+    @CreationTimestamp
     private LocalDateTime createdTime;
 
+    @UpdateTimestamp
     private LocalDateTime updatedTime;
 
     @NotNull
@@ -85,12 +96,9 @@ public class Product {
         this.enabled = true;
     }
 
-    public static class ProductBuilder {
-        public ProductBuilder() {
-            createdTime(LocalDateTime.now());
-            inStock(true);
-            enabled(true);
-        }
+    public void addExtraImage(String imageName) {
+        ProductImage productImage = ProductImage.builder().name(name).product(this).build();
+        this.productImages.add(productImage);
     }
 
     @Override

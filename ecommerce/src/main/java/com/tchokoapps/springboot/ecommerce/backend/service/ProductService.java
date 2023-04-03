@@ -28,4 +28,14 @@ public class ProductService {
         Objects.requireNonNull(product, "product cannot be NULL");
         return productRepository.save(product);
     }
+
+    public Product findByName(String name) throws ProductNotFoundException {
+        Objects.requireNonNull(name, "name cannot be NULL");
+        return productRepository.findProductByName(name).orElseThrow(() -> new ProductNotFoundException(String.format("Product with name %s cannot be found", name)));
+    }
+
+    public void deleteProduct(Integer id) {
+        Objects.requireNonNull(id, "Id cannot be NULL");
+        productRepository.deleteById(id);
+    }
 }

@@ -54,7 +54,6 @@ public class BrandRepositoryTest {
         Brand brand = Brand.builder()
                 .name("EasyShop")
                 .photo("EasyShop.png")
-                .categories(categories)
                 .build();
 
         System.out.println("Brand before saved: " + brand);
@@ -97,7 +96,9 @@ public class BrandRepositoryTest {
 
         brandRepository.saveAll(Arrays.asList(brand1, brand2, brand3, brand4, brand5));
 
-        List<Brand> brandsOrderedByName = brandRepository.findAllByOrderByName();
+        List<Brand> brandsOrderedByName = brandRepository.findAllByOrderByNameAsc();
+
+        brandsOrderedByName.forEach(brand -> System.out.println(brand));
 
         List<String> resultNames = brandsOrderedByName.stream().map(Brand::getName).toList();
 
