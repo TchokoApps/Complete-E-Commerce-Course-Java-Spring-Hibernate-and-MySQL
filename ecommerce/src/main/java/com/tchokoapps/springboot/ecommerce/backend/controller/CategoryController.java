@@ -53,7 +53,9 @@ public class CategoryController {
     }
 
     @PostMapping("admin/categories/create")
-    public String createCategory(@Valid Category category, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String createCategory(@Valid Category category, BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes, Model model,
+                                 @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
         log.info("createCategory() :: create Category {}", category);
 
         if (bindingResult.hasErrors()) {
@@ -65,16 +67,11 @@ public class CategoryController {
         final long maxFileSize = FileUtils.ONE_MB;
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    category.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error happened when saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/categories";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                category.setPhoto(savedFileName);
             } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
                 return "admin/categories/create-form";
             }
         }
@@ -90,7 +87,8 @@ public class CategoryController {
     }
 
     @GetMapping("admin/categories/edit/{id}")
-    public String editCategoryForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+    public String editCategoryForm(@PathVariable(name = "id") Integer id,
+                                   Model model, RedirectAttributes redirectAttributes) {
         try {
             Category category = categoryService.findById(id);
             List<Category> categories = categoryService.findAllHierarchically();
@@ -104,22 +102,19 @@ public class CategoryController {
     }
 
     @PostMapping("admin/categories/edit")
-    public String editCategory(Category category, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String editCategory(Category category, BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes,
+                               @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
         log.info("editCategory - Category {}", category);
 
         final long maxFileSize = ONE_MB;
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    category.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/categories";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                category.setPhoto(savedFileName);
             } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
                 return "admin/categories/edit-form";
             }
         }
@@ -145,6 +140,9 @@ public class CategoryController {
             if (category.getParent() != null) {
                 categoryFound.setParent(category.getParent());
             }
+
+            categoryFound.setEnabled(category.isEnabled());
+
             categoryService.save(categoryFound);
             addMessage(redirectAttributes, "Category Updated Successfully", "success");
         } catch (CategoryNotFoundException e) {
@@ -182,6 +180,25 @@ public class CategoryController {
 
         return "redirect:/admin/categories";
 
+    }
+
+    @GetMapping("/admin/categories/{id}/enabled/{status}")
+    public String enableOrDisableCategoryStatus(@PathVariable(name = "id") Integer id,
+                                                @PathVariable(name = "status") boolean status,
+                                                RedirectAttributes redirectAttributes) {
+        try {
+            final Category categoryFound = categoryService.findById(id);
+            categoryFound.setEnabled(status);
+            categoryService.save(categoryFound);
+            final String newStatus = status ? "Enabled" : "Disabled";
+
+            addMessage(redirectAttributes, String.format("Category %s successfully", newStatus), "success");
+            log.info("enableOrDisableCategoryStatus() :: Category {} status changed to {}", categoryFound.getId(), newStatus);
+
+        } catch (CategoryNotFoundException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+        }
+        return "redirect:/admin/categories";
     }
 }
 

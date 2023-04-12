@@ -59,12 +59,19 @@
                                 <td>[[${count.index + 1}]]</td>
                                 <td>
                                     <img alt="Product photo" height="100"
-                                         th:src="@{${product.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${brand.photo})}}"
-                                         width="100"/>
+                                         th:src="@{${product.obtainMainImagePath}}" width="100"/>
                                 </td>
-                                <td>[[${product.name}]]</td>
+                                <td>
+                                    <span class="product-title text-capitalize">
+                                     [[${product.name}]]
+                                    </span>
+                                </td>
                                 <td>[[${product.brand.name}]]</td>
-                                <td>[[${product.category.name}]]</td>
+                                <td>
+                                    <ul th:each="category : ${product.categories}">
+                                        <li>[[${category.name}]]</li>
+                                    </ul>
+                                </td>
                                 <td>
                                     <a class="fas fa-check-circle fa-2x icon-green" style="color: green"
                                        th:href="@{'/admin/products/' + ${product.id} + '/enabled/false'}"
@@ -74,7 +81,7 @@
                                        th:if="${product.enabled == false}" title="Enable this Product"></a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-info sm" th:href="@{'/admin/product/update/' + ${product.id}}"
+                                    <a class="btn btn-info sm" th:href="@{'/admin/products/update/' + ${product.id}}"
                                        title="Update Product"> <i
                                             class="fas fa-edit"></i> </a>
                                     <a class="btn btn-danger sm" id="delete"

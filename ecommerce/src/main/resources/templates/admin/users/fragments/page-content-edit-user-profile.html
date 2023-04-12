@@ -75,7 +75,9 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Password </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" name="password" placeholder="Only fill in this field if you want to change your password" th:field="*{password}"
+                                    <input class="form-control" name="password"
+                                           placeholder="Only fill in this field if you want to change your password"
+                                           th:field="*{password}"
                                            type="password">
                                     <span style="color: red;" th:errors="*{password}"
                                           th:if="${#fields.hasErrors('password')}"></span>
@@ -103,8 +105,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label"> </label>
                                 <div class="col-sm-10">
-                                    <img alt="Card image cap" class="rounded avatar-lg" id="showImage"
-                                         th:src="@{${user.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${user.photo})}}">
+                                    <img class="rounded avatar-lg" id="showImage" th:src="@{${user.getImagePath}}">
                                 </div>
                             </div>
                             <!-- end row -->

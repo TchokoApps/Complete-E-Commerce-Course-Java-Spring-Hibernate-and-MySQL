@@ -1,9 +1,7 @@
 package com.tchokoapps.springboot.ecommerce.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,50 +9,43 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "brands")
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Brand {
+@Table(name = "product_details")
+public class ProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
-    @Size(min = 3, max = 45, message = "Name must be between 3 and 45 characters long.")
-    @Column(nullable = false, unique = true)
+    @Size(min = 3, max = 256, message = "Name must be between 3 and 256 characters long.")
+    @Column(nullable = false)
     private String name;
 
-    @Size(min = 3, max = 45, message = "Photo must be between 3 and 45 characters long.")
-    @Column(unique = true)
-    private String photo;
+    @NotNull
+    @Size(min = 3, max = 256, message = "Value must be between 3 and 256 characters long.")
+    private String productDetailValue;
 
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
     @CreationTimestamp
     private LocalDateTime createdTime;
 
-    @JsonIgnore
-    @UpdateTimestamp
+    @CreationTimestamp
     private LocalDateTime updatedTime;
 
     @Override
     public String toString() {
-        return "Brand{" +
+        return "ProductDetail{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", photo='" + photo + '\'' +
+                ", productDetailValue='" + productDetailValue + '\'' +
                 ", createdTime=" + createdTime +
                 ", updatedTime=" + updatedTime +
                 '}';
-    }
-
-    @Transient
-    public String getImagePath() {
-        if (id == null || photo == null) {
-            return "/upload/no_image.jpg";
-        }
-        return "/photos/" + photo;
     }
 }

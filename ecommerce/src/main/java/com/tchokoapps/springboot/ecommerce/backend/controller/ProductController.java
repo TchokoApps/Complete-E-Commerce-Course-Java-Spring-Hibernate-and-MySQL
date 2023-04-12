@@ -3,24 +3,32 @@ package com.tchokoapps.springboot.ecommerce.backend.controller;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Brand;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Category;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Product;
+import com.tchokoapps.springboot.ecommerce.backend.entity.ProductImage;
 import com.tchokoapps.springboot.ecommerce.backend.exception.ProductNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.BrandService;
 import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
 import com.tchokoapps.springboot.ecommerce.backend.service.ProductService;
+import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
@@ -75,7 +83,11 @@ public class ProductController {
 
     @PostMapping("admin/products/create")
     public String createProduct(@Valid Product product, BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes, Model model) {
+                                RedirectAttributes redirectAttributes, Model model,
+                                @RequestParam(name = "image") MultipartFile multipartFile,
+                                @RequestParam(name = "moreImages") MultipartFile[] multipartFileArray,
+                                @RequestParam(name = "productDetailNames", required = false) String[] productDetailNames,
+                                @RequestParam(name = "productDetailValues", required = false) String[] productDetailValues) throws IOException {
 
         log.info("createProduct - creating Product {}", product);
 
@@ -89,9 +101,33 @@ public class ProductController {
 
         try {
             productService.findByName(product.getName());
-            bindingResult.rejectValue("name", null, String.format("Product name %s exist already", product.getName()));
+            bindingResult.rejectValue("name", null,
+                    String.format("Product name %s exist already", product.getName()));
         } catch (ProductNotFoundException ignored) {
 
+        }
+
+        final long maxFileSize = FileUtils.ONE_MB;
+        if (!multipartFile.isEmpty()) {
+            if (multipartFile.getSize() <= maxFileSize) {
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                product.setMainImage(savedFileName);
+            } else {
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                return "admin/products/create-form";
+            }
+        }
+
+        for (MultipartFile multipartFile1 : multipartFileArray) {
+            if (multipartFile1.getSize() <= maxFileSize) {
+                String fileSaved = FileUploadUtil.saveFile(multipartFile1);
+                product.addExtraImage(fileSaved);
+            } else {
+                bindingResult.rejectValue("moreImages", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                return "admin/products/create-form";
+            }
         }
 
         if (StringUtils.isBlank(product.getAlias())) {
@@ -105,6 +141,8 @@ public class ProductController {
         product.setCreatedTime(LocalDateTime.now());
         product.setUpdatedTime(LocalDateTime.now());
 
+        createProductDetails(product, productDetailNames, productDetailValues);
+
         try {
             Product productSaved = productService.save(product);
             log.info("createProduct - Product saved: {}", productSaved);
@@ -116,13 +154,131 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
+    private void createProductDetails(Product product, String[] productDetailNames, String[] productDetailValues) {
+        if (productDetailNames != null && productDetailNames.length != 0
+                && productDetailValues != null && productDetailValues.length == productDetailNames.length) {
+            for (int i = 0; i < productDetailNames.length; i++) {
+                String name = productDetailNames[i];
+                String value = productDetailValues[i];
+                product.addProductDetail(name, value);
+            }
+        }
+    }
+
     @GetMapping("/admin/products/delete/{id}")
     public String deleteProduct(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+
+        try {
+            Product product = productService.findById(id);
+
+            if (product.getMainImage() != null) {
+                FileUploadUtil.deleteQuietly(product.getMainImage());
+            }
+
+            Set<ProductImage> productImages = product.getProductImages();
+
+            if (productImages != null && productImages.size() != 0) {
+                productImages.forEach(productImage -> FileUploadUtil.deleteQuietly(productImage.getName()));
+            }
+        } catch (ProductNotFoundException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+            return "redirect:/admin/products";
+        }
+
         productService.deleteProduct(id);
         log.info("deleteProduct - Product with id {} deleted successfully", id);
         addMessage(redirectAttributes, "Product Deleted Successfully", "success");
         return "redirect:/admin/products";
     }
+
+    @GetMapping("admin/products/update/{id}")
+    public String updateProductForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Product product = productService.findById(id);
+            System.out.println(ToStringBuilder.reflectionToString(product));
+            List<Category> categories = categoryService.findAllHierarchically();
+            List<Brand> brands = brandService.findAllByOrderByName();
+            model.addAttribute("product", product);
+            model.addAttribute("categories", categories);
+            model.addAttribute("brands", brands);
+            return "admin/products/update-form";
+
+        } catch (ProductNotFoundException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+            return "redirect:/admin/products";
+        }
+    }
+
+    @PostMapping("admin/products/update")
+    public String updateProduct(@Valid Product product, BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes, Model model,
+                                @RequestParam(name = "image") MultipartFile multipartFile,
+                                @RequestParam(name = "moreImages") MultipartFile[] multipartFiles,
+                                @RequestParam(name = "productDetailNames", required = false) String[] productDetailNames,
+                                @RequestParam(name = "productDetailValues", required = false) String[] productDetailValues) throws IOException {
+
+        log.info("updateProduct - updating product {}", product);
+
+        if (bindingResult.hasErrors()) {
+            List<Brand> brands = brandService.findAllByOrderByName();
+            List<Category> categories = categoryService.findAllHierarchically();
+            model.addAttribute("brands", brands);
+            model.addAttribute("categories", categories);
+            return "admin/products/create-form";
+        }
+
+        try {
+            productService.findByName(product.getName());
+            bindingResult.rejectValue("name", null,
+                    String.format("Product name %s exist already", product.getName()));
+        } catch (ProductNotFoundException ignored) {
+
+        }
+
+        final long maxFileSize = FileUtils.ONE_MB;
+        if (!multipartFile.isEmpty()) {
+            if (multipartFile.getSize() <= maxFileSize) {
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                product.setMainImage(savedFileName);
+            } else {
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                return "admin/products/create-form";
+            }
+        }
+
+        for (MultipartFile multipartFile1 : multipartFiles) {
+            if (multipartFile1.getSize() <= maxFileSize) {
+                String fileSaved = FileUploadUtil.saveFile(multipartFile1);
+                product.addExtraImage(fileSaved);
+            } else {
+                bindingResult.rejectValue("moreImages", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                return "admin/products/create-form";
+            }
+        }
+
+        if (StringUtils.isBlank(product.getAlias())) {
+            String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getName());
+            product.setAlias(alias);
+        } else {
+            String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getAlias());
+            product.setAlias(alias);
+        }
+
+        createProductDetails(product, productDetailNames, productDetailValues);
+
+        try {
+            Product productSaved = productService.save(product);
+            log.info("createProduct - Product saved: {}", productSaved);
+            addMessage(redirectAttributes, "Product Created Successfully", "success");
+        } catch (Exception e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+        }
+
+        return "redirect:/admin/products";
+    }
+
 
     private String removeWhitespaceAndNonAlphanumericCharacters(String text) {
         return text.toLowerCase()

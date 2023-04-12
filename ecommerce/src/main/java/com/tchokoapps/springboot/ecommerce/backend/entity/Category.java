@@ -11,7 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -45,6 +47,9 @@ public class Category {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Category> children = new HashSet<>();
 
+    @ManyToMany(mappedBy = "categories")
+    private List<Product> products = new ArrayList<>();
+
     @CreationTimestamp
     private LocalDateTime createdTime;
 
@@ -52,8 +57,15 @@ public class Category {
     private LocalDateTime updatedTime;
 
     public Category() {
-        this.createdTime = LocalDateTime.now();
         this.enabled = true;
+    }
+
+    @Transient
+    public String getImagePath() {
+        if (id == null || photo == null) {
+            return "/upload/no_image.jpg";
+        }
+        return "/photos/" + photo;
     }
 
     @Transient
@@ -63,6 +75,12 @@ public class Category {
         }
 
         return "";
+    }
+
+    public static class CategoryBuilder {
+        public CategoryBuilder() {
+            enabled(true);
+        }
     }
 
     @Transient

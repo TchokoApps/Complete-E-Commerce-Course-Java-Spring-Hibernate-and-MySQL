@@ -3,6 +3,7 @@ package com.tchokoapps.springboot.ecommerce.backend.repository;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Brand;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Category;
 import com.tchokoapps.springboot.ecommerce.backend.entity.Product;
+import com.tchokoapps.springboot.ecommerce.backend.entity.ProductDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,27 +19,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class ProductRepositoryTest {
+public class ProductDetailRepositoryTest {
 
     @Autowired
-    private ProductRepository productRepository;
+    private BrandRepository brandRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private BrandRepository brandRepository;
+    private ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Test
-    public void testCrateNewProduct() {
+    public void testProductDetails() {
 
         Category category = Category.builder()
                 .name("Electronics")
                 .build();
 
+        categoryRepository.save(category);
+
         Brand brand = Brand.builder()
                 .name("Apple")
                 .build();
+
+        brandRepository.save(brand);
 
         Product product = Product.builder()
                 .name("iPhone 13")
@@ -58,35 +66,39 @@ public class ProductRepositoryTest {
                 .brand(brand)
                 .build();
 
-        Product product2 = Product.builder()
-                .name("Samsung Galaxy S21 Ultra")
-                .alias("galaxys21ultra")
-                .shortDescription("The ultimate Android phone")
-                .fullDescription("The Samsung Galaxy S21 Ultra is a top-of-the-line Android smartphone with a huge 6.8-inch Dynamic AMOLED display, 5G connectivity, and an Exynos 2100 processor")
-                .inStock(true)
-                .cost(BigDecimal.valueOf(800))
-                .price(BigDecimal.valueOf(1199))
-                .discountPercent(BigDecimal.valueOf(0))
-                .length(BigDecimal.valueOf(6.5))
-                .width(BigDecimal.valueOf(3))
-                .weight(BigDecimal.valueOf(2.82))
-                .height(BigDecimal.valueOf(0.4))
-                .weight(BigDecimal.valueOf(0.33))
-                .categories(Collections.singletonList(category))
-                .brand(brand)
+        productRepository.save(product);
+
+        ProductDetail productDetail1 = ProductDetail.builder()
+                .name("Processor")
+                .description("Intel Celeron Processor N4020 (4M Cache, 1.10 GHz up to 2.80 GHz)")
+                .product(product)
                 .build();
 
-        Category categorySaved = categoryRepository.save(category);
-        Brand brandSaved = brandRepository.save(brand);
+        ProductDetail productDetail2 = ProductDetail.builder()
+                .name("Display")
+                .description("14\" FHD (1920 x 1080) IPS Display")
+                .product(product)
+                .build();
 
-        assertThat(categorySaved.getId()).isNotNull();
-        assertThat(brandSaved.getId()).isNotNull();
+        ProductDetail productDetail3 = ProductDetail.builder()
+                .name("Memory")
+                .description("4GB LPDDR4 RAM")
+                .product(product)
+                .build();
 
-        List<Product> products = productRepository.saveAll(Arrays.asList(product, product2));
+        ProductDetail productDetail4 = ProductDetail.builder()
+                .name("Storage")
+                .description("256GB SATA M.2 SSD")
+                .product(product)
+                .build();
 
-        assertThat(products.size()).isEqualTo(2);
+        List<ProductDetail> productDetails =
+                productDetailRepository.saveAll(Arrays.asList(productDetail1, productDetail2, productDetail3, productDetail4));
 
-        products.forEach(item -> assertThat(item.getId()).isNotNull());
+        System.out.println(productDetails);
+
+        productDetails.forEach(productDetail -> assertThat(productDetail.getId()).isNotNull());
+
     }
 
 }

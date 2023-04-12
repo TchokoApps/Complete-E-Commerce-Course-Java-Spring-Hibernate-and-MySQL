@@ -1,0 +1,65 @@
+#showImageContainer {
+    position: relative;
+    display: inline-block;
+}
+
+#showImage {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+#deleteImage {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.selected-images {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selected-images > div {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.delete-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.product-title {
+    max-width: 300px;
+    display: inline-block;
+}
+
+table.dataTable.nowrap th, table.dataTable.nowrap td {
+    white-space: normal;
+}

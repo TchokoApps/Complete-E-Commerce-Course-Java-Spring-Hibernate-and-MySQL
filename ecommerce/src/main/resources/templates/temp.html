@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <title>Form File Upload | Upcube - Admin & Dashboard Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
+    <meta content="Themesdesign" name="author"/>
+    <!-- App favicon -->
+    <link rel="shortcut icon" th:href="@{/backend/assets/images/favicon.ico}">
+
+    <!-- Bootstrap Css -->
+    <link id="bootstrap-style" rel="stylesheet" th:href="@{/backend/assets/css/bootstrap.min.css}" type="text/css"/>
+    <!-- Icons Css -->
+    <link rel="stylesheet" th:href="@{/backend/assets/css/icons.min.css}" type="text/css"/>
+    <!-- App Css-->
+    <link id="app-style" rel="stylesheet" th:href="@{/backend/assets/css/app.min.css}" type="text/css"/>
+
+</head>
+
+<body data-topbar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Bootstrap Validation - Normal</h4>
+                            <p class="card-title-desc">Provide valuable, actionable feedback to your users with
+                                HTML5 form validation–available in all our supported browsers.</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="validationCustom01">Name</label>
+                                        <input class="form-control" id="validationCustom01" placeholder="Name"
+                                               required="" type="text" value="Mark">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="validationCustom02">Value</label>
+                                        <input class="form-control" id="validationCustom02" placeholder="Value"
+                                               required="" type="text" value="Otto">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" type="submit">Add More Fields</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- JAVASCRIPT -->
+<script th:src="@{/backend/assets/libs/jquery/jquery.min.js}"></script>
+<script th:src="@{/backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/backend/assets/libs/metismenu/metisMenu.min.js}"></script>
+<script th:src="@{/backend/assets/libs/simplebar/simplebar.min.js}"></script>
+<script th:src="@{/backend/assets/libs/node-waves/waves.min.js}"></script>
+
+<!-- Plugins js -->
+<script th:src="@{/backend/assets/libs/dropzone/min/dropzone.min.js}"></script>
+
+<script th:src="@{/backend/assets/js/app.js}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>

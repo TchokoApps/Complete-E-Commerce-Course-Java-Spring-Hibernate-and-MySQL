@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Entity
@@ -29,6 +31,9 @@ public class Role {
     @Size(min = 3, max = 150, message = "Description must be between 3 and 150 characters long.")
     @Column(nullable = false)
     private String description;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdTime;

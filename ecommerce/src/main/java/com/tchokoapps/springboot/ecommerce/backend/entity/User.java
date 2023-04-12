@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -54,8 +56,10 @@ public class User {
 
     private boolean enabled;
 
+    @CreationTimestamp
     private LocalDateTime createdTime;
 
+    @UpdateTimestamp
     private LocalDateTime updatedTime;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -67,17 +71,14 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
-        this.createdTime = LocalDateTime.now();
         this.enabled = true;
     }
 
     public static class UserBuilder {
         public UserBuilder() {
-            createdTime(LocalDateTime.now());
             enabled(true);
         }
     }
-
 
     @Override
     public String toString() {
@@ -92,6 +93,15 @@ public class User {
                 ", enabled=" + enabled +
                 ", createdTime=" + createdTime +
                 ", updatedTime=" + updatedTime +
+                ", roles=" + roles +
                 '}';
+    }
+
+    @Transient
+    public String getImagePath() {
+        if (id == null || photo == null) {
+            return "/upload/no_image.jpg";
+        }
+        return "/photos/" + photo;
     }
 }

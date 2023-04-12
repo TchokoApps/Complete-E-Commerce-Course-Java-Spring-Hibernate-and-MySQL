@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -42,7 +43,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(3.02))
                 .height(BigDecimal.valueOf(0.33))
                 .weight(BigDecimal.valueOf(0.25))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -58,7 +59,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(9.7))
                 .height(BigDecimal.valueOf(0.71))
                 .weight(BigDecimal.valueOf(4.5))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -74,7 +75,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(3.84))
                 .height(BigDecimal.valueOf(3.46))
                 .weight(BigDecimal.valueOf(1.63))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -90,7 +91,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(5.5))
                 .height(BigDecimal.valueOf(1.5))
                 .weight(BigDecimal.valueOf(0.05))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -106,7 +107,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(3.07))
                 .height(BigDecimal.valueOf(0.35))
                 .weight(BigDecimal.valueOf(0.23))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -122,7 +123,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(6.7))
                 .height(BigDecimal.valueOf(3.2))
                 .weight(BigDecimal.valueOf(0.24))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
 
                 .build();
@@ -139,7 +140,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(7.67))
                 .height(BigDecimal.valueOf(3.03))
                 .weight(BigDecimal.valueOf(0.94))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -155,7 +156,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(4.02))
                 .height(BigDecimal.valueOf(0.55))
                 .weight(BigDecimal.valueOf(0.65))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -171,7 +172,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(2.5))
                 .height(BigDecimal.valueOf(1.2))
                 .weight(BigDecimal.valueOf(0.03))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 
@@ -187,7 +188,7 @@ public class ProductCreator {
                 .width(BigDecimal.valueOf(3.43))
                 .height(BigDecimal.valueOf(0.99))
                 .weight(BigDecimal.valueOf(0.05))
-                .category(category)
+                .categories(Collections.singletonList(category))
                 .brand(brand)
                 .build();
 

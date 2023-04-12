@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,10 +26,12 @@ public class RoleServiceIT {
     public void testFindAll() {
 
         // Given
-        Role role1 = new Role(1, "ADMIN", "Can perform all actions", LocalDateTime.now(), LocalDateTime.now());
+        Role role1 = new Role(1, "ADMIN", "Can perform all actions",
+                new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now());
         roleRepository.save(role1);
 
-        Role role2 = new Role(2, "USER", "Can view and edit own data", LocalDateTime.now(), LocalDateTime.now());
+        Role role2 = new Role(2, "USER", "Can view and edit own data",
+                new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now());
         roleRepository.save(role2);
 
         // When

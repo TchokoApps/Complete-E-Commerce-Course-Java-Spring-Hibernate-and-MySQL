@@ -24,6 +24,7 @@ public class UserCreator {
     private PasswordEncoder passwordEncoder;
 
     public void createUsers() {
+
         Faker faker = Faker.instance();
 
         for (int i = 0; i < 25; i++) {
@@ -40,7 +41,7 @@ public class UserCreator {
             user.setLastName(lastName);
 
             Set<Role> roles = new HashSet<>();
-            int number = faker.number().numberBetween(1, 11);
+            int number = faker.number().numberBetween(1, 5);
             roles.add(roleRepository.findById(number).orElseThrow(() -> new RuntimeException("Role Not Found")));
             user.setRoles(roles);
 
@@ -48,5 +49,21 @@ public class UserCreator {
             user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
         }
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findById(1).orElseThrow(() -> new RuntimeException("Role Not Found")));
+
+        User adminUser = User.builder().firstName("Alain")
+                .lastName("Foka")
+                .email("Alain.Foka@gmail.com")
+                .password("123456789")
+                .roles(roles)
+                .build();
+
+        log.info("User: {}", adminUser);
+
+        adminUser.setPassword(passwordEncoder.encode("123456789"));
+
+        userRepository.save(adminUser);
     }
 }

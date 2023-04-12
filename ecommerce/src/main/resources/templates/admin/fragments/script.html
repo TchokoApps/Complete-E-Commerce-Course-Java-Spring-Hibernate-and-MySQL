@@ -69,10 +69,6 @@
 
     <script th:src="@{/backend/assets/js/pages/form-advanced.init.js}"></script>
 
-
-    <!-- Sweet alert init js-->
-    <script th:src="@{/backend/assets/js/code.js}"></script>
-
     <!-- twitter-bootstrap-wizard js -->
     <script th:src="@{/backend/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js}"></script>
 
@@ -88,6 +84,33 @@
     <script th:src="@{/backend/assets/js/pages/form-editor.init.js}"></script>
 
     <script th:src="@{/backend/assets/js/app.js}"></script>
+
+    <script>
+        $(function () {
+            $(document).on('click', '#delete', function (e) {
+                e.preventDefault();
+                var link = $(this).attr("href");
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Delete This Data?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = link
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -121,11 +144,33 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#buttonCancelUpdateProduct").on("click", function () {
+                window.location = "[[@{/admin/products}]]";
+            });
+        });
+    </script>
+
     <script th:if="${message != null && alertType != null} " th:inline="javascript">
         /*<![CDATA[*/
         /* Get session message and alertType if they exist */
         var message = /*[[${message}]]*/ '';
         var alertType = /*[[${alertType}]]*/ 'success';
+
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
 
         /* Show Toastr notification if message exists */
         if (message !== '') {
@@ -147,44 +192,130 @@
         /*]]>*/
     </script>
 
-    <script type="text/javascript">
-
+    <script>
         $(document).ready(function () {
-            $('#image').change(function (e) {
+            // Set up event listener for file input
+            $('#image').on('change', function () {
+                var file = this.files[0];
+                // Check file size
+                if (file && file.size > 500000) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'File size should not exceed 500 KB.'
+                    });
+                    return;
+                }
+                // Read selected file and set preview image
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $('#showImage').attr('src', e.target.result);
+                    $('#deleteImage').show();
                 }
-                reader.readAsDataURL(e.target.files['0']);
+                reader.readAsDataURL(file);
+            });
+
+            // Set up event listener for remove button
+            $('#deleteImage').on('click', function () {
+                // Reset file input and preview image to default
+                $('#image').val('');
+                $('#showImage').attr('src', '/upload/no_image.jpg');
+                $(this).hide();
             });
         });
     </script>
 
     <script>
-        $(document).ready(function () {
-            // function to display selected image
-            function displayImage(file) {
-                var reader = new FileReader();
+        $(function () {
 
-                reader.addEventListener("load", function () {
-                    var image = new Image();
-                    image.title = file.name;
-                    image.src = this.result;
-                    $('#showPhoto').attr('src', image.src);
-                }, false);
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
+            if ($('.selected-images').children().length === 0) {
+                showDefaultImage();
+                // Empty the #moreImages input field
+                $('#moreImages').val('');
             }
 
-            // bind displayImage function to file input change event
-            $('#photo').on('change', function () {
-                displayImage(this.files[0]);
-            });
+            // Handle file input change event
+            $('#moreImages').on('change', handleFileInputChange);
+
+            function handleFileInputChange() {
+                // Get the selected files
+                const files = $(this)[0].files;
+                // Clear the selected-images div
+                $('.selected-images').empty();
+                // Iterate through the selected files and create image elements
+                for (const file of files) {
+                    createImageElement(file);
+                }
+
+                // Log the moreImages field
+                console.dir($('#moreImages')[0].files);
+            }
+
+            function createImageElement(file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Check if the file size is greater than 1 MB
+                    if (file.size > 500000) {
+                        $('#moreImages').val('');
+                        toastr.options = {
+                            "closeButton": true,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+
+                        toastr.error('File size should not exceed 500 KB.');
+                        return;
+                    }
+                    // Create image element
+                    const img = $('<img>', {
+                        class: 'rounded avatar-lg',
+                        height: '100',
+                        src: e.target.result,
+                        width: '100'
+                    });
+                    // Append the image element and delete button element to the selected-images div
+                    $('.selected-images').append($('<div>').append(img));
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function showDefaultImage() {
+                $('.selected-images').html('<img class="rounded avatar-lg" id="showImage" src="/upload/no_image.jpg">');
+            }
         });
     </script>
 
+    <script>
+
+        function showDefaultImage() {
+            $('.selected-images').html('<img class="rounded avatar-lg" id="showImage" src="/upload/no_image.jpg">');
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#addProductDetailRow').on('click', function () {
+                let newRow = '<tr><td><input type="text" class="form-control" ' +
+                    'name="productDetailNames" id="productDetailNames" required minlength="3" maxlength="150">' +
+                    '</td><td><input type="text" class="form-control" name="productDetailValues" id="productDetailValues" ' +
+                    'required required minlength="3" maxlength="150"></td><td><button type="button" ' +
+                    'class="btn btn-danger delete-row">Delete</button></td></tr>';
+                $('table#custom-fields-table tbody').append(newRow);
+            });
+
+            $('table#custom-fields-table').on('click', '.delete-row', function () {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

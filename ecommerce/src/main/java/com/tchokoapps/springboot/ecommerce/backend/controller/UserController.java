@@ -66,7 +66,7 @@ public class UserController {
 
     @PostMapping("admin/users/create")
     public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes
-            redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+            redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
         log.info("createUser() :: User = {}", user);
 
         if (bindingResult.hasErrors()) {
@@ -86,16 +86,11 @@ public class UserController {
         final long maxFileSize = ONE_MB;
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    user.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/users";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                user.setPhoto(savedFileName);
             } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
                 return "admin/users/create-form";
             }
         }
@@ -123,21 +118,15 @@ public class UserController {
     }
 
     @PostMapping("admin/users/edit")
-    public String editUser(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String editUser(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
 
         log.info("editUser() :: User: {}", user);
 
         final long maxFileSize = ONE_MB;
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    user.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/users";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                user.setPhoto(savedFileName);
             } else {
                 bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
                 return "admin/users/edit-form";
@@ -222,23 +211,19 @@ public class UserController {
     @PostMapping("admin/users/profile")
     public String editProfilePage(User user, BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes,
-                                  @RequestParam("image") MultipartFile multipartFile, @AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
+                                  @RequestParam("image") MultipartFile multipartFile,
+                                  @AuthenticationPrincipal DefaultUserDetails defaultUserDetails) throws IOException {
         log.info("editProfilePage() :: User: {}", user);
 
         final long maxFileSize = ONE_MB;
 
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    user.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                user.setPhoto(savedFileName);
             } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
                 return "admin/users/profile";
             }
         }

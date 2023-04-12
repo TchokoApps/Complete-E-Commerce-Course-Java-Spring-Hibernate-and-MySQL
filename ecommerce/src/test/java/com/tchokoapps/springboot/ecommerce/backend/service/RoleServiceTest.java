@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,8 +30,10 @@ public class RoleServiceTest {
     @Test
     public void testFindAll() {
         // Given
-        List<Role> roles = Arrays.asList(new Role(1, "ADMIN", "Can perform all actions", LocalDateTime.now(), LocalDateTime.now()),
-                new Role(2, "USER", "Can view and edit own data", LocalDateTime.now(), LocalDateTime.now()));
+        List<Role> roles = Arrays.asList(new Role(1, "ADMIN", "Can perform all actions",
+                        new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now()),
+                new Role(2, "USER", "Can view and edit own data",
+                        new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now()));
         doReturn(roles).when(roleRepository).findAll();
 
         // When

@@ -60,7 +60,9 @@ public class BrandController {
     }
 
     @PostMapping("admin/brands/create")
-    public String createBrand(@Valid Brand brand, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String createBrand(@Valid Brand brand, BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes, Model model,
+                              @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
         log.info("createBrand - creating brand {}", brand);
 
         if (bindingResult.hasErrors()) {
@@ -71,7 +73,8 @@ public class BrandController {
 
         try {
             brandService.findByName(brand.getName());
-            bindingResult.rejectValue("name", "brand.name.already.exist", String.format("Brand name %s exist already", brand.getName()));
+            bindingResult.rejectValue("name", "brand.name.already.exist",
+                    String.format("Brand name %s exist already", brand.getName()));
             return "admin/brands/create-form";
         } catch (BrandNotFoundExcepion ignored) {
 
@@ -80,16 +83,11 @@ public class BrandController {
         final long maxFileSize = FileUtils.ONE_MB;
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    brand.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error happened when saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/brands";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                brand.setPhoto(savedFileName);
             } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
                 return "admin/brands/create-form";
             }
         }
@@ -101,7 +99,8 @@ public class BrandController {
     }
 
     @GetMapping("admin/brands/update/{id}")
-    public String updateBrandForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+    public String updateBrandForm(@PathVariable(name = "id") Integer id,
+                                  Model model, RedirectAttributes redirectAttributes) {
         try {
             Brand brand = brandService.findById(id);
             List<Category> categories = categoryService.findAllHierarchically();
@@ -116,23 +115,20 @@ public class BrandController {
     }
 
     @PostMapping("/admin/brands/update")
-    public String updateBrand(Brand brand, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile multipartFile) {
+    public String updateBrand(Brand brand, BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
+                              @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
 
         log.info("updateBrand - Brand to update {}", brand);
 
         final long maxFileSize = ONE_MB;
         if (!multipartFile.isEmpty()) {
             if (multipartFile.getSize() <= maxFileSize) {
-                try {
-                    String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                    brand.setPhoto(savedFileName);
-                } catch (IOException e) {
-                    log.error("Error saving file", e);
-                    addMessage(redirectAttributes, e.getMessage(), "error");
-                    return "redirect:/admin/brands";
-                }
+                String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                brand.setPhoto(savedFileName);
             } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
+                bindingResult.rejectValue("photo", null,
+                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
                 return "admin/categories/edit-form";
             }
         }

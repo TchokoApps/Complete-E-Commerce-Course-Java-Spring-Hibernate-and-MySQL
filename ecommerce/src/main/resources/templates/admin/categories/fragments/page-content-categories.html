@@ -58,9 +58,7 @@
                             <tr th:each="category,count : ${categories}">
                                 <td>[[${count.index + 1}]]</td>
                                 <td>
-                                    <img alt="Category photo" height="100" th:height="100"
-                                         th:src="@{${category.photo == null} ? @{/upload/no_image.jpg} : @{/photos/{filename}(filename=${category.photo})}}"
-                                         th:width="100"/>
+                                    <img alt="" height="100" th:src="@{${category.getImagePath}}" width="100"/>
                                 </td>
                                 <td>[[${category.name}]]</td>
                                 <td>[[${category.alias}]]</td>
