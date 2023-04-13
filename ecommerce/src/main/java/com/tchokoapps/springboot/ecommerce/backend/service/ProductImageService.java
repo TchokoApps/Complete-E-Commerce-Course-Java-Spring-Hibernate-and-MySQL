@@ -21,6 +21,7 @@ public class ProductImageService {
     private ProductRepository productRepository;
     private ProductImageRepository productImageRepository;
 
+    @Transactional
     public void deleteProductImage(Integer productId, Integer productImageId) {
 
         Objects.requireNonNull(productId, "productId cannot be null");

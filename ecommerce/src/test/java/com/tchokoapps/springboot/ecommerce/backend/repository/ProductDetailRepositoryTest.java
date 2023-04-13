@@ -70,25 +70,25 @@ public class ProductDetailRepositoryTest {
 
         ProductDetail productDetail1 = ProductDetail.builder()
                 .name("Processor")
-                .description("Intel Celeron Processor N4020 (4M Cache, 1.10 GHz up to 2.80 GHz)")
+                .productDetailValue("Intel Celeron Processor N4020 (4M Cache, 1.10 GHz up to 2.80 GHz)")
                 .product(product)
                 .build();
 
         ProductDetail productDetail2 = ProductDetail.builder()
                 .name("Display")
-                .description("14\" FHD (1920 x 1080) IPS Display")
+                .productDetailValue("14\" FHD (1920 x 1080) IPS Display")
                 .product(product)
                 .build();
 
         ProductDetail productDetail3 = ProductDetail.builder()
                 .name("Memory")
-                .description("4GB LPDDR4 RAM")
+                .productDetailValue("4GB LPDDR4 RAM")
                 .product(product)
                 .build();
 
         ProductDetail productDetail4 = ProductDetail.builder()
                 .name("Storage")
-                .description("256GB SATA M.2 SSD")
+                .productDetailValue("256GB SATA M.2 SSD")
                 .product(product)
                 .build();
 
