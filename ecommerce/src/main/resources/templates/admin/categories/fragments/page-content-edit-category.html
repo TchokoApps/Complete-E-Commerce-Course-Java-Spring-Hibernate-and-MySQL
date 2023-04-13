@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-body">
                         <form enctype="multipart/form-data" method="post" th:action="@{/admin/categories/edit}"
-                              th:object="${category}">
+                              class="custom-validation" th:object="${category}">
                             <input name="id" th:value="*{id}" type="hidden">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Name </label>

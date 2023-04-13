@@ -22,7 +22,7 @@
         <!-- end page title -->
         <div class="row">
             <form enctype="multipart/form-data" method="post" th:action="@{/admin/products/create}"
-                  th:object="${product}">
+                  class="custom-validation" th:object="${product}">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">

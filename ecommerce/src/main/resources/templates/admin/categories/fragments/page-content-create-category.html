@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-body">
                         <form enctype="multipart/form-data" method="post" th:action="@{/admin/categories/create}"
-                              th:object="${category}">
+                              class="custom-validation" th:object="${category}">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Name </label>
                                 <div class="col-sm-10">
@@ -56,8 +56,6 @@
                                 <select aria-label="Default select example" class="form-select" id="categoryId"
                                         name="categoryId" th:field="*{parent}">
                                     <option selected="" value="0">[No Parent]</option>
-                                    <!--                                    <option th:each="category : ${categories}" th:value="${category.id}"-->
-                                    <!--                                            th:text="${category.name}"></option>-->
                                     <th:block th:each="category : ${categories}">
                                         <option th:text="${category.name}" th:value="${category.id}"></option>
                                     </th:block>

@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-body">
                         <form enctype="multipart/form-data" method="post" th:action="@{/admin/users/profile}"
-                              th:object="${user}">
+                              class="custom-validation" th:object="${user}">
                             <input name="id" th:value="*{id}" type="hidden">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">E-Mail </label>
@@ -75,10 +75,9 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Password </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" name="password"
+                                    <input class="form-control" id="password" name="password"
                                            placeholder="Only fill in this field if you want to change your password"
-                                           th:field="*{password}"
-                                           type="password">
+                                           th:field="*{password}" type="password">
                                     <span style="color: red;" th:errors="*{password}"
                                           th:if="${#fields.hasErrors('password')}"></span>
                                 </div>
@@ -88,7 +87,7 @@
                                 <label class="col-sm-2 col-form-label">Confirm Password </label>
                                 <div class="col-sm-10">
                                     <input class="form-control" name="confirmPassword" th:field="*{confirmPassword}"
-                                           type="password">
+                                           data-parsley-equalto="#password" id="confirmPassword" type="password">
                                     <span style="color: red;" th:errors="*{confirmPassword}"
                                           th:if="${#fields.hasErrors('confirmPassword')}"></span>
                                 </div>
