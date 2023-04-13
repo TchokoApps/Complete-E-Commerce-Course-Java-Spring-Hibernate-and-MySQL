@@ -8,7 +8,6 @@ import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
 import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-
-import static org.apache.commons.io.FileUtils.ONE_MB;
 
 @Slf4j
 @AllArgsConstructor
@@ -80,16 +77,9 @@ public class BrandController {
 
         }
 
-        final long maxFileSize = FileUtils.ONE_MB;
         if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
-                String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                brand.setPhoto(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
-                return "admin/brands/create-form";
-            }
+            String savedFileName = FileUploadUtil.saveFile(multipartFile);
+            brand.setPhoto(savedFileName);
         }
 
         brandService.save(brand);
@@ -117,23 +107,16 @@ public class BrandController {
     @PostMapping("/admin/brands/update")
     public String updateBrand(Brand brand, BindingResult bindingResult,
                               RedirectAttributes redirectAttributes,
-                              @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
+                              @RequestParam(name = "image") MultipartFile multipartFile) {
 
         log.info("updateBrand - Brand to update {}", brand);
 
-        final long maxFileSize = ONE_MB;
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
+        try {
+
+            if (!multipartFile.isEmpty()) {
                 String savedFileName = FileUploadUtil.saveFile(multipartFile);
                 brand.setPhoto(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
-                return "admin/categories/edit-form";
             }
-        }
-
-        try {
 
             Brand brandFound = brandService.findById(brand.getId());
 
@@ -151,7 +134,7 @@ public class BrandController {
             brandService.save(brandFound);
             addMessage(redirectAttributes, "Brand Updated Successfully", "success");
 
-        } catch (BrandNotFoundExcepion e) {
+        } catch (BrandNotFoundExcepion | IOException e) {
             addMessage(redirectAttributes, e.getMessage(), "error");
         }
 

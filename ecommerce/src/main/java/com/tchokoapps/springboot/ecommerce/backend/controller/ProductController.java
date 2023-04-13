@@ -7,13 +7,12 @@ import com.tchokoapps.springboot.ecommerce.backend.entity.ProductImage;
 import com.tchokoapps.springboot.ecommerce.backend.exception.ProductNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.service.BrandService;
 import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
+import com.tchokoapps.springboot.ecommerce.backend.service.ProductImageService;
 import com.tchokoapps.springboot.ecommerce.backend.service.ProductService;
 import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +37,7 @@ public class ProductController {
     private ProductService productService;
     private BrandService brandService;
     private CategoryService categoryService;
+    private ProductImageService productImageService;
 
     private static void addMessage(RedirectAttributes redirectAttributes, String message, String alertType) {
         redirectAttributes.addFlashAttribute("message", message);
@@ -107,27 +107,14 @@ public class ProductController {
 
         }
 
-        final long maxFileSize = FileUtils.ONE_MB;
         if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
-                String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                product.setMainImage(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
-                return "admin/products/create-form";
-            }
+            String savedFileName = FileUploadUtil.saveFile(multipartFile);
+            product.setMainImage(savedFileName);
         }
 
         for (MultipartFile multipartFile1 : multipartFileArray) {
-            if (multipartFile1.getSize() <= maxFileSize) {
-                String fileSaved = FileUploadUtil.saveFile(multipartFile1);
-                product.addExtraImage(fileSaved);
-            } else {
-                bindingResult.rejectValue("moreImages", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
-                return "admin/products/create-form";
-            }
+            String fileSaved = FileUploadUtil.saveFile(multipartFile1);
+            product.addProductImage(fileSaved);
         }
 
         if (StringUtils.isBlank(product.getAlias())) {
@@ -195,7 +182,6 @@ public class ProductController {
     public String updateProductForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Product product = productService.findById(id);
-            System.out.println(ToStringBuilder.reflectionToString(product));
             List<Category> categories = categoryService.findAllHierarchically();
             List<Brand> brands = brandService.findAllByOrderByName();
             model.addAttribute("product", product);
@@ -215,7 +201,7 @@ public class ProductController {
                                 @RequestParam(name = "image") MultipartFile multipartFile,
                                 @RequestParam(name = "moreImages") MultipartFile[] multipartFiles,
                                 @RequestParam(name = "productDetailNames", required = false) String[] productDetailNames,
-                                @RequestParam(name = "productDetailValues", required = false) String[] productDetailValues) throws IOException {
+                                @RequestParam(name = "productDetailValues", required = false) String[] productDetailValues) {
 
         log.info("updateProduct - updating product {}", product);
 
@@ -224,59 +210,51 @@ public class ProductController {
             List<Category> categories = categoryService.findAllHierarchically();
             model.addAttribute("brands", brands);
             model.addAttribute("categories", categories);
-            return "admin/products/create-form";
+            return "admin/products/update-form";
         }
 
         try {
-            productService.findByName(product.getName());
-            bindingResult.rejectValue("name", null,
-                    String.format("Product name %s exist already", product.getName()));
-        } catch (ProductNotFoundException ignored) {
-
-        }
-
-        final long maxFileSize = FileUtils.ONE_MB;
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
+            Product productFound = productService.findById(product.getId());
+            if (!multipartFile.isEmpty()) {
                 String savedFileName = FileUploadUtil.saveFile(multipartFile);
+                String mainImage = productFound.getMainImage();
+                if (!StringUtils.isBlank(mainImage)) {
+                    FileUploadUtil.deleteQuietly(mainImage);
+                }
                 product.setMainImage(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
-                return "admin/products/create-form";
             }
-        }
 
-        for (MultipartFile multipartFile1 : multipartFiles) {
-            if (multipartFile1.getSize() <= maxFileSize) {
-                String fileSaved = FileUploadUtil.saveFile(multipartFile1);
-                product.addExtraImage(fileSaved);
-            } else {
-                bindingResult.rejectValue("moreImages", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
-                return "admin/products/create-form";
+            if (multipartFiles != null && !multipartFiles[0].isEmpty()) {
+
+                productFound.getProductImages().forEach(productImage -> FileUploadUtil.deleteQuietly(productImage.getName()));
+
+                productImageService.deleteAllProductImagesByProductId(productFound.getId());
+
+                for (MultipartFile multipartFile1 : multipartFiles) {
+                    String fileNameSaved = FileUploadUtil.saveFile(multipartFile1);
+                    product.addProductImage(fileNameSaved);
+                }
             }
-        }
 
-        if (StringUtils.isBlank(product.getAlias())) {
-            String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getName());
-            product.setAlias(alias);
-        } else {
-            String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getAlias());
-            product.setAlias(alias);
-        }
+            if (StringUtils.isBlank(product.getAlias())) {
+                String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getName());
+                product.setAlias(alias);
+            } else {
+                String alias = removeWhitespaceAndNonAlphanumericCharacters(product.getAlias());
+                product.setAlias(alias);
+            }
 
-        createProductDetails(product, productDetailNames, productDetailValues);
+            createProductDetails(product, productDetailNames, productDetailValues);
 
-        try {
             Product productSaved = productService.save(product);
             log.info("createProduct - Product saved: {}", productSaved);
             addMessage(redirectAttributes, "Product Created Successfully", "success");
-        } catch (Exception e) {
-            addMessage(redirectAttributes, e.getMessage(), "error");
-        }
 
-        return "redirect:/admin/products";
+            return "redirect:/admin/products";
+        } catch (ProductNotFoundException | IOException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+            return "admin/products/all";
+        }
     }
 
 

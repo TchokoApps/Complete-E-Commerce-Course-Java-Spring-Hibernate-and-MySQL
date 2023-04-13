@@ -22,8 +22,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
-import static org.apache.commons.io.FileUtils.ONE_MB;
-
 @Slf4j
 @AllArgsConstructor
 @Controller
@@ -102,24 +100,17 @@ public class CategoryController {
     }
 
     @PostMapping("admin/categories/edit")
-    public String editCategory(Category category, BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes,
-                               @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
+    public String editCategory(Category category, RedirectAttributes redirectAttributes,
+                               @RequestParam(name = "image") MultipartFile multipartFile) {
         log.info("editCategory - Category {}", category);
 
-        final long maxFileSize = ONE_MB;
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
+        try {
+
+            if (!multipartFile.isEmpty()) {
                 String savedFileName = FileUploadUtil.saveFile(multipartFile);
                 category.setPhoto(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
-                return "admin/categories/edit-form";
             }
-        }
 
-        try {
             Category categoryFound = categoryService.findById(category.getId());
 
             if (StringUtils.isNotBlank(category.getName())) {
@@ -145,7 +136,7 @@ public class CategoryController {
 
             categoryService.save(categoryFound);
             addMessage(redirectAttributes, "Category Updated Successfully", "success");
-        } catch (CategoryNotFoundException e) {
+        } catch (CategoryNotFoundException | IOException e) {
             addMessage(redirectAttributes, e.getMessage(), "error");
         }
         return "redirect:/admin/categories";
@@ -160,7 +151,8 @@ public class CategoryController {
             Category category = categoryService.findById(id);
 
             if (!category.getChildren().isEmpty()) {
-                addMessage(redirectAttributes, "This category has one or more subcategories. Please delete the sub categories before you delete this one", "error");
+                addMessage(redirectAttributes, "This category has one or more subcategories. " +
+                        "Please delete the sub categories before you delete this one", "error");
                 return "redirect:/admin/categories";
             }
 

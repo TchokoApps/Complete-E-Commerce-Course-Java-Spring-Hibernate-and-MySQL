@@ -103,12 +103,23 @@ public class Product {
     }
 
     @Transient
-    public void addExtraImage(String imageName) {
+    public void addProductImage(String imageName) {
         ProductImage productImage = ProductImage.builder()
                 .name(imageName)
                 .product(this)
                 .build();
         this.productImages.add(productImage);
+    }
+
+    @Transient
+    public void removeProductImage(ProductImage productImage) {
+        this.productImages.remove(productImage);
+        productImage.setProduct(null);
+    }
+
+    @Transient
+    public void removeAllProductImages() {
+        this.productImages.clear();
     }
 
     @Transient
@@ -127,7 +138,7 @@ public class Product {
     }
 
     @Transient
-    public String obtainMainImagePath() {
+    public String getMainImagePath() {
 
         if (id == null || StringUtils.isBlank(mainImage)) {
             return "/upload/no_image.jpg";
@@ -136,7 +147,7 @@ public class Product {
     }
 
     @Transient
-    public List<String> obtainMoreImages() {
+    public List<String> getMoreImages() {
         List<String> moreImages = new ArrayList<>();
         for (ProductImage productImage : productImages) {
             moreImages.add(productImage.getName());

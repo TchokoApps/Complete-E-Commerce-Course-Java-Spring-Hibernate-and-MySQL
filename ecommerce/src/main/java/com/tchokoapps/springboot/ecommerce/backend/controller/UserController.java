@@ -118,22 +118,19 @@ public class UserController {
     }
 
     @PostMapping("admin/users/edit")
-    public String editUser(@ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
+    public String editUser(@ModelAttribute("user") User user, BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
+                           @RequestParam(name = "image") MultipartFile multipartFile) {
 
         log.info("editUser() :: User: {}", user);
 
-        final long maxFileSize = ONE_MB;
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
+        try {
+
+            if (!multipartFile.isEmpty()) {
                 String savedFileName = FileUploadUtil.saveFile(multipartFile);
                 user.setPhoto(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null, String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
-                return "admin/users/edit-form";
             }
-        }
 
-        try {
             User userFound = userService.findUserById(user.getId());
             userFound.setEmail(user.getEmail());
             userFound.setLastName(user.getLastName());
@@ -143,7 +140,7 @@ public class UserController {
             userFound.setPhoto(user.getPhoto());
             userService.save(userFound);
             addMessage(redirectAttributes, "User UPDATED successfully", "success");
-        } catch (Exception e) {
+        } catch (UserNotFoundException | IOException e) {
             addMessage(redirectAttributes, e.getMessage(), "error");
         }
         return "redirect:/admin/users";
@@ -212,23 +209,17 @@ public class UserController {
     public String editProfilePage(User user, BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes,
                                   @RequestParam("image") MultipartFile multipartFile,
-                                  @AuthenticationPrincipal DefaultUserDetails defaultUserDetails) throws IOException {
+                                  @AuthenticationPrincipal DefaultUserDetails defaultUserDetails) {
+
         log.info("editProfilePage() :: User: {}", user);
 
-        final long maxFileSize = ONE_MB;
+        try {
 
-        if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
+            if (!multipartFile.isEmpty()) {
                 String savedFileName = FileUploadUtil.saveFile(multipartFile);
                 user.setPhoto(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / ONE_MB));
-                return "admin/users/profile";
             }
-        }
 
-        try {
             User userFound = userService.findUserById(user.getId());
             userFound.setEmail(user.getEmail());
             userFound.setFirstName(user.getFirstName());
@@ -264,7 +255,7 @@ public class UserController {
 
             userService.save(userFound);
             addMessage(redirectAttributes, "User profile UPDATED successfully", "success");
-        } catch (Exception e) {
+        } catch (UserNotFoundException | IOException e) {
             addMessage(redirectAttributes, e.getMessage(), "error");
         }
         return "redirect:/admin/users";
