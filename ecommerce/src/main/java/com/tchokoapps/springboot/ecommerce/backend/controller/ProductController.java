@@ -222,6 +222,8 @@ public class ProductController {
                     FileUploadUtil.deleteQuietly(mainImage);
                 }
                 product.setMainImage(savedFileName);
+            } else {
+                product.setMainImage(productFound.getMainImage());
             }
 
             if (multipartFiles != null && !multipartFiles[0].isEmpty()) {
@@ -234,6 +236,8 @@ public class ProductController {
                     String fileNameSaved = FileUploadUtil.saveFile(multipartFile1);
                     product.addProductImage(fileNameSaved);
                 }
+            } else {
+                product.setProductImages(productFound.getProductImages());
             }
 
             if (StringUtils.isBlank(product.getAlias())) {
