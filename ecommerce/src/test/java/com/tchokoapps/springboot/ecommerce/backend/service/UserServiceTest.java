@@ -3,6 +3,7 @@ package com.tchokoapps.springboot.ecommerce.backend.service;
 import com.tchokoapps.springboot.ecommerce.backend.entity.User;
 import com.tchokoapps.springboot.ecommerce.backend.exception.UserNotFoundException;
 import com.tchokoapps.springboot.ecommerce.backend.repository.UserRepository;
+import com.tchokoapps.springboot.ecommerce.backend.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class UserServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserService(userRepository, passwordEncoder);
+        userService = new UserServiceImpl(userRepository, passwordEncoder);
     }
 
     @Test

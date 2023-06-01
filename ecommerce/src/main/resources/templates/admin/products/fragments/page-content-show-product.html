@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Content Modal Show Product</title>
+</head>
+<body>
+<div class="page-content" th:fragment="page-content">
+    <div aria-hidden="true" aria-labelledby="showProductModalTitle" class="modal fade" id="showProductModal"
+         role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showProductModalTitle">Scrollable Modal</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <!--                    <div class="container-fluid">-->
+                    <!--                        &lt;!&ndash; start page title &ndash;&gt;-->
+                    <!--                        <div class="row">-->
+                    <!--                            <div class="col-12">-->
+                    <!--                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">-->
+                    <!--                                    <h4 class="mb-sm-0">Show Product</h4>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        &lt;!&ndash; end page title &ndash;&gt;-->
+                    <!--                        <div class="row">-->
+                    <!--                            <form enctype="multipart/form-data" method="post" th:action="@{/admin/products/update}"-->
+                    <!--                                  th:object="${product}">-->
+                    <!--                                <input name="id" th:value="*{id}" type="hidden">-->
+                    <!--                                <div class="col-12">-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title mb-4">Overview</h4>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-6">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Name</label>-->
+                    <!--                                                        <input class="form-control" maxlength="256" minlength="3" name="name"-->
+                    <!--                                                               required th:field="*{name}" type="text">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{name}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('name')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-6">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Alias</label>-->
+                    <!--                                                        <input class="form-control" maxlength="256" minlength="3"-->
+                    <!--                                                               name="alias" th:field="*{alias}" type="text">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{alias}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('alias')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-6">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Brand</label>-->
+                    <!--                                                        <select aria-label="Default select example" class="form-select"-->
+                    <!--                                                                id="brandId"-->
+                    <!--                                                                name="brandId" required th:field="*{brand}">-->
+                    <!--                                                            <option selected="" value="0">Select Brand</option>-->
+                    <!--                                                            <option th:each="brand : ${brands}"-->
+                    <!--                                                                    th:text="${brand.name}"-->
+                    <!--                                                                    th:value="${brand.id}"></option>-->
+                    <!--                                                        </select>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-6">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Categories</label>-->
+                    <!--                                                        <select class="select2 form-control select2-multiple"-->
+                    <!--                                                                data-placeholder="Select One Or More Categories" id="categoryId"-->
+                    <!--                                                                multiple="multiple" name="categoryId" th:field="*{categories}">-->
+                    <!--                                                            <option th:each="category : ${categories}"-->
+                    <!--                                                                    th:text="${category.name}"-->
+                    <!--                                                                    th:value="${category.id}"></option>-->
+                    <!--                                                        </select>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-6">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Enabled</label>-->
+                    <!--                                                        <input class="form-check-input" th:field="*{enabled}"-->
+                    <!--                                                               type="checkbox">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{enabled}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('enabled')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-6">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">In-Stock</label>-->
+                    <!--                                                        <input class="form-check-input" th:field="*{inStock}"-->
+                    <!--                                                               type="checkbox">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{inStock}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('inStock')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-4">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Cost</label>-->
+                    <!--                                                        <input class="form-control" min="0" name="cost"-->
+                    <!--                                                               required step="0.01" th:field="*{cost}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{cost}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('cost')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-4">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Price</label>-->
+                    <!--                                                        <input class="form-control" min="0" name="cost"-->
+                    <!--                                                               required step="0.01" th:field="*{price}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{price}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('price')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-4">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Discount</label>-->
+                    <!--                                                        <input class="form-control" max="100" min="0"-->
+                    <!--                                                               name="discountPercent" step="0.01" th:field="*{discountPercent}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{discountPercent}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('discountPercent')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title mb-4">Short Description</h4>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-12">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                        <textarea class="form-control" maxlength="500" minlength="3"-->
+                    <!--                                                  name="shortDescription" required-->
+                    <!--                                                  th:field="*{shortDescription}"></textarea>-->
+                    <!--                                                        <span style="color: red;" th:errors="*{shortDescription}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('shortDescription')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title mb-4">Full Description</h4>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-12">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                        <textarea id="elm1" minlength="3" name="fullDescription"-->
+                    <!--                                                  th:field="*{fullDescription}"></textarea>-->
+                    <!--                                                        <span style="color: red;" th:errors="*{fullDescription}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('fullDescription')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title mb-4">Upload Main Image</h4>-->
+                    <!--                                            <div class="row mb-3">-->
+                    <!--                                                <label class="col-sm-2 col-form-label">Main Image: </label>-->
+                    <!--                                                <div class="col-sm-10">-->
+                    <!--                                                    <input accept="image/*" class="form-control" id="image" name="image" type="file">-->
+                    <!--                                                    <span style="color: red;" th:errors="*{mainImage}"-->
+                    <!--                                                          th:if="${#fields.hasErrors('mainImage')}"></span>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                            <div class="row mb-3">-->
+                    <!--                                                <label class="col-sm-2 col-form-label"> </label>-->
+                    <!--                                                <div class="col-sm-10">-->
+                    <!--                                                    <div id="showImageContainer">-->
+                    <!--                                                        <img class="rounded avatar-lg" id="showImage"-->
+                    <!--                                                             th:src="@{${product.getMainImagePath}}" width="100">-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title mb-4">Upload More Images</h4>-->
+                    <!--                                            <div class="row mb-3">-->
+                    <!--                                                <label class="col-sm-2 col-form-label">More Images: </label>-->
+                    <!--                                                <div class="col-sm-10">-->
+                    <!--                                                    <input accept="image/*" class="form-control" id="moreImages" multiple-->
+                    <!--                                                           name="moreImages" type="file">-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                            <div class="row mb-3">-->
+                    <!--                                                <label class="col-sm-2 col-form-label"> </label>-->
+                    <!--                                                <div class="col-sm-10">-->
+                    <!--                                                    <div class="selected-images">-->
+                    <!--                                                        <div th:each="moreImage : ${product.getMoreImages}">-->
+                    <!--                                                            <img class="rounded avatar-lg" style="height: 100px; width: 100px;"-->
+                    <!--                                                                 th:src="@{'/photos/' + ${moreImage}}">-->
+                    <!--                                                        </div>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title">Detail</h4>-->
+                    <!--                                            <p class="card-title-desc">Add Name and Value</p>-->
+
+                    <!--                                            <div class="container mt-5">-->
+                    <!--                                                <div class="table-responsive">-->
+                    <!--                                                    <table class="table mb-0" id="custom-fields-table">-->
+                    <!--                                                        <thead>-->
+                    <!--                                                        <tr>-->
+                    <!--                                                            <th>Name</th>-->
+                    <!--                                                            <th>Value</th>-->
+                    <!--                                                            <th>Action</th>-->
+                    <!--                                                        </tr>-->
+                    <!--                                                        </thead>-->
+                    <!--                                                        <tbody>-->
+                    <!--                                                        <tr th:each="productDetail : ${product.productDetails}">-->
+                    <!--                                                            <td><input class="form-control" id="productDetailNames" maxlength="150"-->
+                    <!--                                                                       minlength="3"-->
+                    <!--                                                                       name="productDetailNames" required="" th:value="${productDetail.name}"-->
+                    <!--                                                                       type="text"></td>-->
+                    <!--                                                            <td><input class="form-control" id="productDetailValues" maxlength="150"-->
+                    <!--                                                                       minlength="3"-->
+                    <!--                                                                       name="productDetailValues" required="" th:value="${productDetail.productDetailValue}"-->
+                    <!--                                                                       type="text"></td>-->
+                    <!--                                                            <td>-->
+                    <!--                                                                <button class="btn btn-danger delete-row" type="button">Delete-->
+                    <!--                                                                </button>-->
+                    <!--                                                            </td>-->
+                    <!--                                                        </tr>-->
+                    <!--                                                        </tbody>-->
+                    <!--                                                    </table>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="mt-3">-->
+                    <!--                                                    <button class="btn btn-primary" id="addProductDetailRow" type="button">Add Row-->
+                    <!--                                                    </button>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="card">-->
+                    <!--                                        <div class="card-body">-->
+                    <!--                                            <h4 class="card-title mb-4">Shipping</h4>-->
+                    <!--                                            <p class="card-title-desc">The following information is important to calculate shipping cost-->
+                    <!--                                                for the product. The dimensions (L x W x H) is for the box that is used to package the-->
+                    <!--                                                product - not the product´s dimensions.</p>-->
+                    <!--                                            <div class="row">-->
+                    <!--                                                <div class="col-lg-3">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Length</label>-->
+                    <!--                                                        <input class="form-control" min="0" name="length"-->
+                    <!--                                                               required step="0.01" th:field="*{length}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{length}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('length')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-3">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Width</label>-->
+                    <!--                                                        <input class="form-control" max="100" min="0"-->
+                    <!--                                                               name="width" step="0.01" th:field="*{width}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{width}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('width')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-3">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Height</label>-->
+                    <!--                                                        <input class="form-control" max="100" min="0"-->
+                    <!--                                                               name="height" step="0.01" th:field="*{height}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{height}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('height')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="col-lg-3">-->
+                    <!--                                                    <div class="mb-3">-->
+                    <!--                                                        <label class="form-label">Weight</label>-->
+                    <!--                                                        <input class="form-control" max="100" min="0"-->
+                    <!--                                                               name="weight" step="0.01" th:field="*{weight}"-->
+                    <!--                                                               type="number">-->
+                    <!--                                                        <span style="color: red;" th:errors="*{weight}"-->
+                    <!--                                                              th:if="${#fields.hasErrors('weight')}"></span>-->
+                    <!--                                                    </div>-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                </div> &lt;!&ndash; end col &ndash;&gt;-->
+                    <!--                                <div class="card">-->
+                    <!--                                    <div class="card-body">-->
+                    <!--                                        <input class="btn btn-info waves-effect waves-light" type="submit" value="Update Product">-->
+                    <!--                                        <input class="btn btn-secondary" id="buttonCancelUpdateProduct" type="button" value="Cancel"/>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+
+                    <!--                            </form>-->
+                    <!--                        </div>-->
+                    <!--                    </div> &lt;!&ndash; container-fluid &ndash;&gt;-->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light waves-effect" data-bs-dismiss="modal" type="button">Close</button>
+                    <button class="btn btn-primary waves-effect waves-light" type="button">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+</div>
+</body>
+</html>
+
+
+

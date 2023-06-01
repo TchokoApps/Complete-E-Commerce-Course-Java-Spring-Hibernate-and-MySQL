@@ -2,14 +2,15 @@ package com.tchokoapps.springboot.ecommerce.backend.service;
 
 import com.tchokoapps.springboot.ecommerce.backend.entity.Role;
 import com.tchokoapps.springboot.ecommerce.backend.repository.RoleRepository;
+import com.tchokoapps.springboot.ecommerce.backend.service.impl.RoleServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,16 +25,16 @@ public class RoleServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        roleService = new RoleService(roleRepository);
+        roleService = new RoleServiceImpl(roleRepository);
     }
 
     @Test
     public void testFindAll() {
         // Given
         List<Role> roles = Arrays.asList(new Role(1, "ADMIN", "Can perform all actions",
-                        new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now()),
+                        new HashSet<>(), LocalDateTime.now(), LocalDateTime.now()),
                 new Role(2, "USER", "Can view and edit own data",
-                        new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now()));
+                        new HashSet<>(), LocalDateTime.now(), LocalDateTime.now()));
         doReturn(roles).when(roleRepository).findAll();
 
         // When

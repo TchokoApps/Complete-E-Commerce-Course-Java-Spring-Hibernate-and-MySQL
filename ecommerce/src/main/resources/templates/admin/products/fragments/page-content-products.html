@@ -63,7 +63,10 @@
                                 </td>
                                 <td>
                                     <span class="product-title text-capitalize">
-                                     [[${product.name}]]
+                                        <a data-bs-target="#showProductModal"
+                                           data-bs-toggle="modal" th:href="@{'/admin/products/show/' + ${product.id}}"
+                                           title="View Details of this Product">[[${product.name}]]</a>
+                                        <div th:include="admin/products/fragments/page-content-show-product :: page-content"></div>
                                     </span>
                                 </td>
                                 <td>[[${product.brand.name}]]</td>
@@ -81,9 +84,11 @@
                                        th:if="${product.enabled == false}" title="Enable this Product"></a>
                                 </td>
                                 <td>
+                                    <a class="btn btn-secondary waves-effect waves-light"
+                                       th:href="@{'/admin/products/show/' + ${product.id}}"
+                                       title="Update Product"> <i class="fas fa-bars"></i> </a>
                                     <a class="btn btn-info sm" th:href="@{'/admin/products/update/' + ${product.id}}"
-                                       title="Update Product"> <i
-                                            class="fas fa-edit"></i> </a>
+                                       title="Update Product"> <i class="fas fa-edit"></i> </a>
                                     <a class="btn btn-danger sm" id="delete"
                                        th:href="@{'/admin/products/delete/'+ ${product.id}}" title="Delete Product">
                                         <i class="fas fa-trash-alt"></i> </a>

@@ -195,6 +195,21 @@ public class ProductController {
         }
     }
 
+    @GetMapping("admin/products/show/{id}")
+    public String showProductForm(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Product product = productService.findById(id);
+            List<Category> categories = categoryService.findAllHierarchically();
+            List<Brand> brands = brandService.findAllByOrderByName();
+            model.addAttribute("product", product);
+            return "admin/products/update-form";
+
+        } catch (ProductNotFoundException e) {
+            addMessage(redirectAttributes, e.getMessage(), "error");
+            return "redirect:/admin/products";
+        }
+    }
+
     @PostMapping("admin/products/update")
     public String updateProduct(@Valid Product product, BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes, Model model,

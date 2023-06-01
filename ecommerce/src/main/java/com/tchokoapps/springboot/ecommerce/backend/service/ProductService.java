@@ -2,41 +2,17 @@ package com.tchokoapps.springboot.ecommerce.backend.service;
 
 import com.tchokoapps.springboot.ecommerce.backend.entity.Product;
 import com.tchokoapps.springboot.ecommerce.backend.exception.ProductNotFoundException;
-import com.tchokoapps.springboot.ecommerce.backend.repository.ProductRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
-@Service
-@AllArgsConstructor
-public class ProductService {
+public interface ProductService {
+    List<Product> findAll();
 
-    private ProductRepository productRepository;
+    Product findById(Integer id) throws ProductNotFoundException;
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
+    Product save(Product product);
 
-    public Product findById(Integer id) throws ProductNotFoundException {
-        return productRepository.findById(id).orElseThrow(() ->
-                new ProductNotFoundException(String.format("Product with id = %s cannot be found", id)));
-    }
+    Product findByName(String name) throws ProductNotFoundException;
 
-    public Product save(Product product) {
-        Objects.requireNonNull(product, "product cannot be NULL");
-        return productRepository.save(product);
-    }
-
-    public Product findByName(String name) throws ProductNotFoundException {
-        Objects.requireNonNull(name, "name cannot be NULL");
-        return productRepository.findProductByName(name).orElseThrow(() -> new ProductNotFoundException(String.format("Product with name %s cannot be found", name)));
-    }
-
-    public void deleteProduct(Integer id) {
-        Objects.requireNonNull(id, "Id cannot be NULL");
-        productRepository.deleteById(id);
-    }
-
+    void deleteProduct(Integer id);
 }

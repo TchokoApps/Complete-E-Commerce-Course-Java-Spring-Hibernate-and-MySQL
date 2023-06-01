@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <input id="search-bar" placeholder="Search..." type="text">
+    <button type="submit">Search</button>
+</form>
+<div id="search-results"></div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (event) {
+            event.preventDefault();
+            var searchTerm = $('#search-bar').val();
+            $.ajax({
+                url: 'search.php',
+                method: 'POST',
+                data: {search: searchTerm},
+                success: function (response) {
+                    $('#search-results').html(response);
+                }
+            });
+        });
+    });
+
+</script>
+</html>

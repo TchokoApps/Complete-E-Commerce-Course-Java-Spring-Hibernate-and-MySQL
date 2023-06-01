@@ -1,42 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
-
-<div th:replace="admin/fragments/header :: header('Create Product')"></div>
-
-<body data-topbar="dark">
-
-<!-- Begin page -->
-<div id="layout-wrapper">
-
-    <div th:replace="admin/fragments/page-topbar :: page-topbar"></div>
-
-    <!-- ========== Left Sidebar Start ========== -->
-    <div th:replace="admin/fragments/vertical-menu :: vertical-menu"></div>
-    <!-- Left Sidebar End -->
-
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
-    <div class="main-content">
-
-        <div th:replace="admin/products/fragments/page-content-create-product :: page-content"></div>
-        <!-- End Page-content -->
-
-        <div th:replace="admin/fragments/footer :: footer"></div>
-
-    </div>
-    <!-- end main content-->
-
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="search-bar">
+    <select id="category-select">
+        <option value="">All Categories</option>
+        <optgroup label="Automotive Vehicles">
+            <option value="Cars & Bakkies">Cars & Bakkies</option>
+            <option value="Auto Parts & Accessories">Auto Parts & Accessories</option>
+            <option value="Motorcycles & Scooters">Motorcycles & Scooters</option>
+            <option value="Motorcycle Parts & Accessories">Motorcycle Parts & Accessories</option>
+            <option value="Caravans & Trailers">Caravans & Trailers</option>
+            <option value="Classic & Vintage Cars">Classic & Vintage Cars</option>
+            <option value="Medium & Heavy Commercials">Medium & Heavy Commercials</option>
+            <option value="Farm Vehicles & Equipment">Farm Vehicles & Equipment</option>
+        </optgroup>
+    </select>
+    <input id="search-input" placeholder="Search..." type="text">
+    <select id="category-select2">
+        <option value="">All South Africa</option>
+        <optgroup label="Eastern Cape">
+            <option value="Adelaide">Adelaide</option>
+            <option value="Alice">Alice</option>
+            <option value="Aliwal North">Aliwal North</option>
+            <option value="Barkly East">Barkly East</option>
+        </optgroup>
+    </select>
+    <button id="search-btn">Search</button>
 </div>
-<!-- END layout-wrapper -->
-
-<!-- Right Sidebar -->
-<div th:replace="admin/fragments/right-bar :: right-bar"></div>
-
-<!-- JAVASCRIPT -->
-<div th:replace="admin/fragments/script :: script"></div>
-
 </body>
+<script>
+    $(document).ready(function () {
+        // Search button click event
+        $('#search-btn').click(function () {
+            search();
+        });
 
+        // Search input enter key press event
+        $('#search-input').keypress(function (e) {
+            if (e.which == 13) {
+                search();
+            }
+        });
+
+        // Search function
+        function search() {
+            var query = $('#search-input').val();
+            var category = $('#category-select').val();
+
+            // Redirect to search results page with query and category parameters
+            window.location.href = '/search?query=' + query + '&category=' + category;
+        }
+    });
+</script>
 </html>

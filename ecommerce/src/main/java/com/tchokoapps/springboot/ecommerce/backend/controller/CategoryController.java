@@ -6,7 +6,6 @@ import com.tchokoapps.springboot.ecommerce.backend.service.CategoryService;
 import com.tchokoapps.springboot.ecommerce.common.utils.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,16 +61,9 @@ public class CategoryController {
             return "admin/categories/create-form";
         }
 
-        final long maxFileSize = FileUtils.ONE_MB;
         if (!multipartFile.isEmpty()) {
-            if (multipartFile.getSize() <= maxFileSize) {
-                String savedFileName = FileUploadUtil.saveFile(multipartFile);
-                category.setPhoto(savedFileName);
-            } else {
-                bindingResult.rejectValue("photo", null,
-                        String.format("File size should be less or equal %s MB", maxFileSize / FileUtils.ONE_MB));
-                return "admin/categories/create-form";
-            }
+            String savedFileName = FileUploadUtil.saveFile(multipartFile);
+            category.setPhoto(savedFileName);
         }
 
         try {

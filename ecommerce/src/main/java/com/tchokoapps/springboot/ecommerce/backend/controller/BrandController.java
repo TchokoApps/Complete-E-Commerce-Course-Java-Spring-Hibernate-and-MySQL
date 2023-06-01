@@ -149,6 +149,7 @@ public class BrandController {
             brandService.delete(id);
         } catch (BrandNotFoundExcepion e) {
             addMessage(redirectAttributes, e.getMessage(), "error");
+            return "redirect:/admin/brands";
         }
 
         addMessage(redirectAttributes, "Brand Deleted Successfully", "success");
