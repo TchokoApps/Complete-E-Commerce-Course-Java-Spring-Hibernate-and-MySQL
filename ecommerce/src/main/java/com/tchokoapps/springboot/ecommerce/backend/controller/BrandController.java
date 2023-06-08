@@ -61,7 +61,6 @@ public class BrandController {
                               RedirectAttributes redirectAttributes, Model model,
                               @RequestParam(name = "image") MultipartFile multipartFile) throws IOException {
         log.info("createBrand - creating brand {}", brand);
-
         if (bindingResult.hasErrors()) {
             List<Category> categories = categoryService.findAllHierarchically();
             model.addAttribute("categories", categories);

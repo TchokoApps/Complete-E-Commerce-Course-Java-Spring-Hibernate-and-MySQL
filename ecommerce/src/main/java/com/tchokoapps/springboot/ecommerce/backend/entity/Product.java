@@ -48,7 +48,7 @@ public class Product {
     @Size(min = 3, max = 256, message = "Main Image must be between 3 and 256 characters long.")
     private String mainImage;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<ProductImage> productImages = new HashSet<>();
 
     @CreationTimestamp
@@ -94,7 +94,7 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<ProductDetail> productDetails = new HashSet<>();
 
     public Product() {
@@ -135,6 +135,7 @@ public class Product {
     @Transient
     public void removeProductDetail(ProductDetail productDetail) {
         productDetails.remove(productDetail);
+        productDetail.setProduct(null);
     }
 
     @Transient
